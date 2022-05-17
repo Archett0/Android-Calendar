@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/bg_material.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/bg_ripple.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/ic_launcher_background.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_calendar.xml" value="0.16058763931104356" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_full.xml" value="0.16058763931104356" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_main.xml" value="0.16058763931104356" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_mix.xml" value="0.1793478260869565" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_view_pager.xml" value="0.32708333333333334" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/drawable-v21/cv_bg_material.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/layout/cv_layout_calendar_view.xml" value="0.16058763931104356" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/layout/cv_week_bar.xml" value="0.16058763931104356" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
