@@ -7,11 +7,17 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/bg_material.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/bg_ripple.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/ic_launcher_background.xml" value="0.188" />
-        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_calendar.xml" value="0.16058763931104356" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_calendar.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_daily_calendar.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_full.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_main.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_mix.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_view_pager.xml" value="0.32708333333333334" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/custom_week_bar.xml" value="0.4891304347826087" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/english_week_bar.xml" value="0.4891304347826087" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/fragment_pager.xml" value="0.4891304347826087" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/hour_cell.xml" value="0.5536458333333333" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/solar_week_bar.xml" value="0.4891304347826087" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/drawable-v21/cv_bg_material.xml" value="0.188" />

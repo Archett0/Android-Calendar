@@ -7,7 +7,7 @@
     android:background="#ffffff"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="edu.zjut.androiddeveloper_ailaiziciqi.Calendar.MainActivity"
+    tools:context=".DailyCalendarActivity"
     tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
 
 
@@ -61,79 +61,34 @@
 
         <FrameLayout
             android:id="@+id/fl_current"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/bg_ripple">
 
-            <ImageView
-                android:id="@+id/ib_calendar"
+            <Button
+                android:id="@+id/daily_back_home_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
-                android:src="@mipmap/ic_calendar"
-                 />
+                android:background="@null"
+                android:padding="4dp"
+                android:text="回到月视图" />
 
-            <TextView
-                android:id="@+id/tv_current_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="13"
-                android:textColor="#000000"
-                android:textSize="12sp" />
         </FrameLayout>
-
-        <ImageView
-            android:id="@+id/iv_more"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="60dp"
-            android:background="@drawable/bg_ripple"
-            android:contentDescription="@string/app_name"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@mipmap/ic_more"
-            app:tint="#333333" />
-
-        <ImageView
-            android:id="@+id/iv_func"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:layout_toLeftOf="@+id/iv_more"
-            android:background="@drawable/bg_ripple"
-            android:padding="4dp"
-            android:src="@mipmap/ic_func"
-            app:tint="#333333" />
-
-        <Button
-            android:id="@+id/daily_btn"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="12dp"
-            android:layout_toLeftOf="@id/iv_func"
-            android:background="@null"
-            android:padding="4dp"
-            android:text="今日" />
-
-
     </RelativeLayout>
+
 
     <edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout
         android:id="@+id/calendarLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
+        app:calendar_show_mode="only_week_view"
+        app:default_status="shrink"
         android:orientation="vertical"
+
         app:calendar_content_view_id="@+id/recyclerView">
 
         <edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView
@@ -171,21 +126,32 @@
             app:year_view_week_text_color="#e1e1e1"
             app:year_view_week_text_size="6sp" />
 
-        <edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView
-            android:id="@+id/recyclerView"
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="今日日程"
+            android:textColor="@color/black"
+            android:background="@null"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="20sp" />
+
+        <ListView
+            android:id="@+id/hourListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/content_background"
-            app:group_background="@color/content_background"
-            app:group_center="false"
-            app:group_has_header="false"
-            app:group_height="42dp"
-            app:group_padding_left="16dp"
-            app:group_padding_right="16dp"
-            app:group_text_color="#555555"
-            app:group_text_size="14sp" />
+            android:layout_height="0dp"
+            android:layout_weight="5">
+        </ListView>
 
     </edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout>
-
-
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_margin="40dp"-->
+<!--        android:id="@+id/fab"-->
+<!--        android:src="@drawable/ic_add_event"-->
+<!--        android:contentDescription="AddDailyEvent" />-->
 </LinearLayout>
