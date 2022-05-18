@@ -17,6 +17,13 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/drawable-v21/cv_bg_material.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/layout/cv_layout_calendar_view.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/layout/cv_week_bar.xml" value="0.16058763931104356" />
+        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/bg_material.xml" value="0.1365" />
+        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/corners_shape.xml" value="0.1365" />
+        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/divider.xml" value="0.1435" />
+        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1435" />
+        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_mix.xml" value="0.264" />
+        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/item_list_article.xml" value="0.25833333333333336" />
+        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/settings_activity.xml" value="0.25833333333333336" />
       </map>
     </option>
   </component>
