@@ -7,7 +7,6 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.base.activity
 
 /**
  * Only calendar
- * Created by haibin on 2019/6/12.
  */
 
 public class CalendarActivity extends BaseActivity {
