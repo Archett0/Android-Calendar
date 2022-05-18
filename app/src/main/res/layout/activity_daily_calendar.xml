@@ -10,148 +10,86 @@
     tools:context=".DailyCalendarActivity"
     tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
 
-
     <RelativeLayout
-        android:id="@+id/rl_tool"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_month_day"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:textColor="#000000"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            tools:ignore="RtlSymmetry" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/tv_month_day"
-            android:orientation="vertical"
-            android:paddingBottom="12dp"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingTop="12dp"
-            tools:ignore="RelativeOverlap">
-
-            <TextView
-                android:id="@+id/tv_year"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/tv_lunar"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/fl_current"
-            android:layout_width="wrap_content"
-            android:layout_height="33dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/bg_ripple">
-
-            <Button
-                android:id="@+id/daily_back_home_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:padding="4dp"
-                android:text="回到月视图" />
-
-        </FrameLayout>
-    </RelativeLayout>
-
-
-    <edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout
-        android:id="@+id/calendarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff"
-        app:calendar_show_mode="only_week_view"
-        app:default_status="shrink"
-        android:orientation="vertical"
-
-        app:calendar_content_view_id="@+id/recyclerView">
-
-        <edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView
-            android:id="@+id/calendarView"
+        <edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout
+            android:id="@+id/calendarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#fff"
-            app:calendar_padding_left="42dp"
-            app:calendar_padding_right="10dp"
-            app:current_month_lunar_text_color="#CFCFCF"
-            app:current_month_text_color="#333333"
-            app:max_year="2020"
-            app:min_year="2004"
-            app:month_view="edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixMonthView"
-            app:month_view_show_mode="mode_fix"
-            app:other_month_lunar_text_color="#e1e1e1"
-            app:other_month_text_color="#e1e1e1"
-            app:scheme_text="假"
-            app:scheme_text_color="#333"
-            app:scheme_theme_color="#128c4b"
-            app:selected_lunar_text_color="#fff"
-            app:selected_text_color="#fff"
-            app:selected_theme_color="#046cea"
-            app:week_background="#fff"
-            app:week_start_with="mon"
-            app:week_text_color="#e1e1e1"
-            app:week_view="edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixWeekView"
-            app:year_view_day_text_color="#333333"
-            app:year_view_day_text_size="7sp"
-            app:year_view_month_text_color="#ff0000"
-            app:year_view_month_text_size="20sp"
-            app:year_view_scheme_color="#f17706"
-            app:year_view_select_text_color="#fff"
-            app:year_view_week_height="12dp"
-            app:year_view_week_text_color="#e1e1e1"
-            app:year_view_week_text_size="6sp" />
+            android:orientation="vertical"
+            app:calendar_content_view_id="@+id/recyclerView"
+            app:calendar_show_mode="only_week_view"
+            app:default_status="shrink">
+
+            <edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                app:calendar_padding_left="42dp"
+                app:calendar_padding_right="10dp"
+                app:current_month_lunar_text_color="#CFCFCF"
+                app:current_month_text_color="#333333"
+                app:max_year="2020"
+                app:min_year="2004"
+                app:month_view="edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixMonthView"
+                app:month_view_show_mode="mode_fix"
+                app:other_month_lunar_text_color="#e1e1e1"
+                app:other_month_text_color="#e1e1e1"
+                app:scheme_text="假"
+                app:scheme_text_color="#333"
+                app:scheme_theme_color="#128c4b"
+                app:selected_lunar_text_color="#fff"
+                app:selected_text_color="#fff"
+                app:selected_theme_color="#046cea"
+                app:week_background="#fff"
+                app:week_start_with="mon"
+                app:week_text_color="#e1e1e1"
+                app:week_view="edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixWeekView"
+                app:year_view_day_text_color="#333333"
+                app:year_view_day_text_size="7sp"
+                app:year_view_month_text_color="#ff0000"
+                app:year_view_month_text_size="20sp"
+                app:year_view_scheme_color="#f17706"
+                app:year_view_select_text_color="#fff"
+                app:year_view_week_height="12dp"
+                app:year_view_week_text_color="#e1e1e1"
+                app:year_view_week_text_size="6sp" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="今日日程"
-            android:textColor="@color/black"
-            android:background="@null"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@null"
+                android:text="今日日程"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/hourListView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
-        </ListView>
+            <ListView
+                android:id="@+id/hourListView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5" />
 
-    </edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout>
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_margin="40dp"-->
-<!--        android:id="@+id/fab"-->
-<!--        android:src="@drawable/ic_add_event"-->
-<!--        android:contentDescription="AddDailyEvent" />-->
+        </edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_event"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="40dp"
+            android:contentDescription="AddDailyEvent"
+            android:backgroundTint="@color/primary_btn_color"
+            android:src="@drawable/ic_add_event" />
+    </RelativeLayout>
 </LinearLayout>

@@ -55,7 +55,6 @@ public class Event {
         return events;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Event> eventsForDateAndTime(LocalDate date, LocalTime time) {
         ArrayList<Event> events = new ArrayList<>();
         for (Event event : eventArrayList) {

@@ -6,9 +6,11 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/bg_material.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/bg_ripple.xml" value="0.188" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/ic_add_event.xml" value="0.35" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.35" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/ic_launcher_background.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_calendar.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_daily_calendar.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_daily_calendar.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_full.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_main.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_mix.xml" value="0.33" />

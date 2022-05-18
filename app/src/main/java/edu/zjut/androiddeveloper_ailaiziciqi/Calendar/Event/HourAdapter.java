@@ -25,7 +25,6 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
         super(context, 0, objects);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -33,23 +32,23 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
         HourEvent event = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.hour_cell, parent, false);   //TODO: possible errors
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.hour_cell, parent, false);
         }
 
         setHour(convertView, event.time);
         setEvents(convertView, event.events);
 
-
         return convertView;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    // 设置一个时间cell
     private void setHour(View convertView, LocalTime time) {
         TextView timeTV = convertView.findViewById(R.id.timeTV);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         timeTV.setText(time.format(formatter));
     }
 
+    // 设置当前时间cell的全部日程
     private void setEvents(View convertView, ArrayList<Event> events) {
         TextView event1 = convertView.findViewById(R.id.event1);
         TextView event2 = convertView.findViewById(R.id.event2);
@@ -71,21 +70,23 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
             setEvent(event1, events.get(0));
             setEvent(event2, events.get(1));
             setEvent(event3, events.get(2));
-        } else {
+        } else {    // 最多显示三个,若更多则显示更多events
             setEvent(event1, events.get(0));
             setEvent(event2, events.get(1));
             event3.setVisibility(View.VISIBLE);
-            String eventsNotShown = String.valueOf(events.size() - 2);
-            eventsNotShown += " More Events";
+            String eventsNotShown = "还有";
+            eventsNotShown += String.valueOf(events.size() - 2) + "个日程";
             event3.setText(eventsNotShown);
         }
     }
 
+    // 设置显示一个日程
     private void setEvent(TextView textView, Event event) {
         textView.setText(event.getName());
         textView.setVisibility(View.VISIBLE);
     }
 
+    // 隐藏一个日程
     private void hideEvent(TextView textView) {
         textView.setVisibility(View.INVISIBLE);
     }
