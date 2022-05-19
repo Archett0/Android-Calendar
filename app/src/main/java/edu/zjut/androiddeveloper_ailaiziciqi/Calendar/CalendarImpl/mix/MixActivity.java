@@ -4,14 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -20,8 +18,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Article;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.ArticleAdapter;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.EventListAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.base.activity.BaseActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupItemDecoration;
@@ -211,13 +208,6 @@ public class MixActivity extends BaseActivity implements
                 mFuncDialog.show();
             }
         });
-
-        findViewById(R.id.daily_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MixActivity.this, DailyCalendarActivity.class));
-            }
-        });
     }
 
     @Override
@@ -250,8 +240,8 @@ public class MixActivity extends BaseActivity implements
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Article>());
-        mRecyclerView.setAdapter(new ArticleAdapter(this));
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Event>());
+        mRecyclerView.setAdapter(new EventListAdapter(this, LocalDate.now()));
         mRecyclerView.notifyDataSetChanged();
     }
 
@@ -297,6 +287,8 @@ public class MixActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
+        mRecyclerView.setAdapter(new EventListAdapter(this, dayClickRecord));
+        mRecyclerView.notifyDataSetChanged();
 
         Log.e("onDateSelected", "  -- " + calendar.getYear() +
                 "  --  " + calendar.getMonth() +

@@ -15,5 +15,5 @@
         android:textSize="14sp"
         android:textColor="#555555"
         android:paddingRight="16dp"
-        tools:text="今日推荐" />
+        tools:text="今日日程" />
 </LinearLayout>

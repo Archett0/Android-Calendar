@@ -19,6 +19,9 @@ import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 
+/**
+ *  小时Cell的适配器
+ */
 public class HourAdapter extends ArrayAdapter<HourEvent> {
 
     public HourAdapter(@NonNull Context context, @NonNull List<HourEvent> objects) {

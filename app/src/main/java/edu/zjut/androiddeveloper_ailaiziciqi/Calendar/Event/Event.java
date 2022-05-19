@@ -8,15 +8,26 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * 日程类
+ */
 public class Event {
     private String name;
     private LocalDate date;
     private LocalTime time;
+    private LocalTime endTime;
 
     public Event(String name, LocalDate date, LocalTime time) {
         this.name = name;
         this.date = date;
         this.time = time;
+    }
+
+    public Event(String name, LocalDate date, LocalTime time, LocalTime endTime) {
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.endTime = endTime;
     }
 
     public String getName() {
@@ -41,6 +52,14 @@ public class Event {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     public static ArrayList<Event> eventArrayList = new ArrayList<>();

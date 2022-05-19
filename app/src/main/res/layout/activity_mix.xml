@@ -115,17 +115,6 @@
             android:src="@mipmap/ic_func"
             app:tint="#333333" />
 
-        <Button
-            android:id="@+id/daily_btn"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="12dp"
-            android:layout_toLeftOf="@id/iv_func"
-            android:background="@null"
-            android:padding="4dp"
-            android:text="今日" />
-
-
     </RelativeLayout>
 
     <edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout

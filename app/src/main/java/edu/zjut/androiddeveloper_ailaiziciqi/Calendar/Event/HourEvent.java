@@ -3,7 +3,9 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-// 一个时间段的全部事件
+/**
+ *  一个时间段的全部事件
+ */
 public class HourEvent {
 
     LocalTime time;
