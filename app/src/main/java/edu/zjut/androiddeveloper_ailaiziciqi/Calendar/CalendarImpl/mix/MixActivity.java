@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
@@ -53,6 +58,16 @@ public class MixActivity extends BaseActivity implements
     private AlertDialog mMoreDialog;
     private AlertDialog mFuncDialog;
 
+
+    /*
+      增加新日程按钮
+     */
+    private FloatingActionButton addButton;
+
+    /*
+      搜索按钮
+     */
+    private ImageView search;
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, MixActivity.class));
@@ -184,6 +199,23 @@ public class MixActivity extends BaseActivity implements
             }
         });
 
+        addButton = findViewById(R.id.iv_add);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addIntent = new Intent(MixActivity.this, AddScheduleActivity.class);
+                startActivity(addIntent);
+            }
+        });
+
+        search = findViewById(R.id.iv_search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent searchIntent = new Intent(MixActivity.this, SearchActivity.class);
+                startActivity(searchIntent);
+            }
+        });
     }
 
     @Override
