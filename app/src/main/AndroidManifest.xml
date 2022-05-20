@@ -14,15 +14,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <!--        <activity android:name=".MainActivity">-->
         <activity
             android:name=".CalendarImpl.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".CalendarImpl.add.AddScheduleActivity"
             android:exported="true"
-            android:label="@string/title_activity_add_schedule" /> <!-- <activity android:name=".MainActivity"> -->
+            android:label="@string/title_activity_add_schedule" />
         <activity
-            android:name=".CalendarImpl.mix.MixActivity"
+            android:name=".DailyCalendarActivity"
+            android:exported="false" />
+        <activity android:name=".CalendarImpl.mix.MixActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +35,6 @@
         </activity>
         <activity android:name=".TestActivity" />
         <activity android:name=".CalendarActivity" />
+        <!--        <activity android:name=".mix.MixActivity" />-->
     </application>
-
 </manifest>

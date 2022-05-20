@@ -18,16 +18,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Article;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.ArticleAdapter;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.EventListAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.base.activity.BaseActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupItemDecoration;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +60,8 @@ public class MixActivity extends BaseActivity implements
     // TODO: new line here
     private AlertDialog mMoreDialog;
     private AlertDialog mFuncDialog;
+    private int dayClickCount;
+    private static LocalDate dayClickRecord;
 
 
     /*
@@ -83,12 +88,32 @@ public class MixActivity extends BaseActivity implements
     @Override
     protected void initView() {
         setStatusBarDarkMode();
+        dayClickCount = 0;
         mTextMonthDay = findViewById(R.id.tv_month_day);
         mTextYear = findViewById(R.id.tv_year);
         mTextLunar = findViewById(R.id.tv_lunar);
         mRelativeTool = findViewById(R.id.rl_tool);
         mCalendarView = findViewById(R.id.calendarView);
         mTextCurrentDay = findViewById(R.id.tv_current_day);
+        // TODO:测试完成后删去这个sector
+        Event event1 = new Event("Play apex",LocalDate.now(), LocalTime.of(20,0));
+        Event event2 = new Event("Destroy Android studio",LocalDate.now(),LocalTime.of(21,0));
+        Event event3 = new Event("Tea with Jack Ma",LocalDate.now().plusDays(1),LocalTime.of(15,0));
+        Event event4 = new Event("Take a bath",LocalDate.now(),LocalTime.of(20,0));
+        Event event5 = new Event("Event no.1",LocalDate.now(),LocalTime.of(18,0));
+        Event event6 = new Event("Event no.2",LocalDate.now(),LocalTime.of(18,0));
+        Event event7 = new Event("Event no.3",LocalDate.now(),LocalTime.of(18,0));
+        Event event8 = new Event("Event no.4",LocalDate.now(),LocalTime.of(18,0));
+        Event.eventArrayList.add(event1);
+        Event.eventArrayList.add(event2);
+        Event.eventArrayList.add(event3);
+        Event.eventArrayList.add(event4);
+        Event.eventArrayList.add(event5);
+        Event.eventArrayList.add(event6);
+        Event.eventArrayList.add(event7);
+        Event.eventArrayList.add(event8);
+        // TODO:Sector ends here
+
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,8 +273,8 @@ public class MixActivity extends BaseActivity implements
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Article>());
-        mRecyclerView.setAdapter(new ArticleAdapter(this));
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Event>());
+        mRecyclerView.setAdapter(new EventListAdapter(this, LocalDate.now()));
         mRecyclerView.notifyDataSetChanged();
     }
 
@@ -276,15 +301,27 @@ public class MixActivity extends BaseActivity implements
 
     }
 
+    // 日期的点击事件:单击修改左上角的日期,双击打开日视图
     @SuppressLint("SetTextI18n")
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
+        dayClickCount += 1;
+        LocalDate clickedDay = LocalDate.of(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+        if(dayClickCount >= 2 && dayClickRecord.equals(clickedDay)){
+            dayClickCount = 0;
+            startActivity(new Intent(MixActivity.this, DailyCalendarActivity.class));
+        }
+        else{
+            dayClickRecord = LocalDate.of(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+        }
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
+        mRecyclerView.setAdapter(new EventListAdapter(this, dayClickRecord));
+        mRecyclerView.notifyDataSetChanged();
 
         Log.e("onDateSelected", "  -- " + calendar.getYear() +
                 "  --  " + calendar.getMonth() +
