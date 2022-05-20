@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,6 +81,8 @@ public class SearchActivity extends AppCompatActivity {
     public void setMenuView(BottomNavigationMenuView menuView) {
         this.menuView = menuView;
     }
+
+    private ImageView smsSearch;
 
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -211,6 +214,16 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        smsSearch = findViewById(R.id.sms_search);
+        smsSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this, SmsSearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Log.w("主要构造函数","运行");
 
     }

@@ -4,6 +4,8 @@
     package="edu.zjut.androiddeveloper_ailaiziciqi.Calendar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <application
         android:allowBackup="false"
@@ -14,7 +16,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <!--        <activity android:name=".MainActivity">-->
+        <activity
+            android:name=".CalendarImpl.smsdetail.SmsDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalendarImpl.add.SendSmsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalendarImpl.search.SmsSearchActivity"
+            android:exported="false" /> <!-- <activity android:name=".MainActivity"> -->
         <activity
             android:name=".CalendarImpl.search.SearchActivity"
             android:exported="false" />
@@ -25,7 +35,8 @@
         <activity
             android:name=".DailyCalendarActivity"
             android:exported="false" />
-        <activity android:name=".CalendarImpl.mix.MixActivity"
+        <activity
+            android:name=".CalendarImpl.mix.MixActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +46,6 @@
         </activity>
         <activity android:name=".TestActivity" />
         <activity android:name=".CalendarActivity" />
-        <!--        <activity android:name=".mix.MixActivity" />-->
     </application>
+
 </manifest>
