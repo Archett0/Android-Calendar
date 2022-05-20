@@ -12,4 +12,8 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="bottomNavigationView" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="android:textColorSecondary">@color/colorAccent</item>
+    </style>
 </resources>

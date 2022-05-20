@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/content_background"
+    tools:context="edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity">
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_ripple"
+                android:padding="4dp"
+                android:paddingLeft="16dp"
+                android:src="@drawable/back" />
+
+
+
+            <SearchView
+                android:id="@+id/searchview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:queryHint="请输入搜索内容"
+                app:queryBackground="@drawable/bg_searchview"
+                android:imeOptions="actionSearch"
+                android:layout_toRightOf="@id/back"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/select_bar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/cancle"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_ripple"
+                android:padding="4dp"
+                android:paddingLeft="16dp"
+                android:src="@drawable/cancle" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/cancle"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="筛选"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:layout_above="@+id/bottom_navigation"
+        android:divider="#00000000"
+        android:textColor="#000"></ListView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="end|bottom"
+        android:background="@color/white"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_bottom_navigation" />
+</RelativeLayout>

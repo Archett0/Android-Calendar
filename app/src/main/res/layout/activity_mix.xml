@@ -203,8 +203,8 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="end|bottom"
         android:layout_marginRight="20dp"
-        android:backgroundTint="#046cea"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="#046cea"
         android:contentDescription="123"
         android:src="@drawable/addbutton" />
 
