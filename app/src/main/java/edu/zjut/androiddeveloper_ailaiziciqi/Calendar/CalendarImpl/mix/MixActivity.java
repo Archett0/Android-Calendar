@@ -20,6 +20,8 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddSchedu
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
@@ -62,6 +64,8 @@ public class MixActivity extends BaseActivity implements
     private AlertDialog mFuncDialog;
     private int dayClickCount;
     private static LocalDate dayClickRecord;
+    private EventListAdapter mEventListAdapter;
+    private ImageView mOldManBtn;
 
 
     /*
@@ -96,14 +100,16 @@ public class MixActivity extends BaseActivity implements
         mCalendarView = findViewById(R.id.calendarView);
         mTextCurrentDay = findViewById(R.id.tv_current_day);
         // TODO:测试完成后删去这个sector
-        Event event1 = new Event("Play apex",LocalDate.now(), LocalTime.of(20,0));
-        Event event2 = new Event("Destroy Android studio",LocalDate.now(),LocalTime.of(21,0));
-        Event event3 = new Event("Tea with Jack Ma",LocalDate.now().plusDays(1),LocalTime.of(15,0));
-        Event event4 = new Event("Take a bath",LocalDate.now(),LocalTime.of(20,0));
-        Event event5 = new Event("Event no.1",LocalDate.now(),LocalTime.of(18,0));
-        Event event6 = new Event("Event no.2",LocalDate.now(),LocalTime.of(18,0));
-        Event event7 = new Event("Event no.3",LocalDate.now(),LocalTime.of(18,0));
-        Event event8 = new Event("Event no.4",LocalDate.now(),LocalTime.of(18,0));
+        Event event1 = new Event("Play apex", LocalDate.now(), LocalTime.of(20, 0));
+        Event event2 = new Event("Destroy Android studio", LocalDate.now(), LocalTime.of(21, 0));
+        Event event3 = new Event("Tea with Jack Ma", LocalDate.now().plusDays(1), LocalTime.of(15, 0));
+        Event event4 = new Event("Take a bath", LocalDate.now(), LocalTime.of(20, 0));
+        Event event5 = new Event("Event no.1", LocalDate.now(), LocalTime.of(18, 0));
+        Event event6 = new Event("Event no.2", LocalDate.now(), LocalTime.of(18, 0));
+        Event event7 = new Event("Event no.3", LocalDate.now(), LocalTime.of(18, 0));
+        Event event8 = new Event("Event no.4", LocalDate.now(), LocalTime.of(18, 0));
+        Event event9 = new Event("Neutralize CB's Server", LocalDate.now().plusDays(2), LocalTime.of(4, 0));
+        Event event10 = new Event("Neutralize CB's Website", LocalDate.now().plusDays(2), LocalTime.of(6, 0));
         Event.eventArrayList.add(event1);
         Event.eventArrayList.add(event2);
         Event.eventArrayList.add(event3);
@@ -112,6 +118,8 @@ public class MixActivity extends BaseActivity implements
         Event.eventArrayList.add(event6);
         Event.eventArrayList.add(event7);
         Event.eventArrayList.add(event8);
+        Event.eventArrayList.add(event9);
+        Event.eventArrayList.add(event10);
         // TODO:Sector ends here
 
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +249,35 @@ public class MixActivity extends BaseActivity implements
                 startActivity(searchIntent);
             }
         });
+
+        // 今日日程列表的监听
+        mEventListAdapter = new EventListAdapter(this, LocalDate.now());
+        mEventListAdapter.setOnItemClickListener(new EventListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, Event event) {
+                Log.i("Event List Click", "In Activity:" + position);
+                Log.i("Event List Click", "In Activity:" + event.toString());
+                Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
+                intent.putExtra("Name", event.getName());
+                intent.putExtra("Date", event.getDate());
+                intent.putExtra("Time", String.valueOf(event.getTime()));
+                intent.putExtra("EndTime", String.valueOf(event.getEndTime()));
+                intent.putExtra("Weather", "晴 18 - 27");
+                intent.putExtra("WeatherDetails", "有微风");
+                intent.putExtra("Type", "我的日历");
+                startActivity(intent);
+            }
+        });
+
+        // 暂时的老年版按钮的监听
+        mOldManBtn = findViewById(R.id.iv_old_man_btn);
+        mOldManBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MixActivity.this, OldmanActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -274,7 +311,7 @@ public class MixActivity extends BaseActivity implements
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Event>());
-        mRecyclerView.setAdapter(new EventListAdapter(this, LocalDate.now()));
+        mRecyclerView.setAdapter(mEventListAdapter);
         mRecyclerView.notifyDataSetChanged();
     }
 
@@ -306,13 +343,12 @@ public class MixActivity extends BaseActivity implements
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
         dayClickCount += 1;
-        LocalDate clickedDay = LocalDate.of(calendar.getYear(),calendar.getMonth(),calendar.getDay());
-        if(dayClickCount >= 2 && dayClickRecord.equals(clickedDay)){
+        LocalDate clickedDay = LocalDate.of(calendar.getYear(), calendar.getMonth(), calendar.getDay());
+        if (dayClickCount >= 2 && dayClickRecord.equals(clickedDay)) {
             dayClickCount = 0;
             startActivity(new Intent(MixActivity.this, DailyCalendarActivity.class));
-        }
-        else{
-            dayClickRecord = LocalDate.of(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+        } else {
+            dayClickRecord = LocalDate.of(calendar.getYear(), calendar.getMonth(), calendar.getDay());
         }
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
@@ -320,7 +356,24 @@ public class MixActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
-        mRecyclerView.setAdapter(new EventListAdapter(this, dayClickRecord));
+        mEventListAdapter = new EventListAdapter(this, dayClickRecord);
+        mEventListAdapter.setOnItemClickListener(new EventListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, Event event) {
+                Log.i("Event List Click", "In Activity(Date changed):" + position);
+                Log.i("Event List Click", "In Activity(Date changed):" + event.toString());
+                Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
+                intent.putExtra("Name", event.getName());
+                intent.putExtra("Date", event.getDate());
+                intent.putExtra("Time", String.valueOf(event.getTime()));
+                intent.putExtra("EndTime", String.valueOf(event.getEndTime()));
+                intent.putExtra("Weather", "晴 18 - 27");
+                intent.putExtra("WeatherDetails", "有微风");
+                intent.putExtra("Type", "我的日历");
+                startActivity(intent);
+            }
+        });
+        mRecyclerView.setAdapter(mEventListAdapter);
         mRecyclerView.notifyDataSetChanged();
 
         Log.e("onDateSelected", "  -- " + calendar.getYear() +

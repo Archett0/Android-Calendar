@@ -1,6 +1,8 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,6 +33,15 @@ public class EventListAdapter extends GroupRecyclerAdapter<String, edu.zjut.andr
     private RequestManager mLoader;
     private static final Event defaultEvent = new Event("今日暂无日程", null, null, null);
     private static boolean emptyFlag = false;
+    private OnItemClickListener mEventItemClickListener;    // 用于Activity监听列表点击事件的接口
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position, Event event);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener mEventItemClickListener) {
+        this.mEventItemClickListener = mEventItemClickListener;
+    }
 
     public EventListAdapter(Context context, LocalDate dayClickRecord) {
         super(context);
@@ -52,11 +63,11 @@ public class EventListAdapter extends GroupRecyclerAdapter<String, edu.zjut.andr
     }
 
     @Override
-    protected void onBindViewHolder(RecyclerView.ViewHolder holder, edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event item, int position) {
+    protected void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event item, int position) {
         EventViewHolder h = (EventViewHolder) holder;
         h.mTextTitle.setText(item.getName());
         h.mEventTime.setText(String.valueOf(item.getTime()));
-        h.mEventTimeEnd.setText(String.valueOf(item.getTime()));
+        h.mEventTimeEnd.setText(String.valueOf(item.getEndTime()));
         if (emptyFlag) {
             h.mTextTitle.setVisibility(View.VISIBLE);
             h.mEventTime.setVisibility(View.INVISIBLE);
@@ -71,6 +82,19 @@ public class EventListAdapter extends GroupRecyclerAdapter<String, edu.zjut.andr
             h.mEventTimeEnd.setVisibility(View.VISIBLE);
             h.mMainCardBar.setVisibility(View.VISIBLE);
         }
+        // 监听子项的点击事件
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String eventName = item.getName();
+                    int eventPosition = holder.getLayoutPosition();
+                    Log.i("Event List Click", "------------");
+                    Log.i("Event List Click", "Item:" + eventName);
+                    Log.i("Event List Click", "Item:" + eventPosition);
+                    Log.i("Event List Click", "------------");
+                    mEventItemClickListener.onItemClick(holder.itemView, eventPosition, item);
+                }
+            });
     }
 
     private static class EventViewHolder extends RecyclerView.ViewHolder {

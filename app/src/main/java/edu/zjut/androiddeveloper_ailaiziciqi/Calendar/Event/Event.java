@@ -2,6 +2,7 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class Event {
         this.name = name;
         this.date = date;
         this.time = time;
+        endTime = time.plusHours(1);
     }
 
     public Event(String name, LocalDate date, LocalTime time, LocalTime endTime) {
@@ -84,5 +86,16 @@ public class Event {
             }
         }
         return events;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String msg = "日程: ";
+        msg += "名称 = " + name + " " +
+                "日期 = " + date + " " +
+                "开始时间 = " + time + " " +
+                "结束时间 = " + endTime;
+        return msg;
     }
 }
