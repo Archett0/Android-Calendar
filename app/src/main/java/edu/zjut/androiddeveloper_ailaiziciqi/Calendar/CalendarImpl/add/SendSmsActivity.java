@@ -41,6 +41,7 @@ public class SendSmsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_send_sms);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
+        // 获得发送短信权限
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS} , 1);
 
         schedule_phone = findViewById(R.id.schedule_phone);
@@ -76,9 +77,10 @@ public class SendSmsActivity extends AppCompatActivity {
                     Toast.makeText(SendSmsActivity.this, "输入有误，请检查输入", Toast.LENGTH_LONG).show();
                 } else {
                     SmsManager massage = SmsManager.getDefault();
-                    massage.sendTextMessage(phone, null, "【爱瓷日历】查询日程时间:"+time, null, null);
+                    massage.sendTextMessage(phone, null, "【爱瓷日历】查询日程时间:"+time+",待查询号码:"+phone, null, null);
                     //调用senfTextMassage方法来发送短信
                     Toast.makeText(SendSmsActivity.this, "短信发送成功", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         });

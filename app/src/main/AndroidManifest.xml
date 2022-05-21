@@ -4,6 +4,8 @@
     package="edu.zjut.androiddeveloper_ailaiziciqi.Calendar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
@@ -46,6 +48,14 @@
         </activity>
         <activity android:name=".TestActivity" />
         <activity android:name=".CalendarActivity" />
+
+        <receiver android:name="SmsReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
