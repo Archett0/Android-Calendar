@@ -25,7 +25,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.EventListAdapter;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleListAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.base.activity.BaseActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupItemDecoration;
@@ -64,7 +64,7 @@ public class MixActivity extends BaseActivity implements
     private AlertDialog mFuncDialog;
     private int dayClickCount;
     private static LocalDate dayClickRecord;
-    private EventListAdapter mEventListAdapter;
+    private ScheduleListAdapter mScheduleListAdapter;
     private ImageView mOldManBtn;
 
 
@@ -251,8 +251,8 @@ public class MixActivity extends BaseActivity implements
         });
 
         // 今日日程列表的监听
-        mEventListAdapter = new EventListAdapter(this, LocalDate.now());
-        mEventListAdapter.setOnItemClickListener(new EventListAdapter.OnItemClickListener() {
+        mScheduleListAdapter = new ScheduleListAdapter(this, LocalDate.now());
+        mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Event event) {
                 Log.i("Event List Click", "In Activity:" + position);
@@ -311,7 +311,7 @@ public class MixActivity extends BaseActivity implements
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Event>());
-        mRecyclerView.setAdapter(mEventListAdapter);
+        mRecyclerView.setAdapter(mScheduleListAdapter);
         mRecyclerView.notifyDataSetChanged();
     }
 
@@ -356,8 +356,8 @@ public class MixActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
-        mEventListAdapter = new EventListAdapter(this, dayClickRecord);
-        mEventListAdapter.setOnItemClickListener(new EventListAdapter.OnItemClickListener() {
+        mScheduleListAdapter = new ScheduleListAdapter(this, dayClickRecord);
+        mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Event event) {
                 Log.i("Event List Click", "In Activity(Date changed):" + position);
@@ -373,7 +373,7 @@ public class MixActivity extends BaseActivity implements
                 startActivity(intent);
             }
         });
-        mRecyclerView.setAdapter(mEventListAdapter);
+        mRecyclerView.setAdapter(mScheduleListAdapter);
         mRecyclerView.notifyDataSetChanged();
 
         Log.e("onDateSelected", "  -- " + calendar.getYear() +

@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * 每日日程列表适配器
  */
-public class EventListAdapter extends GroupRecyclerAdapter<String, edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event> {
+public class ScheduleListAdapter extends GroupRecyclerAdapter<String, edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event> {
 
     private RequestManager mLoader;
     private static final Event defaultEvent = new Event("今日暂无日程", null, null, null);
@@ -43,7 +43,7 @@ public class EventListAdapter extends GroupRecyclerAdapter<String, edu.zjut.andr
         this.mEventItemClickListener = mEventItemClickListener;
     }
 
-    public EventListAdapter(Context context, LocalDate dayClickRecord) {
+    public ScheduleListAdapter(Context context, LocalDate dayClickRecord) {
         super(context);
         mLoader = Glide.with(context.getApplicationContext());
         LinkedHashMap<String, List<edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event>> map = new LinkedHashMap<>();
