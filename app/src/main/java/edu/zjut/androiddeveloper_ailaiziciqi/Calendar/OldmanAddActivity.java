@@ -1,4 +1,6 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -6,24 +8,20 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Calendar;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 
-public class AddScheduleActivity extends AppCompatActivity {
+public class OldmanAddActivity extends AppCompatActivity {
     private TextView timestart, timeend;
     private Calendar cal;
     private int year_start, month_start, day_start;
@@ -44,7 +42,7 @@ public class AddScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.activity_oldman_add);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
@@ -95,9 +93,6 @@ public class AddScheduleActivity extends AppCompatActivity {
                 Log.w("1", scheduleTitle.getText().toString());
                 Log.w("2", timestart.getText().toString());
                 Log.w("3", timeend.getText().toString());
-
-                Log.w("",year_start+""+month_start+day_start+hour_start+min_start);
-                Log.w("",year_end+""+month_end+day_end+hour_end+min_end);
                 //结束
                 finish();
             }
@@ -165,11 +160,11 @@ public class AddScheduleActivity extends AppCompatActivity {
                             textView.setText(textView.getText() + " " + fixhour + i + ":" + fixmin + i1);
                         }
                     };
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(AddScheduleActivity.this, timeSetListener, hour, min, true);
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(OldmanAddActivity.this, timeSetListener, hour, min, true);
                     timePickerDialog.show();
                 }
             };
-            DatePickerDialog dialog = new DatePickerDialog(AddScheduleActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, listener, year, month, day);//后边三个参数为显示dialog时默认的日期，月份从0开始，0-11对应1-12个月
+            DatePickerDialog dialog = new DatePickerDialog(OldmanAddActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, listener, year, month, day);//后边三个参数为显示dialog时默认的日期，月份从0开始，0-11对应1-12个月
             dialog.show();
 
 

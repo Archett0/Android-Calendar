@@ -56,7 +56,12 @@ public class SmsSearchAdapter extends BaseAdapter {
         SmsSearchInformation s = (SmsSearchInformation) getItem(position);
         viewHolder.phone_num.setText(s.getPhone());
         viewHolder.send_date.setText(s.getSendDate().toString());
-        viewHolder.message.setText(s.getSmsScheduleList().get(0).getSchedule());
+        if(s.getSmsScheduleList() == null) {
+            viewHolder.message.setText("无日程结果");
+        } else {
+            viewHolder.message.setText(s.getSmsScheduleList().get(0).getSchedule());
+        }
+
         return convertView;
     }
 
