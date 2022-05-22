@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
@@ -100,26 +100,26 @@ public class MixActivity extends BaseActivity implements
         mCalendarView = findViewById(R.id.calendarView);
         mTextCurrentDay = findViewById(R.id.tv_current_day);
         // TODO:测试完成后删去这个sector
-        Event event1 = new Event("Play apex", LocalDate.now(), LocalTime.of(20, 0));
-        Event event2 = new Event("Destroy Android studio", LocalDate.now(), LocalTime.of(21, 0));
-        Event event3 = new Event("Tea with Jack Ma", LocalDate.now().plusDays(1), LocalTime.of(15, 0));
-        Event event4 = new Event("Take a bath", LocalDate.now(), LocalTime.of(20, 0));
-        Event event5 = new Event("Event no.1", LocalDate.now(), LocalTime.of(18, 0));
-        Event event6 = new Event("Event no.2", LocalDate.now(), LocalTime.of(18, 0));
-        Event event7 = new Event("Event no.3", LocalDate.now(), LocalTime.of(18, 0));
-        Event event8 = new Event("Event no.4", LocalDate.now(), LocalTime.of(18, 0));
-        Event event9 = new Event("Neutralize CB's Server", LocalDate.now().plusDays(2), LocalTime.of(4, 0));
-        Event event10 = new Event("Neutralize CB's Website", LocalDate.now().plusDays(2), LocalTime.of(6, 0));
-        Event.eventArrayList.add(event1);
-        Event.eventArrayList.add(event2);
-        Event.eventArrayList.add(event3);
-        Event.eventArrayList.add(event4);
-        Event.eventArrayList.add(event5);
-        Event.eventArrayList.add(event6);
-        Event.eventArrayList.add(event7);
-        Event.eventArrayList.add(event8);
-        Event.eventArrayList.add(event9);
-        Event.eventArrayList.add(event10);
+        Schedule schedule1 = new Schedule("Play apex", LocalDate.now(), LocalTime.of(20, 0));
+        Schedule schedule2 = new Schedule("Destroy Android studio", LocalDate.now(), LocalTime.of(21, 0));
+        Schedule schedule3 = new Schedule("Tea with Jack Ma", LocalDate.now().plusDays(1), LocalTime.of(15, 0));
+        Schedule schedule4 = new Schedule("Take a bath", LocalDate.now(), LocalTime.of(20, 0));
+        Schedule schedule5 = new Schedule("Event no.1", LocalDate.now(), LocalTime.of(18, 0));
+        Schedule schedule6 = new Schedule("Event no.2", LocalDate.now(), LocalTime.of(18, 0));
+        Schedule schedule7 = new Schedule("Event no.3", LocalDate.now(), LocalTime.of(18, 0));
+        Schedule schedule8 = new Schedule("Event no.4", LocalDate.now(), LocalTime.of(18, 0));
+        Schedule schedule9 = new Schedule("Neutralize CB's Server", LocalDate.now().plusDays(2), LocalTime.of(4, 0));
+        Schedule schedule10 = new Schedule("Neutralize CB's Website", LocalDate.now().plusDays(2), LocalTime.of(6, 0));
+        Schedule.scheduleArrayList.add(schedule1);
+        Schedule.scheduleArrayList.add(schedule2);
+        Schedule.scheduleArrayList.add(schedule3);
+        Schedule.scheduleArrayList.add(schedule4);
+        Schedule.scheduleArrayList.add(schedule5);
+        Schedule.scheduleArrayList.add(schedule6);
+        Schedule.scheduleArrayList.add(schedule7);
+        Schedule.scheduleArrayList.add(schedule8);
+        Schedule.scheduleArrayList.add(schedule9);
+        Schedule.scheduleArrayList.add(schedule10);
         // TODO:Sector ends here
 
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
@@ -254,14 +254,14 @@ public class MixActivity extends BaseActivity implements
         mScheduleListAdapter = new ScheduleListAdapter(this, LocalDate.now());
         mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, Event event) {
+            public void onItemClick(View view, int position, Schedule schedule) {
                 Log.i("Event List Click", "In Activity:" + position);
-                Log.i("Event List Click", "In Activity:" + event.toString());
+                Log.i("Event List Click", "In Activity:" + schedule.toString());
                 Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
-                intent.putExtra("Name", event.getName());
-                intent.putExtra("Date", event.getDate());
-                intent.putExtra("Time", String.valueOf(event.getTime()));
-                intent.putExtra("EndTime", String.valueOf(event.getEndTime()));
+                intent.putExtra("Name", schedule.getSchedule());
+                intent.putExtra("Date", schedule.getScheduleDate());
+                intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
+                intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
                 intent.putExtra("Weather", "晴 18 - 27");
                 intent.putExtra("WeatherDetails", "有微风");
                 intent.putExtra("Type", "我的日历");
@@ -310,7 +310,7 @@ public class MixActivity extends BaseActivity implements
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Event>());
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Schedule>());
         mRecyclerView.setAdapter(mScheduleListAdapter);
         mRecyclerView.notifyDataSetChanged();
     }
@@ -359,14 +359,14 @@ public class MixActivity extends BaseActivity implements
         mScheduleListAdapter = new ScheduleListAdapter(this, dayClickRecord);
         mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, Event event) {
+            public void onItemClick(View view, int position, Schedule schedule) {
                 Log.i("Event List Click", "In Activity(Date changed):" + position);
-                Log.i("Event List Click", "In Activity(Date changed):" + event.toString());
+                Log.i("Event List Click", "In Activity(Date changed):" + schedule.toString());
                 Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
-                intent.putExtra("Name", event.getName());
-                intent.putExtra("Date", event.getDate());
-                intent.putExtra("Time", String.valueOf(event.getTime()));
-                intent.putExtra("EndTime", String.valueOf(event.getEndTime()));
+                intent.putExtra("Name", schedule.getSchedule());
+                intent.putExtra("Date", schedule.getScheduleDate());
+                intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
+                intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
                 intent.putExtra("Weather", "晴 18 - 27");
                 intent.putExtra("WeatherDetails", "有微风");
                 intent.putExtra("Type", "我的日历");

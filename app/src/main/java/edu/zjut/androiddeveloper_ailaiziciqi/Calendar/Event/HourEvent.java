@@ -3,17 +3,19 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+
 /**
  *  一个时间段的全部事件
  */
 public class HourEvent {
 
     LocalTime time;
-    ArrayList<Event> events;
+    ArrayList<Schedule> schedules;
 
-    public HourEvent(LocalTime time, ArrayList<Event> events) {
+    public HourEvent(LocalTime time, ArrayList<Schedule> schedules) {
         this.time = time;
-        this.events = events;
+        this.schedules = schedules;
     }
 
     public LocalTime getTime() {
@@ -24,11 +26,11 @@ public class HourEvent {
         this.time = time;
     }
 
-    public ArrayList<Event> getEvents() {
-        return events;
+    public ArrayList<Schedule> getEvents() {
+        return schedules;
     }
 
-    public void setEvents(ArrayList<Event> events) {
-        this.events = events;
+    public void setEvents(ArrayList<Schedule> schedules) {
+        this.schedules = schedules;
     }
 }

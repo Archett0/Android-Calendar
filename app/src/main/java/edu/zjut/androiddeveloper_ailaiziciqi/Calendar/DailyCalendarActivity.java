@@ -1,11 +1,7 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,8 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.HourAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.HourEvent;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
@@ -77,8 +72,8 @@ public class DailyCalendarActivity extends AppCompatActivity implements
         for (int hour = 0; hour < 24; ++hour) {
             LocalDate date = selectedDate;   // 获取用户选中的日期,默认为当天
             LocalTime time = LocalTime.of(hour, 0); // 当前在设置的小时
-            ArrayList<Event> events = Event.eventsForDateAndTime(date, time);   // 当前在设置的小时所包含的所有日程
-            HourEvent hourEvent = new HourEvent(time, events);
+            ArrayList<Schedule> schedules = Schedule.eventsForDateAndTime(date, time);   // 当前在设置的小时所包含的所有日程
+            HourEvent hourEvent = new HourEvent(time, schedules);
             list.add(hourEvent);
         }
         return list;

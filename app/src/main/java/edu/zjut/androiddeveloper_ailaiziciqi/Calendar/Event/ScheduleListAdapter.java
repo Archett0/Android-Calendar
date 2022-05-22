@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,11 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 
-import org.w3c.dom.Text;
-
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerAdapter;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,15 +25,15 @@ import java.util.List;
 /**
  * 每日日程列表适配器
  */
-public class ScheduleListAdapter extends GroupRecyclerAdapter<String, edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event> {
+public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> {
 
     private RequestManager mLoader;
-    private static final Event defaultEvent = new Event("今日暂无日程", null, null, null);
+    private static final Schedule DEFAULT_SCHEDULE = new Schedule("今日暂无日程", null, null, null);
     private static boolean emptyFlag = false;
     private OnItemClickListener mEventItemClickListener;    // 用于Activity监听列表点击事件的接口
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, Event event);
+        void onItemClick(View view, int position, Schedule schedule);
     }
 
     public void setOnItemClickListener(OnItemClickListener mEventItemClickListener) {
@@ -46,7 +43,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, edu.zjut.a
     public ScheduleListAdapter(Context context, LocalDate dayClickRecord) {
         super(context);
         mLoader = Glide.with(context.getApplicationContext());
-        LinkedHashMap<String, List<edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event>> map = new LinkedHashMap<>();
+        LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
         List<String> titles = new ArrayList<>();
         map.put("今日日程", getEventList(0, dayClickRecord));
         map.put("类别2待完善", getEventList(1, dayClickRecord));
@@ -63,11 +60,11 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, edu.zjut.a
     }
 
     @Override
-    protected void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event item, int position) {
+    protected void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") Schedule item, int position) {
         EventViewHolder h = (EventViewHolder) holder;
-        h.mTextTitle.setText(item.getName());
-        h.mEventTime.setText(String.valueOf(item.getTime()));
-        h.mEventTimeEnd.setText(String.valueOf(item.getEndTime()));
+        h.mTextTitle.setText(item.getSchedule());
+        h.mEventTime.setText(String.valueOf(item.getScheduleStartTime()));
+        h.mEventTimeEnd.setText(String.valueOf(item.getScheduleEndTime()));
         if (emptyFlag) {
             h.mTextTitle.setVisibility(View.VISIBLE);
             h.mEventTime.setVisibility(View.INVISIBLE);
@@ -86,7 +83,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, edu.zjut.a
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String eventName = item.getName();
+                    String eventName = item.getSchedule();
                     int eventPosition = holder.getLayoutPosition();
                     Log.i("Event List Click", "------------");
                     Log.i("Event List Click", "Item:" + eventName);
@@ -110,13 +107,13 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, edu.zjut.a
         }
     }
 
-    private static List<Event> getEventList(int type, LocalDate date) {
-        List<Event> eventList = new ArrayList<>();
+    private static List<Schedule> getEventList(int type, LocalDate date) {
+        List<Schedule> scheduleList = new ArrayList<>();
         if (type == 0) {
             emptyFlag = false;
-            eventList = Event.eventsForDate(date);
-            if (eventList.isEmpty()) {
-                eventList.add(defaultEvent);
+            scheduleList = Schedule.eventsForDate(date);
+            if (scheduleList.isEmpty()) {
+                scheduleList.add(DEFAULT_SCHEDULE);
                 emptyFlag = true;
             }
         } else if (type == 1) {
@@ -124,7 +121,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, edu.zjut.a
         } else if (type == 2) {
 
         }
-        return eventList;
+        return scheduleList;
     }
 
 

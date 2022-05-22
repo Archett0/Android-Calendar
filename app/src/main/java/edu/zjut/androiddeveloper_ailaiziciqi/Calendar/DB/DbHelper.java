@@ -26,7 +26,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 + ScheduleEntry.COLUMN_START_TIME + " TEXT NOT NULL, "
                 + ScheduleEntry.COLUMN_END_TIME + " TEXT NOT NULL, "
                 + ScheduleEntry.COLUMN_WEEK + " TEXT NOT NULL, "
-                + ScheduleEntry.COLUMN_LUNAR + " TEXT);";
+                + ScheduleEntry.COLUMN_LUNAR + " TEXT NOT NULL);";
         sqLiteDatabase.execSQL(SQL_TABLE);
     }
 

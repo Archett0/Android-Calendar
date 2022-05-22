@@ -1,28 +1,31 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
+/**
+ * 日程类
+ */
 public class Schedule {
     private int id;
 
-    private LocalDate scheduleDate;
-
-    private LocalTime scheduleStartTime;
-    private LocalTime scheduleEndTime;
-
-    private String week; //星期
-
-    private String lunar; //农历
-    private String schedule;
+    private String schedule;    // 日程名称
+    private LocalDate scheduleDate; // 日程日期
+    private LocalTime scheduleStartTime; // 日程开始时间
+    private LocalTime scheduleEndTime;  // 日程结束时间
+    private String week; // 日程所在星期
+    private String lunar; // 日程农历日期
 
     public Schedule(Schedule s) {
+        this.schedule = s.schedule;
         this.scheduleDate = s.scheduleDate;
         this.scheduleStartTime = s.scheduleStartTime;
         this.scheduleEndTime = s.scheduleEndTime;
         this.week = s.week;
         this.lunar = s.lunar;
-        this.schedule = s.schedule;
     }
 
     public Schedule(LocalDate scheduleDate, LocalTime scheduleStartTime, LocalTime scheduleEndTime, String week, String lunar, String schedule) {
@@ -32,6 +35,20 @@ public class Schedule {
         this.week = week;
         this.lunar = lunar;
         this.schedule = schedule;
+    }
+
+    public Schedule(String name, LocalDate date, LocalTime time) {
+        this.schedule = name;
+        this.scheduleDate = date;
+        this.scheduleStartTime = time;
+        scheduleEndTime = time.plusHours(1);
+    }
+
+    public Schedule(String name, LocalDate date, LocalTime time, LocalTime endTime) {
+        this.schedule = name;
+        this.scheduleDate = date;
+        this.scheduleStartTime = time;
+        this.scheduleEndTime = endTime;
     }
 
     public int getId() {
@@ -88,5 +105,41 @@ public class Schedule {
 
     public void setSchedule(String schedule) {
         this.schedule = schedule;
+    }
+
+
+    public static ArrayList<Schedule> scheduleArrayList = new ArrayList<>();
+
+    public static ArrayList<Schedule> eventsForDate(LocalDate date) {
+        ArrayList<Schedule> events = new ArrayList<>();
+        for (Schedule event : scheduleArrayList) {
+            if (event.getScheduleDate().equals(date)) {
+                events.add(event);
+            }
+        }
+        return events;
+    }
+
+    public static ArrayList<Schedule> eventsForDateAndTime(LocalDate date, LocalTime time) {
+        ArrayList<Schedule> events = new ArrayList<>();
+        for (Schedule event : scheduleArrayList) {
+            int eventHour = event.scheduleStartTime.getHour();
+            int cellHour = time.getHour();
+            if (event.getScheduleDate().equals(date) && eventHour == cellHour) {
+                events.add(event);
+            }
+        }
+        return events;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String msg = "日程: ";
+        msg += "名称 = " + schedule + " " +
+                "日期 = " + scheduleDate + " " +
+                "开始时间 = " + scheduleStartTime + " " +
+                "结束时间 = " + scheduleEndTime;
+        return msg;
     }
 }
