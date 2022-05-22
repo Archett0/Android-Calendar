@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerAdapter;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 
@@ -32,6 +34,8 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
     private static final Schedule DEFAULT_SCHEDULE = new Schedule("今日暂无日程", null, null, null);
     private static boolean emptyFlag = false;
     private OnItemClickListener mEventItemClickListener;    // 用于Activity监听列表点击事件的接口
+    private Context context;
+    private Cursor cursor;
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position, Schedule schedule);
@@ -41,8 +45,11 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         this.mEventItemClickListener = mEventItemClickListener;
     }
 
-    public ScheduleListAdapter(Context context, LocalDate dayClickRecord) {
+    // 1: Constructor will be executed first.
+    public ScheduleListAdapter(Context context, LocalDate dayClickRecord, Cursor cursor) {
         super(context);
+        this.context = context;
+        this.cursor = cursor;
         mLoader = Glide.with(context.getApplicationContext());
         LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
         List<String> titles = new ArrayList<>();
@@ -55,11 +62,16 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         resetGroups(map, titles);
     }
 
+    // 2. And we should get the inflated view to ViewHolder class.
     @Override
     protected RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new EventViewHolder(mInflater.inflate(R.layout.item_list_event, parent, false));
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.item_list_event, parent, false);
+        return new EventViewHolder(view);
+        //        return new EventViewHolder(mInflater.inflate(R.layout.item_list_event, parent, false));
     }
 
+    // 3: After that we go here to set the parameters and texts for the views we got.
     @Override
     protected void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") Schedule item, int position) {
         EventViewHolder h = (EventViewHolder) holder;
@@ -95,6 +107,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         });
     }
 
+    // 3: Then we should write this static class to get the views.
     private static class EventViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextTitle, mEventTime, mEventTimeEnd;
         private View mMainCardBar;

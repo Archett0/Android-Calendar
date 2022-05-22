@@ -3,8 +3,14 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
@@ -16,12 +22,21 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Calendar;
+import com.nlf.calendar.Lunar;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
+
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 
 public class AddScheduleActivity extends AppCompatActivity {
     private TextView timestart, timeend;
@@ -40,6 +55,9 @@ public class AddScheduleActivity extends AppCompatActivity {
     private ImageView back, submit;
 
     private EditText scheduleTitle;
+
+    private boolean isInputValid;   // 记录用户输入是否合法的Flag
+    private Cursor mCursor; // 重新加载数据需要使用的Cursor
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +100,8 @@ public class AddScheduleActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(AddScheduleActivity.this, MixActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -90,15 +110,159 @@ public class AddScheduleActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isInputValid = false;
                 //保存日程信息（主题 开始 结束）
                 scheduleTitle.getText();
-
-                //结束
-                finish();
+                // execute to database
+                if (saveSchedule() == false) {
+                    // failed and do nothing
+                    Toast.makeText(AddScheduleActivity.this, "添加日程失败", Toast.LENGTH_SHORT).show();
+                } else {
+                    // success and we should reload the data from db to static list
+                    reloadDataFromDatabase();
+                    Intent intent = new Intent(AddScheduleActivity.this, MixActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
-
         scheduleTitle = findViewById(R.id.schedule_title);
+    }
+
+    // 覆写返回键的监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) { //按下的如果是BACK，同时没有重复
+            Intent intent = new Intent(AddScheduleActivity.this, MixActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    // 检查用户输入是否合法，并将合法的用户输入写入数据库
+    private boolean saveSchedule() {
+
+        // 保存结果
+        String scheduleName = scheduleTitle.getText().toString().trim();    // event name: done
+        String tmpStartString = timestart.getText().toString().trim();  // raw start data
+        String tmpEndString = timeend.getText().toString().trim();  // raw end data
+        LocalDate date = LocalDate.of(Integer.parseInt(tmpStartString.substring(0, 4)), month_start + 1, Integer.parseInt(tmpStartString.substring(7, 9)));
+        LocalTime time = LocalTime.of(Integer.parseInt(tmpStartString.substring(tmpStartString.length() - 5, tmpStartString.length() - 3)), Integer.parseInt(tmpStartString.substring(tmpStartString.length() - 2, tmpStartString.length())));
+        LocalTime endTime = LocalTime.of(Integer.parseInt(tmpEndString.substring(tmpEndString.length() - 5, tmpEndString.length() - 3)), Integer.parseInt(tmpEndString.substring(tmpEndString.length() - 2, tmpEndString.length())));
+        Log.i("Random Debug", "Trying to save:" + String.valueOf(time));
+        Log.i("Random Debug", "Trying to save:" + String.valueOf(endTime));
+        String scheduleDate = String.valueOf(date);
+        String scheduleStartTime = String.valueOf(time);
+        String scheduleEndTime = String.valueOf(endTime);
+        Lunar todayLunar = Lunar.fromDate(new Date());
+        String scheduleWeek = "星期" + todayLunar.getWeekInChinese();
+        String scheduleLunar = todayLunar.getDayInChinese();
+
+        // Judge if the inputs are all empty
+        if (TextUtils.isEmpty(scheduleName)
+                && TextUtils.isEmpty(scheduleDate)
+                && TextUtils.isEmpty(scheduleStartTime)
+                && TextUtils.isEmpty(scheduleEndTime)
+                && TextUtils.isEmpty(scheduleWeek)
+                && TextUtils.isEmpty(scheduleLunar)) {
+            isInputValid = true;
+            return isInputValid;
+        }
+
+        // Judge if any input is invalid
+        ContentValues values = new ContentValues();
+
+        if (TextUtils.isEmpty(scheduleName)) {
+            Toast.makeText(this, "必须输入主题", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_EVENT_NAME, scheduleName);
+        }
+
+        if (TextUtils.isEmpty(scheduleDate)) {
+            Toast.makeText(this, "必须选择日期", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_DATE, scheduleDate);
+        }
+
+        if (TextUtils.isEmpty(scheduleStartTime)) {
+            Toast.makeText(this, "必须选择日期", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_START_TIME, scheduleStartTime);
+        }
+
+        if (TextUtils.isEmpty(scheduleEndTime)) {
+            Toast.makeText(this, "必须选择日期", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_END_TIME, scheduleEndTime);
+            values.put(DbContact.ScheduleEntry.COLUMN_WEEK, scheduleWeek);
+            values.put(DbContact.ScheduleEntry.COLUMN_LUNAR, scheduleLunar);
+        }
+
+        // check if end is earlier than start
+        if (time.isAfter(endTime)) {
+            Toast.makeText(this, "结束时间不可早于开始时间", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        }
+
+        Uri newUri = getContentResolver().insert(DbContact.ScheduleEntry.CONTENT_URI, values);
+        if (newUri == null) {
+            Toast.makeText(this, "保存出错", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "成功保存", Toast.LENGTH_SHORT).show();
+        }
+        isInputValid = true;
+        return isInputValid;
+    }
+
+    private void reloadDataFromDatabase() {
+        String[] projection = {DbContact.ScheduleEntry._ID,
+                DbContact.ScheduleEntry.COLUMN_EVENT_NAME,
+                DbContact.ScheduleEntry.COLUMN_DATE,
+                DbContact.ScheduleEntry.COLUMN_START_TIME,
+                DbContact.ScheduleEntry.COLUMN_END_TIME,
+                DbContact.ScheduleEntry.COLUMN_WEEK,
+                DbContact.ScheduleEntry.COLUMN_LUNAR
+        };
+        mCursor = getContentResolver().query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, null);
+        // clear the old static list
+        if (Schedule.scheduleArrayList.size() != 0) {
+            Schedule.scheduleArrayList.clear();
+        }
+        // retrieve data from database
+        if (mCursor != null && mCursor.moveToFirst()) {
+            do {
+                /// 获取Column的位置
+                int scheduleIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_EVENT_NAME);
+                int scheduleDateIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_DATE);
+                int scheduleStartTimeIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_START_TIME);
+                int scheduleEndTimeIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_END_TIME);
+                int weekIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_WEEK);
+                int lunarIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_LUNAR);
+                // 取值
+                String scheduleValue = mCursor.getString(scheduleIndex);
+                String scheduleDateValue = mCursor.getString(scheduleDateIndex);
+                String scheduleStartTimeValue = mCursor.getString(scheduleStartTimeIndex);
+                String scheduleEndTimeValue = mCursor.getString(scheduleEndTimeIndex);
+                String weekValue = mCursor.getString(weekIndex);
+                String lunarValue = mCursor.getString(lunarIndex);
+                // 转换
+                LocalDate date = LocalDate.parse(scheduleDateValue);
+                LocalTime time = LocalTime.parse(scheduleStartTimeValue);
+                LocalTime endTime = LocalTime.parse(scheduleEndTimeValue);
+                // 保存
+                Schedule newSchedule = new Schedule(date, time, endTime, weekValue, lunarValue, scheduleValue);
+                Schedule.scheduleArrayList.add(newSchedule);
+            } while (mCursor.moveToNext());
+            // Tag
+            Log.i("Random Debug", "Reloaded from database");
+            Log.i("Random Debug", "Data loaded:" + Schedule.scheduleArrayList.size());
+        }
     }
 
     private void getDate(int num) {

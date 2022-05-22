@@ -11,6 +11,8 @@ import android.util.Log;
 
 import java.util.Objects;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
+
 public class Provider extends ContentProvider {
 
     // Uris
@@ -29,6 +31,7 @@ public class Provider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mDbHelper = new DbHelper(getContext());
+        Log.i("Provider Executed", "on create");
         return true;
     }
 
