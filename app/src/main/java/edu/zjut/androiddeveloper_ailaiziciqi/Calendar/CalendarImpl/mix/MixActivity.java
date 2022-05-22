@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
@@ -59,7 +61,7 @@ public class MixActivity extends BaseActivity implements
     GroupRecyclerView mRecyclerView;
 
 
-    // TODO: new line here
+    // 新增的属性
     private AlertDialog mMoreDialog;
     private AlertDialog mFuncDialog;
     private int dayClickCount;
@@ -255,17 +257,24 @@ public class MixActivity extends BaseActivity implements
         mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Schedule schedule) {
-                Log.i("Event List Click", "In Activity:" + position);
-                Log.i("Event List Click", "In Activity:" + schedule.toString());
-                Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
-                intent.putExtra("Name", schedule.getSchedule());
-                intent.putExtra("Date", schedule.getScheduleDate());
-                intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
-                intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
-                intent.putExtra("Weather", "晴 18 - 27");
-                intent.putExtra("WeatherDetails", "有微风");
-                intent.putExtra("Type", "我的日历");
-                startActivity(intent);
+                if(schedule.getScheduleDate() != null){
+                    Log.i("Event List Click", "In Activity:" + position);
+                    Log.i("Event List Click", "In Activity:" + schedule.toString());
+                    Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
+                    intent.putExtra("Name", schedule.getSchedule());
+                    intent.putExtra("Date", schedule.getScheduleDate());
+                    intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
+                    intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
+                    intent.putExtra("Weather", "晴 18 - 27");
+                    intent.putExtra("WeatherDetails", "有微风");
+                    intent.putExtra("Type", "我的日历");
+                    startActivity(intent);
+                }
+                else{
+                    Log.i("Event List Click", "In Activity:" + "No schedule today");
+                    Intent intent = new Intent(MixActivity.this, AddScheduleActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -360,17 +369,24 @@ public class MixActivity extends BaseActivity implements
         mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Schedule schedule) {
-                Log.i("Event List Click", "In Activity(Date changed):" + position);
-                Log.i("Event List Click", "In Activity(Date changed):" + schedule.toString());
-                Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
-                intent.putExtra("Name", schedule.getSchedule());
-                intent.putExtra("Date", schedule.getScheduleDate());
-                intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
-                intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
-                intent.putExtra("Weather", "晴 18 - 27");
-                intent.putExtra("WeatherDetails", "有微风");
-                intent.putExtra("Type", "我的日历");
-                startActivity(intent);
+                if(schedule.getScheduleDate() != null){
+                    Log.i("Event List Click", "In Activity:" + position);
+                    Log.i("Event List Click", "In Activity:" + schedule.toString());
+                    Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
+                    intent.putExtra("Name", schedule.getSchedule());
+                    intent.putExtra("Date", schedule.getScheduleDate());
+                    intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
+                    intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
+                    intent.putExtra("Weather", "晴 18 - 27");
+                    intent.putExtra("WeatherDetails", "有微风");
+                    intent.putExtra("Type", "我的日历");
+                    startActivity(intent);
+                }
+                else{
+                    Log.i("Event List Click", "In Activity:" + "No schedule today");
+                    Intent intent = new Intent(MixActivity.this, AddScheduleActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         mRecyclerView.setAdapter(mScheduleListAdapter);

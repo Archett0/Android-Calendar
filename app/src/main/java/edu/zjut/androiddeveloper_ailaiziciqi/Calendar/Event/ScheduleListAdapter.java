@@ -2,6 +2,7 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,18 +81,18 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
             h.mMainCardBar.setVisibility(View.VISIBLE);
         }
         // 监听子项的点击事件
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String eventName = item.getSchedule();
-                    int eventPosition = holder.getLayoutPosition();
-                    Log.i("Event List Click", "------------");
-                    Log.i("Event List Click", "Item:" + eventName);
-                    Log.i("Event List Click", "Item:" + eventPosition);
-                    Log.i("Event List Click", "------------");
-                    mEventItemClickListener.onItemClick(holder.itemView, eventPosition, item);
-                }
-            });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String eventName = item.getSchedule();
+                int eventPosition = holder.getLayoutPosition();
+                Log.i("Event List Click", "------------");
+                Log.i("Event List Click", "Item:" + eventName);
+                Log.i("Event List Click", "Item:" + eventPosition);
+                Log.i("Event List Click", "------------");
+                mEventItemClickListener.onItemClick(holder.itemView, eventPosition, item);
+            }
+        });
     }
 
     private static class EventViewHolder extends RecyclerView.ViewHolder {
@@ -123,27 +124,4 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         }
         return scheduleList;
     }
-
-
-//    private static List<edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Article> create(int p) {
-//        List<edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Article> list = new ArrayList<>();
-//        if (p == 0) {
-//
-//        } else if (p == 1) {
-//            //暂无类别2
-//        } else if (p == 2) {
-//            //暂无类别3
-//        }
-//
-//
-//        return list;
-//    }
-//
-//    private static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Article create(String title, String content, String imgUrl) {
-//        edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Article article = new edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Article();
-//        article.setTitle(title);
-//        article.setContent(content);
-//        article.setImgUrl(imgUrl);
-//        return article;
-//    }
 }
