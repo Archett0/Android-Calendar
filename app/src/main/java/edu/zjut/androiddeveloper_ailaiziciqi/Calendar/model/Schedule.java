@@ -127,9 +127,14 @@ public class Schedule {
         this.schedule = schedule;
     }
 
-
+    /**
+     * 用来保存从DB读取的所有日程
+     */
     public static ArrayList<Schedule> scheduleArrayList = new ArrayList<>();
 
+    /**
+     * 根据开始日期获取日程
+     */
     public static ArrayList<Schedule> eventsForDate(LocalDate date) {
         ArrayList<Schedule> events = new ArrayList<>();
         for (Schedule event : scheduleArrayList) {
@@ -140,6 +145,9 @@ public class Schedule {
         return events;
     }
 
+    /**
+     * 根据开始日期和开始时间获取日程
+     */
     public static ArrayList<Schedule> eventsForDateAndTime(LocalDate date, LocalTime time) {
         ArrayList<Schedule> events = new ArrayList<>();
         for (Schedule event : scheduleArrayList) {
@@ -150,6 +158,19 @@ public class Schedule {
             }
         }
         return events;
+    }
+
+    /**
+     * 根据名称模糊搜索日程(忽略大小写)
+     */
+    public static ArrayList<Schedule> schedulesForName(String input) {
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        for (Schedule schedule : scheduleArrayList) {
+            if (schedule.getSchedule().toLowerCase().contains(input.toLowerCase())) {
+                schedules.add(schedule);
+            }
+        }
+        return schedules;
     }
 
     @NonNull

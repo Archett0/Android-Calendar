@@ -1,5 +1,7 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.schedulesForName;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -104,7 +106,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // i 代表位置
-                if(isCheckBoxOn) {
+                if (isCheckBoxOn) {
                     // 如果checkbox模式启动，则该点击不能跳转到详情页
                     Log.w("checkbox模式启动", "");
                 } else {
@@ -157,7 +159,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                updateListView();
+                updateListView(s);
                 return true;
             }
         });
@@ -168,7 +170,7 @@ public class SearchActivity extends AppCompatActivity {
         for (int i = 0; i < menuView.getChildCount(); i++) {
             BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(i);
             itemView.setShifting(false);
-            if(i == 0 || i == 1) {
+            if (i == 0 || i == 1) {
                 itemView.setEnabled(false);
             }
         }
@@ -185,7 +187,7 @@ public class SearchActivity extends AppCompatActivity {
                         break;
                     case R.id.select_all_items:
                         if (!isCheckBoxSelected) {
-                            Log.w("isCheckBoxSelected","");
+                            Log.w("isCheckBoxSelected", "");
                             searchListAdapter.setAllCheckBoxSelected();
                             isCheckBoxSelected = true;
                             item.setIcon(R.drawable.ic_baseline_library_add_check_24_selected);
@@ -211,33 +213,29 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-        Log.w("主要构造函数","运行");
+        Log.w("主要构造函数", "运行");
 
     }
 
+    /**
+     * 更新搜索日程的结果列表
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void updateListView() {
-//        userList = dbHelper.query();
+    public void updateListView(String input) {
+
+        // 返回的新结果List
         List<ScheduleWithCheck> list = new ArrayList<>();
-        LocalDate localDate = LocalDate.now();
-        LocalTime localTime = LocalTime.now();
-        Schedule schedule1 = new Schedule(localDate, localTime, localTime, "0", "五月十二", "这是一些日程");
-        list.add(new ScheduleWithCheck(schedule1));
 
-        Schedule schedule2 = new Schedule(localDate, localTime, localTime, "1", "五月十二", "这是一些日程");
-        list.add(new ScheduleWithCheck(schedule2));
-
-        Schedule schedule3 = new Schedule(localDate, localTime, localTime, "2", "五月十二", "这是一些日程");
-        list.add(new ScheduleWithCheck(schedule3));
-
-        Schedule schedule4 = new Schedule(localDate, localTime, localTime, "3", "五月十二", "这是一些日程");
-        list.add(new ScheduleWithCheck(schedule4));
-
-        Schedule schedule5 = new Schedule(localDate, localTime, localTime, "4", "五月十二", "这是一些日程");
-        list.add(new ScheduleWithCheck(schedule5));
-
-        Schedule schedule6 = new Schedule(localDate, localTime, localTime, "5", "五月十二", "这是一些日程");
-        list.add(new ScheduleWithCheck(schedule6));
+        // 搜索得到的对应DB的List
+        List<Schedule> searchResults = schedulesForName(input);
+        if (!searchResults.isEmpty()) {
+            for (Schedule schedule : searchResults) {
+                list.add(new ScheduleWithCheck(schedule));
+            }
+        } else {
+            Schedule default_schedule = new Schedule(LocalDate.now(), LocalTime.now(), LocalTime.now(), "", "", "没有符合的日程");
+            list.add(new ScheduleWithCheck(default_schedule));
+        }
 
         searchListAdapter = new SearchListAdapter(list, SearchActivity.this);
         lv_show.setAdapter(searchListAdapter);
