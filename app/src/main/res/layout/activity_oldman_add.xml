@@ -36,7 +36,8 @@
             android:text="添加日程"
             android:textColor="#000000"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:background="?android:attr/selectableItemBackground"/>
 
         <FrameLayout
             android:id="@+id/fl_current"
@@ -125,7 +126,8 @@
                         android:text="全天"
                         android:textColor="@color/solar_background"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="?android:attr/selectableItemBackground"/>
 
                     <Switch
                         android:id="@+id/timeswitch"
@@ -172,34 +174,36 @@
                     <TextView
                         android:id="@+id/starttitle"
                         android:layout_width="wrap_content"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_toLeftOf="@+id/timestart"
+                        android:layout_toStartOf="@+id/timestart"
                         android:gravity="left|center"
                         android:text="开始"
                         android:textColor="@color/solar_background"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="?android:attr/selectableItemBackground"/>
 
 
                     <TextView
                         android:id="@+id/timestart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
+
                         android:layout_marginBottom="10dp"
                         android:layout_toLeftOf="@+id/timestartspinner"
                         android:gravity="left|center"
-                        android:text="5月15日 23:30"
+                        android:text="2022年5月15日 23:30"
                         android:textColor="@color/solar_background_light"
                         android:textSize="30sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="?android:attr/selectableItemBackground"/>
 
                     <ImageButton
                         android:id="@+id/timestartspinner"
@@ -207,7 +211,7 @@
                         android:layout_height="40dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+
                         android:layout_marginRight="15dp"
                         android:background="#f2f2f2"
                         android:scaleType="fitXY"
@@ -246,7 +250,7 @@
                     <TextView
                         android:id="@+id/endtitle"
                         android:layout_width="wrap_content"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
@@ -255,25 +259,27 @@
                         android:layout_toLeftOf="@+id/timeend"
                         android:gravity="left|center"
                         android:text="结束"
-                        android:textStyle="bold"
                         android:textColor="@color/solar_background"
-                        android:textSize="25sp" />
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:background="?android:attr/selectableItemBackground"/>
 
 
                     <TextView
                         android:id="@+id/timeend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
+
                         android:layout_marginBottom="10dp"
                         android:layout_toLeftOf="@+id/timeendspinner"
                         android:gravity="left|center"
                         android:text="5月15日 23:30"
                         android:textColor="@color/solar_background_light"
                         android:textSize="30sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="?android:attr/selectableItemBackground"/>
 
                     <ImageButton
                         android:id="@+id/timeendspinner"
@@ -281,7 +287,7 @@
                         android:layout_height="40dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+
                         android:layout_marginRight="15dp"
                         android:background="#f2f2f2"
                         android:scaleType="fitXY"

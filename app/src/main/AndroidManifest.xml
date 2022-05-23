@@ -26,9 +26,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+<!--        <activity-->
+<!--            android:name=".OldmanAddActivity"-->
+<!--            android:exported="false" />-->
         <activity
-            android:name=".OldmanAddActivity"
+            android:name=".CalendarImpl.mix.MixActivity"
             android:exported="false" />
+
         <activity
             android:name=".CalendarImpl.smsdetail.SmsDetailsActivity"
             android:exported="false" />
@@ -48,8 +52,11 @@
         <activity
             android:name=".DailyCalendarActivity"
             android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".CalendarImpl.mix.MixActivity"-->
+<!--            android:exported="true">-->
         <activity
-            android:name=".CalendarImpl.mix.MixActivity"
+            android:name=".OldmanAddActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
