@@ -13,7 +13,8 @@ public class Schedule {
     private int id;
 
     private String schedule;    // 日程名称
-    private LocalDate scheduleDate; // 日程日期
+    private LocalDate scheduleDate; // 日程开始日期
+    private LocalDate scheduleEndDate; // 日程结束日期
     private LocalTime scheduleStartTime; // 日程开始时间
     private LocalTime scheduleEndTime;  // 日程结束时间
     private String week; // 日程所在星期
@@ -37,9 +38,20 @@ public class Schedule {
         this.schedule = schedule;
     }
 
+    public Schedule(LocalDate scheduleDate, LocalDate scheduleEndDate, LocalTime scheduleStartTime, LocalTime scheduleEndTime, String week, String lunar, String schedule) {
+        this.scheduleDate = scheduleDate;
+        this.scheduleEndDate = scheduleEndDate;
+        this.scheduleStartTime = scheduleStartTime;
+        this.scheduleEndTime = scheduleEndTime;
+        this.week = week;
+        this.lunar = lunar;
+        this.schedule = schedule;
+    }
+
     public Schedule(String name, LocalDate date, LocalTime time) {
         this.schedule = name;
         this.scheduleDate = date;
+        this.scheduleEndDate = date;
         this.scheduleStartTime = time;
         scheduleEndTime = time.plusHours(1);
     }
@@ -65,6 +77,14 @@ public class Schedule {
 
     public void setScheduleDate(LocalDate scheduleDate) {
         this.scheduleDate = scheduleDate;
+    }
+
+    public LocalDate getScheduleEndDate() {
+        return scheduleEndDate;
+    }
+
+    public void setScheduleEndDate(LocalDate scheduleEndDate) {
+        this.scheduleEndDate = scheduleEndDate;
     }
 
     public LocalTime getScheduleStartTime() {

@@ -24,7 +24,8 @@ public final class DbContact {
         public static final String TABLE_NAME = "schedule";
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_EVENT_NAME = "event";
-        public static final String COLUMN_DATE = "date";
+        public static final String COLUMN_START_DATE = "startdate";
+        public static final String COLUMN_END_DATE = "enddate";
         public static final String COLUMN_START_TIME = "starttime";
         public static final String COLUMN_END_TIME = "endtime";
         public static final String COLUMN_WEEK = "week";

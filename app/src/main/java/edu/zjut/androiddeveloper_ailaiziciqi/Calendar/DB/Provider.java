@@ -11,8 +11,6 @@ import android.util.Log;
 
 import java.util.Objects;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
-
 public class Provider extends ContentProvider {
 
     // Uris
@@ -90,9 +88,13 @@ public class Provider extends ContentProvider {
         if (event == null)
             throw new IllegalArgumentException("Event Name is required");
 
-        String date = contentValues.getAsString(DbContact.ScheduleEntry.COLUMN_DATE);
+        String date = contentValues.getAsString(DbContact.ScheduleEntry.COLUMN_START_DATE);
         if (date == null)
             throw new IllegalArgumentException("Date is required");
+
+        String endDate = contentValues.getAsString(DbContact.ScheduleEntry.COLUMN_END_DATE);
+        if (endDate == null)
+            throw new IllegalArgumentException("End Date is required");
 
         String startTime = contentValues.getAsString(DbContact.ScheduleEntry.COLUMN_START_TIME);
         if (startTime == null)
@@ -183,10 +185,16 @@ public class Provider extends ContentProvider {
                 throw new IllegalArgumentException("Event Name is required");
         }
 
-        if (contentValues.containsKey(DbContact.ScheduleEntry.COLUMN_DATE)) {
-            String date = contentValues.getAsString(DbContact.ScheduleEntry.COLUMN_DATE);
+        if (contentValues.containsKey(DbContact.ScheduleEntry.COLUMN_START_DATE)) {
+            String date = contentValues.getAsString(DbContact.ScheduleEntry.COLUMN_START_DATE);
             if (date == null)
                 throw new IllegalArgumentException("Date is required");
+        }
+
+        if (contentValues.containsKey(DbContact.ScheduleEntry.COLUMN_END_DATE)) {
+            String endDate = contentValues.getAsString(DbContact.ScheduleEntry.COLUMN_END_DATE);
+            if (endDate == null)
+                throw new IllegalArgumentException("End Date is required");
         }
 
         if (contentValues.containsKey(DbContact.ScheduleEntry.COLUMN_START_TIME)) {

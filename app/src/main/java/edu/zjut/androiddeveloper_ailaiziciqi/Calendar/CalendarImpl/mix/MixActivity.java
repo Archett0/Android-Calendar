@@ -1,13 +1,12 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
+
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -106,76 +104,10 @@ public class MixActivity extends BaseActivity implements
         mCalendarView = findViewById(R.id.calendarView);
         mTextCurrentDay = findViewById(R.id.tv_current_day);
 
-        String[] projection = {DbContact.ScheduleEntry._ID,
-                DbContact.ScheduleEntry.COLUMN_EVENT_NAME,
-                DbContact.ScheduleEntry.COLUMN_DATE,
-                DbContact.ScheduleEntry.COLUMN_START_TIME,
-                DbContact.ScheduleEntry.COLUMN_END_TIME,
-                DbContact.ScheduleEntry.COLUMN_WEEK,
-                DbContact.ScheduleEntry.COLUMN_LUNAR
-        };
-        mCursor = getContentResolver().query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, null);
-        // clear the old static list
-        if (Schedule.scheduleArrayList.size() != 0) {
-            Schedule.scheduleArrayList.clear();
-        }
-        // retrieve data from database
-        if (mCursor != null && mCursor.moveToFirst()) {
-            do {
-                // TODO: 这是从DB获取数据的方法,目前似乎它只会执行一次
-                /// 获取Column的位置
-                int scheduleIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_EVENT_NAME);
-                int scheduleDateIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_DATE);
-                int scheduleStartTimeIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_START_TIME);
-                int scheduleEndTimeIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_END_TIME);
-                int weekIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_WEEK);
-                int lunarIndex = mCursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_LUNAR);
-                // 取值
-                String scheduleValue = mCursor.getString(scheduleIndex);
-                String scheduleDateValue = mCursor.getString(scheduleDateIndex);
-                String scheduleStartTimeValue = mCursor.getString(scheduleStartTimeIndex);
-                String scheduleEndTimeValue = mCursor.getString(scheduleEndTimeIndex);
-                String weekValue = mCursor.getString(weekIndex);
-                String lunarValue = mCursor.getString(lunarIndex);
-                // 转换
-                LocalDate date = LocalDate.parse(scheduleDateValue);
-                LocalTime time = LocalTime.parse(scheduleStartTimeValue);
-                LocalTime endTime = LocalTime.parse(scheduleEndTimeValue);
-                // 保存
-                Schedule newSchedule = new Schedule(date, time, endTime, weekValue, lunarValue, scheduleValue);
-                Schedule.scheduleArrayList.add(newSchedule);
-            } while (mCursor.moveToNext());
-            // Tag
-            Log.i("Load Cursor", "Loaded from database");
-            Log.i("Load Cursor", "Data loaded:" + Schedule.scheduleArrayList.size());
-        }
-        // if there's no data from database, just insert these default data
-        else {
-            // TODO:测试完成后删去这个sector
-            Schedule schedule1 = new Schedule("Play apex", LocalDate.now(), LocalTime.of(20, 0));
-            Schedule schedule2 = new Schedule("Destroy Android studio", LocalDate.now(), LocalTime.of(21, 0));
-            Schedule schedule3 = new Schedule("Tea with Jack Ma", LocalDate.now().plusDays(1), LocalTime.of(15, 0));
-            Schedule schedule4 = new Schedule("Take a bath", LocalDate.now(), LocalTime.of(20, 0));
-            Schedule schedule5 = new Schedule("Event no.1", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule6 = new Schedule("Event no.2", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule7 = new Schedule("Event no.3", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule8 = new Schedule("Event no.4", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule9 = new Schedule("Neutralize CB's Server", LocalDate.now().plusDays(2), LocalTime.of(4, 0));
-            Schedule schedule10 = new Schedule("Neutralize CB's Website", LocalDate.now().plusDays(2), LocalTime.of(6, 0));
-            Schedule.scheduleArrayList.add(schedule1);
-            Schedule.scheduleArrayList.add(schedule2);
-            Schedule.scheduleArrayList.add(schedule3);
-            Schedule.scheduleArrayList.add(schedule4);
-            Schedule.scheduleArrayList.add(schedule5);
-            Schedule.scheduleArrayList.add(schedule6);
-            Schedule.scheduleArrayList.add(schedule7);
-            Schedule.scheduleArrayList.add(schedule8);
-            Schedule.scheduleArrayList.add(schedule9);
-            Schedule.scheduleArrayList.add(schedule10);
-            // TODO:Sector ends here
-            Log.i("Load Cursor", "No data from database, default data is loaded");
-        }
+        // 从数据库读取所有日程
+        loadOrReloadDataFromDatabase(mCursor, getContentResolver(), "Load");
 
+        // 左上日期的点击监听器
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,15 +121,21 @@ public class MixActivity extends BaseActivity implements
                 mTextMonthDay.setText(String.valueOf(mYear));
             }
         });
+
+        // 右上日期的点击监听器
         findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCalendarView.scrollToCurrent();
             }
         });
+
+        // 设置CalendarLayout
         mCalendarLayout = findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
+
+        // 左边缘周标记的点击监听器
         mCalendarView.setOnClickCalendarPaddingListener(new CalendarView.OnClickCalendarPaddingListener() {
             @Override
             public void onClickCalendarPadding(float x, float y, boolean isMonthView,
@@ -208,6 +146,8 @@ public class MixActivity extends BaseActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         });
+
+        // 设置左上角的日期显示
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
