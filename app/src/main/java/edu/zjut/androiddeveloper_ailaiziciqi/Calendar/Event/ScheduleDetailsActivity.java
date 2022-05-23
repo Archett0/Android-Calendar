@@ -21,13 +21,20 @@ import com.google.android.material.navigation.NavigationBarView;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
 
+/**
+ * 日程概览控制类
+ */
 public class ScheduleDetailsActivity extends AppCompatActivity {
 
 
     private ImageView mBackBtn; // 返回按钮
     private TextView mScheduleNameView; // 日程名称
+    private TextView mScheduleStartDescriptionView; // 日程开始时间与星期描述
+    private TextView mScheduleEndDescriptionView; // 日程结束时间与星期描述
     private TextView mStartTimeView;    // 日程开始时间
+    private TextView mStartDateView;    // 日程开始日期
     private TextView mEndTimeView;  // 日程结束时间
+    private TextView mEndDateView;  // 日程结束日期
     private TextView mWeather;  // 日程天气
     private TextView mWeatherHint;  // 日程天气提示
     private TextView mScheduleType; // 日程类别
@@ -44,8 +51,12 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
         // 设置View
         mBackBtn = findViewById(R.id.back);
         mScheduleNameView = findViewById(R.id.single_schedule_name);
+        mScheduleStartDescriptionView = findViewById(R.id.single_schedule_start_description);
+        mScheduleEndDescriptionView = findViewById(R.id.single_schedule_end_description);
         mStartTimeView = findViewById(R.id.single_schedule_start_time);
+        mStartDateView = findViewById(R.id.single_schedule_start_date);
         mEndTimeView = findViewById(R.id.single_schedule_end_time);
+        mEndDateView = findViewById(R.id.single_schedule_end_date);
         mWeather = findViewById(R.id.single_schedule_day_weather);
         mWeatherHint = findViewById(R.id.single_schedule_day_weather_description);
         mScheduleType = findViewById(R.id.single_schedule_type);
@@ -54,7 +65,11 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
         // 设置数据
         Intent intent = getIntent();
         mScheduleNameView.setText(intent.getStringExtra("Name"));
+        mScheduleStartDescriptionView.setText(intent.getStringExtra("StartDescription"));
+        mScheduleEndDescriptionView.setText(intent.getStringExtra("EndDescription"));
+        mStartDateView.setText(intent.getStringExtra("Date"));
         mStartTimeView.setText(intent.getStringExtra("Time"));
+        mEndDateView.setText(intent.getStringExtra("EndDate"));
         mEndTimeView.setText(intent.getStringExtra("EndTime"));
         mWeather.setText(intent.getStringExtra("Weather"));
         mWeatherHint.setText(intent.getStringExtra("WeatherDetails"));
@@ -71,15 +86,15 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
         bottomNavigationMenu.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.single_event_share:
-                        Toast.makeText(ScheduleDetailsActivity.this,"Share Btn Clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScheduleDetailsActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.single_event_modify:
-                        Toast.makeText(ScheduleDetailsActivity.this,"Modify Btn Clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScheduleDetailsActivity.this, "Modify Btn Clicked", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.single_event_delete:
-                        Toast.makeText(ScheduleDetailsActivity.this,"Delete Btn Clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScheduleDetailsActivity.this, "Delete Btn Clicked", Toast.LENGTH_SHORT).show();
                         return true;
                     default:
                         return false;

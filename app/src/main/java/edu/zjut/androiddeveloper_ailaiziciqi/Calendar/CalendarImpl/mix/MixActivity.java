@@ -1,12 +1,19 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.*;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,9 +21,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
@@ -35,11 +49,19 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.base.activity
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupItemDecoration;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.qweather.sdk.bean.base.Code;
+import com.qweather.sdk.bean.weather.WeatherNowBean;
+import com.qweather.sdk.view.HeConfig;
+import com.qweather.sdk.view.QWeather;
 
 public class MixActivity extends BaseActivity implements
         CalendarView.OnCalendarSelectListener,
@@ -64,13 +86,16 @@ public class MixActivity extends BaseActivity implements
 
 
     // 新增的属性
-    private AlertDialog mMoreDialog;
-    private AlertDialog mFuncDialog;
-    private int dayClickCount;
-    private static LocalDate dayClickRecord;
-    private ScheduleListAdapter mScheduleListAdapter;
-    private ImageView mOldManBtn;
-    private Cursor mCursor;
+    private AlertDialog mMoreDialog;    // 功能按钮
+    private AlertDialog mFuncDialog;    // 功能按钮
+    private int dayClickCount;  // 点击次数计数器
+    private static LocalDate dayClickRecord;    // 点击日期记录器
+    private ScheduleListAdapter mScheduleListAdapter;   // 今日日程适配器
+    private ImageView mOldManBtn;   // TODO:老人页面按钮，之后会被整合进设置
+    private Cursor mCursor; // 查询数据得到的游标
+//    private Double longitude, latitude;  // 位置经纬度
+//    private LocationManager locationManager;    // 位置管理器
+//    private FusedLocationProviderClient fusedLocationProviderClient;    // 位置提供器
 
     /*
       增加新日程按钮
@@ -253,19 +278,36 @@ public class MixActivity extends BaseActivity implements
         mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Schedule schedule) {
+                // 点击已有的日程
                 if (schedule.getScheduleDate() != null) {
                     Log.i("Event List Click", "In Activity:" + position);
                     Log.i("Event List Click", "In Activity:" + schedule.toString());
                     Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
                     intent.putExtra("Name", schedule.getSchedule());
-                    intent.putExtra("Date", schedule.getScheduleDate());
+                    intent.putExtra("StartDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START));
+                    intent.putExtra("EndDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END));
+                    intent.putExtra("Date", String.valueOf(schedule.getScheduleDate()));
+                    intent.putExtra("EndDate", String.valueOf(schedule.getScheduleEndDate()));
                     intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
                     intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
-                    intent.putExtra("Weather", "晴 18 - 27");
-                    intent.putExtra("WeatherDetails", "有微风");
+                    // 获取相应的日期,并填充
+                    if (WEATHER_REPORTS != null && !WEATHER_REPORTS.isEmpty()) {
+                        int weatherIndex = getScheduleWeatherReport(schedule.getScheduleDate());
+                        if (weatherIndex != -1) {
+                            intent.putExtra("Weather", WEATHER_REPORTS.get(weatherIndex).getWeather());
+                            intent.putExtra("WeatherDetails", WEATHER_REPORTS.get(weatherIndex).getWeatherDetails());
+                        } else {
+                            intent.putExtra("Weather", "暂无天气信息");
+                            intent.putExtra("WeatherDetails", "暂无天气详情");
+                        }
+                    } else {
+                        intent.putExtra("Weather", "暂无天气信息");
+                        intent.putExtra("WeatherDetails", "暂无天气详情");
+                    }
                     intent.putExtra("Type", "我的日历");
                     startActivity(intent);
                 } else {
+                    // 点击了"暂无日程信息",跳转至新增日程
                     Log.i("Event List Click", "In Activity:" + "No schedule today");
                     Intent intent = new Intent(MixActivity.this, AddScheduleActivity.class);
                     startActivity(intent);
@@ -371,11 +413,26 @@ public class MixActivity extends BaseActivity implements
                     Log.i("Event List Click", "In Activity:" + schedule.toString());
                     Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
                     intent.putExtra("Name", schedule.getSchedule());
-                    intent.putExtra("Date", schedule.getScheduleDate());
+                    intent.putExtra("StartDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START));
+                    intent.putExtra("EndDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END));
+                    intent.putExtra("Date", String.valueOf(schedule.getScheduleDate()));
+                    intent.putExtra("EndDate", String.valueOf(schedule.getScheduleEndDate()));
                     intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
                     intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
-                    intent.putExtra("Weather", "晴 18 - 27");
-                    intent.putExtra("WeatherDetails", "有微风");
+                    // 获取相应的日期,并填充
+                    if (WEATHER_REPORTS != null && !WEATHER_REPORTS.isEmpty()) {
+                        int weatherIndex = getScheduleWeatherReport(schedule.getScheduleDate());
+                        if (weatherIndex != -1) {
+                            intent.putExtra("Weather", WEATHER_REPORTS.get(weatherIndex).getWeather());
+                            intent.putExtra("WeatherDetails", WEATHER_REPORTS.get(weatherIndex).getWeatherDetails());
+                        } else {
+                            intent.putExtra("Weather", "暂无天气信息");
+                            intent.putExtra("WeatherDetails", "暂无天气详情");
+                        }
+                    } else {
+                        intent.putExtra("Weather", "暂无天气信息");
+                        intent.putExtra("WeatherDetails", "暂无天气详情");
+                    }
                     intent.putExtra("Type", "我的日历");
                     startActivity(intent);
                 } else {
@@ -398,7 +455,6 @@ public class MixActivity extends BaseActivity implements
     public void onYearChange(int year) {
         mTextMonthDay.setText(String.valueOf(year));
     }
-
 
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
@@ -429,4 +485,47 @@ public class MixActivity extends BaseActivity implements
                 break;
         }
     }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MixActivity.this);
+        //getLocation();
+        authorizeWeatherAccount();
+        getWeather(MixActivity.this);
+    }
+
+//    /**
+//     * 获取当前位置
+//     */
+//    private void getLocation() {
+//
+//        // 判断当前是否拥有使用GPS的权限
+//        if (ActivityCompat.checkSelfPermission(MixActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                && ActivityCompat.checkSelfPermission(MixActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // 申请权限
+//            ActivityCompat.requestPermissions(MixActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+//            ActivityCompat.requestPermissions(MixActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+//        }
+//        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Location> task) {
+//                Location location = task.getResult();
+//                if (location != null) {
+//                    Geocoder geocoder = new Geocoder(MixActivity.this, Locale.getDefault());
+//                    try {
+//                        List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                        longitude = addressList.get(0).getLongitude();
+//                        latitude = addressList.get(0).getLatitude();
+//                        Log.i("Random Debug", "longitude:" + longitude);
+//                        Log.i("Random Debug", "latitude:" + latitude);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    Log.i("Random Debug", "Can not get location");
+//                }
+//            }
+//        });
+//    }
 }
