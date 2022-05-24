@@ -43,6 +43,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
     private TextView mScheduleType; // 日程类别
     private BottomNavigationView bottomNavigationMenu;  // 菜单
     private Uri mCurrentScheduleUri;    // 当前日程的Uri
+    private String scheduleTextForShare;    // 当前日程分享用描述文字
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,14 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
         mWeather.setText(intent.getStringExtra("Weather"));
         mWeatherHint.setText(intent.getStringExtra("WeatherDetails"));
         mScheduleType.setText(intent.getStringExtra("Type"));
+        scheduleTextForShare = "日程\"" + intent.getStringExtra("Name") + "\"： "
+                + intent.getStringExtra("StartDescription") + "， "
+                + intent.getStringExtra("EndDescription") + "， 日程从"
+                + intent.getStringExtra("Time") + "开始, 到"
+                + intent.getStringExtra("EndTime") + "结束。当天天气是"
+                + intent.getStringExtra("Weather") + "具体说， "
+                + intent.getStringExtra("WeatherDetails") + "。本日程属于日历："
+                + intent.getStringExtra("Type") + "。";
 
         // 设置返回按钮监听
         mBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +102,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.single_event_share:
-                        Toast.makeText(ScheduleDetailsActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT).show();
+                        shareSchedule();
                         return true;
                     case R.id.single_event_modify:
                         Toast.makeText(ScheduleDetailsActivity.this, "Modify Btn Clicked", Toast.LENGTH_SHORT).show();
@@ -107,6 +116,19 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
+    // 日程分享功能
+    private void shareSchedule() {
+        String shareString = (scheduleTextForShare == null) ? "分享不可用" : scheduleTextForShare;
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, shareString);
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
+    }
+
 
     // 编辑界面的确认删除功能
     private void showDeleteConfirmationDialog() {

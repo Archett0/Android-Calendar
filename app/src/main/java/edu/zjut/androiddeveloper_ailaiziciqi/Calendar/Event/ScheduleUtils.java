@@ -300,4 +300,17 @@ public class ScheduleUtils {
         }
         return -1;
     }
+
+    /**
+     * 给出日程来生成分享的文字
+     */
+    public static String generateShareText(Schedule schedule) {
+        String msg;
+        msg = schedule.getSchedule() + "\"： "
+                + generateScheduleDescription(schedule,SCHEDULE_DESCRIPTION_START) + "， "
+                + generateScheduleDescription(schedule,SCHEDULE_DESCRIPTION_END) + "， 日程时间从"
+                + schedule.getScheduleStartTime() + "开始, 到"
+                + schedule.getScheduleEndTime() + "结束。本日程属于日历：我的日历。";
+        return msg;
+    }
 }

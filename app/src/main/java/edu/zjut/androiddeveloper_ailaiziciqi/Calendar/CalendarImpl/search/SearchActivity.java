@@ -1,5 +1,6 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.generateShareText;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.schedulesForName;
 
 import androidx.annotation.NonNull;
@@ -179,10 +180,8 @@ public class SearchActivity extends AppCompatActivity {
         for (int i = 0; i < menuView.getChildCount(); i++) {
             BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(i);
             itemView.setShifting(false);
-            if (i == 0 || i == 1) {
-                itemView.setEnabled(false);
-            }
         }
+
         itemView = (BottomNavigationItemView) menuView.getChildAt(1);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -191,6 +190,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.share:
+                        shareSelectedSchedules();
                         break;
                     case R.id.delete:
                         showDeleteConfirmationDialog();
@@ -235,6 +235,31 @@ public class SearchActivity extends AppCompatActivity {
 
         Log.w("主要构造函数", "运行");
 
+    }
+
+    /**
+     * 分享选中的一个或多个日程
+     */
+    private void shareSelectedSchedules() {
+        String resultString = "";
+        if (searchListAdapter.getListSelected().size() == 1) {
+            String prefix = "日程\"";
+            prefix += generateShareText(searchListAdapter.getListSelected().get(0));
+            resultString = prefix;
+        } else {
+            for (int i = 0; i < searchListAdapter.getListSelected().size(); ++i) {
+                String prefix = "日程#" + (i + 1) + "\"";
+                prefix += generateShareText(searchListAdapter.getListSelected().get(i));
+                resultString += prefix + "  ";
+            }
+        }
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, resultString);
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     /**
