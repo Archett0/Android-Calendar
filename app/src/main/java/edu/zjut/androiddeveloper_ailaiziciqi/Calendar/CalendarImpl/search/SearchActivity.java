@@ -7,7 +7,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +39,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
@@ -187,6 +193,7 @@ public class SearchActivity extends AppCompatActivity {
                     case R.id.share:
                         break;
                     case R.id.delete:
+                        showDeleteConfirmationDialog();
                         break;
                     case R.id.select_all_items:
                         if (!isCheckBoxSelected) {
@@ -226,7 +233,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        Log.w("主要构造函数","运行");
+        Log.w("主要构造函数", "运行");
 
     }
 
@@ -266,4 +273,80 @@ public class SearchActivity extends AppCompatActivity {
             finish();
     }
 
+    // 编辑界面的确认删除功能
+    private void showDeleteConfirmationDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        boolean deleteMultiple = false;
+        if (searchListAdapter.getListSelected().size() == 1) {
+            builder.setMessage("确定删除这个日程？");
+            deleteMultiple = false;
+        } else {
+            builder.setMessage("确定删除这些日程？");
+            deleteMultiple = true;
+        }
+        // 用户确认删除
+        boolean finalDeleteMultiple = deleteMultiple;
+        builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteProduct(finalDeleteMultiple);
+            }
+        });
+        // 不删除
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // 生成并显示确认弹窗
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    // 执行删除
+    private void deleteProduct(boolean deleteMultiple) {
+
+        // single delete
+        if (!deleteMultiple) {
+            int _id = searchListAdapter.getListSelected().get(0).getId();
+            Uri mCurrentScheduleUri = ContentUris.withAppendedId(DbContact.ScheduleEntry.CONTENT_URI, _id);
+            if (mCurrentScheduleUri != null) {
+                int rowsEffected = getContentResolver().delete(mCurrentScheduleUri, null, null);
+                if (rowsEffected == 0) {
+                    // 如果没有一行被删除，报错toast
+                    Toast.makeText(this, "删除错误", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(SearchActivity.this, "无法获取Uri,错误发生", Toast.LENGTH_SHORT).show();
+            }
+        }
+        // multiple deleted so we do row by row
+        else {
+            boolean successFlag = true;
+            for (int i = 0; i < searchListAdapter.getListSelected().size(); ++i) {
+                int _id = searchListAdapter.getListSelected().get(i).getId();
+                Uri mCurrentScheduleUri = ContentUris.withAppendedId(DbContact.ScheduleEntry.CONTENT_URI, _id);
+                if (mCurrentScheduleUri != null) {
+                    int rowsEffected = getContentResolver().delete(mCurrentScheduleUri, null, null);
+                    if (rowsEffected == 0) {
+                        successFlag = false;
+                    }
+                } else {
+                    Toast.makeText(SearchActivity.this, "无法获取Uri,错误发生", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (successFlag) {
+                // 如果没有一行被删除，报错toast
+                Toast.makeText(this, "全部删除成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "存在删除错误", Toast.LENGTH_SHORT).show();
+            }
+        }
+        finish();
+    }
 }

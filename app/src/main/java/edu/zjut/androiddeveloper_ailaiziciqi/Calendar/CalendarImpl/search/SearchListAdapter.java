@@ -165,8 +165,7 @@ public class SearchListAdapter extends BaseAdapter {
         viewHolder.schedule.setText(schedule.getSchedule());
 
         DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
-        viewHolder.date.setText(schedule.getScheduleDate().format(date) +
-                "星期" + schedule.getWeek() + " 农历" + schedule.getLunar());
+        viewHolder.date.setText(schedule.getScheduleDate().format(date) + schedule.getWeek() + " 农历" + schedule.getLunar());
 
         DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
         viewHolder.timeStart.setText(schedule.getScheduleStartTime().format(time));
