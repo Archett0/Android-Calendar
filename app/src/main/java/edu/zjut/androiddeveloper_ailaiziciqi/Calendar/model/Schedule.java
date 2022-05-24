@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * 日程类
  */
 public class Schedule {
-    private int id;
 
+    private int id; // 日程Id
     private String schedule;    // 日程名称
     private LocalDate scheduleDate; // 日程开始日期
     private LocalDate scheduleEndDate; // 日程结束日期
@@ -77,6 +77,17 @@ public class Schedule {
     }
 
     public Schedule(LocalDate scheduleDate, LocalDate scheduleEndDate, LocalTime scheduleStartTime, LocalTime scheduleEndTime, String week, String lunar, String schedule) {
+        this.scheduleDate = scheduleDate;
+        this.scheduleEndDate = scheduleEndDate;
+        this.scheduleStartTime = scheduleStartTime;
+        this.scheduleEndTime = scheduleEndTime;
+        this.week = week;
+        this.lunar = lunar;
+        this.schedule = schedule;
+    }
+
+    public Schedule(int _id, LocalDate scheduleDate, LocalDate scheduleEndDate, LocalTime scheduleStartTime, LocalTime scheduleEndTime, String week, String lunar, String schedule) {
+        this.id = _id;
         this.scheduleDate = scheduleDate;
         this.scheduleEndDate = scheduleEndDate;
         this.scheduleStartTime = scheduleStartTime;

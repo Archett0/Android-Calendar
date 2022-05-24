@@ -3,7 +3,10 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -39,6 +42,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
     private TextView mWeatherHint;  // 日程天气提示
     private TextView mScheduleType; // 日程类别
     private BottomNavigationView bottomNavigationMenu;  // 菜单
+    private Uri mCurrentScheduleUri;    // 当前日程的Uri
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
 
         // 设置数据
         Intent intent = getIntent();
+        mCurrentScheduleUri = intent.getData();
         mScheduleNameView.setText(intent.getStringExtra("Name"));
         mScheduleStartDescriptionView.setText(intent.getStringExtra("StartDescription"));
         mScheduleEndDescriptionView.setText(intent.getStringExtra("EndDescription"));
@@ -94,7 +99,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
                         Toast.makeText(ScheduleDetailsActivity.this, "Modify Btn Clicked", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.single_event_delete:
-                        Toast.makeText(ScheduleDetailsActivity.this, "Delete Btn Clicked", Toast.LENGTH_SHORT).show();
+                        showDeleteConfirmationDialog();
                         return true;
                     default:
                         return false;
@@ -103,5 +108,45 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
         });
     }
 
+    // 编辑界面的确认删除功能
+    private void showDeleteConfirmationDialog() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("确定删除这个日程？");
+
+        // 用户确认删除
+        builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteProduct();
+            }
+        });
+        // 不删除
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // 生成并显示确认弹窗
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    // 执行删除
+    private void deleteProduct() {
+        if (mCurrentScheduleUri != null) {
+            int rowsEffected = getContentResolver().delete(mCurrentScheduleUri, null, null);
+            if (rowsEffected == 0) {
+                // 如果没有一行被删除，报错toast
+                Toast.makeText(this, "删除错误", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        } else {
+            Toast.makeText(ScheduleDetailsActivity.this, "无法获取Uri,错误发生", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

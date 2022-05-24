@@ -97,8 +97,6 @@ public class AddScheduleActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddScheduleActivity.this, MixActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -115,10 +113,6 @@ public class AddScheduleActivity extends AppCompatActivity {
                     // failed and do nothing
                     Toast.makeText(AddScheduleActivity.this, "添加日程失败", Toast.LENGTH_SHORT).show();
                 } else {
-//                    // success and we should reload the data from db to static list
-//                    reloadDataFromDatabase();
-                    Intent intent = new Intent(AddScheduleActivity.this, MixActivity.class);
-                    startActivity(intent);
                     finish();
                 }
             }
@@ -131,8 +125,6 @@ public class AddScheduleActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) { //按下的如果是BACK，同时没有重复
-            Intent intent = new Intent(AddScheduleActivity.this, MixActivity.class);
-            startActivity(intent);
             finish();
             return true;
         }

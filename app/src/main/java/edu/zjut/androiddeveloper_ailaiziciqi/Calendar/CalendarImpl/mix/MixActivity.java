@@ -1,10 +1,12 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
 import android.Manifest;
+
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.*;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.content.IntentFilter;
 import android.util.Log;
@@ -95,7 +98,7 @@ public class MixActivity extends BaseActivity implements
     private static LocalDate dayClickRecord;    // 点击日期记录器
     private ScheduleListAdapter mScheduleListAdapter;   // 今日日程适配器
     private ImageView mOldManBtn;   // TODO:老人页面按钮，之后会被整合进设置
-    private Cursor mCursor; // 查询数据得到的游标
+//    private Cursor mCursor; // 查询数据得到的游标
 //    private Double longitude, latitude;  // 位置经纬度
 //    private LocationManager locationManager;    // 位置管理器
 //    private FusedLocationProviderClient fusedLocationProviderClient;    // 位置提供器
@@ -114,7 +117,6 @@ public class MixActivity extends BaseActivity implements
         context.startActivity(new Intent(context, MixActivity.class));
     }
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_mix;
@@ -132,8 +134,7 @@ public class MixActivity extends BaseActivity implements
         mCalendarView = findViewById(R.id.calendarView);
         mTextCurrentDay = findViewById(R.id.tv_current_day);
 
-        // 从数据库读取所有日程
-        loadOrReloadDataFromDatabase(mCursor, getContentResolver(), "Load");
+        Log.i("Random Debug", "initView");
 
         // 左上日期的点击监听器
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +263,6 @@ public class MixActivity extends BaseActivity implements
             public void onClick(View v) {
                 Intent addIntent = new Intent(MixActivity.this, AddScheduleActivity.class);
                 startActivity(addIntent);
-                finish();
             }
         });
 
@@ -288,6 +288,8 @@ public class MixActivity extends BaseActivity implements
                     Log.i("Event List Click", "In Activity:" + position);
                     Log.i("Event List Click", "In Activity:" + schedule.toString());
                     Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
+                    Uri scheduleUri = ContentUris.withAppendedId(DbContact.ScheduleEntry.CONTENT_URI, schedule.getId());
+                    intent.setData(scheduleUri);
                     intent.putExtra("Name", schedule.getSchedule());
                     intent.putExtra("StartDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START));
                     intent.putExtra("EndDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END));
@@ -344,6 +346,7 @@ public class MixActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
+        Log.i("Random Debug", "initData");
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
 
@@ -420,45 +423,8 @@ public class MixActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
-        mScheduleListAdapter = new ScheduleListAdapter(this, dayClickRecord, null);
-        mScheduleListAdapter.setOnItemClickListener(new ScheduleListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, Schedule schedule) {
-                if (schedule.getScheduleDate() != null) {
-                    Log.i("Event List Click", "In Activity:" + position);
-                    Log.i("Event List Click", "In Activity:" + schedule.toString());
-                    Intent intent = new Intent(MixActivity.this, ScheduleDetailsActivity.class);
-                    intent.putExtra("Name", schedule.getSchedule());
-                    intent.putExtra("StartDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START));
-                    intent.putExtra("EndDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END));
-                    intent.putExtra("Date", String.valueOf(schedule.getScheduleDate()));
-                    intent.putExtra("EndDate", String.valueOf(schedule.getScheduleEndDate()));
-                    intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
-                    intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
-                    // 获取相应的日期,并填充
-                    if (WEATHER_REPORTS != null && !WEATHER_REPORTS.isEmpty()) {
-                        int weatherIndex = getScheduleWeatherReport(schedule.getScheduleDate());
-                        if (weatherIndex != -1) {
-                            intent.putExtra("Weather", WEATHER_REPORTS.get(weatherIndex).getWeather());
-                            intent.putExtra("WeatherDetails", WEATHER_REPORTS.get(weatherIndex).getWeatherDetails());
-                        } else {
-                            intent.putExtra("Weather", "暂无天气信息");
-                            intent.putExtra("WeatherDetails", "暂无天气详情");
-                        }
-                    } else {
-                        intent.putExtra("Weather", "暂无天气信息");
-                        intent.putExtra("WeatherDetails", "暂无天气详情");
-                    }
-                    intent.putExtra("Type", "我的日历");
-                    startActivity(intent);
-                } else {
-                    Log.i("Event List Click", "In Activity:" + "No schedule today");
-                    Intent intent = new Intent(MixActivity.this, AddScheduleActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
-        mRecyclerView.setAdapter(mScheduleListAdapter);
+        // reset adapter
+        mScheduleListAdapter.resetCurrentAdapter(this, dayClickRecord, null);
         mRecyclerView.notifyDataSetChanged();
 
         Log.e("onDateSelected", "  -- " + calendar.getYear() +
@@ -544,4 +510,15 @@ public class MixActivity extends BaseActivity implements
 //            }
 //        });
 //    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (dayClickRecord != null) {
+            mScheduleListAdapter.resetCurrentAdapter(this, dayClickRecord, null);
+        }
+        else {
+            mScheduleListAdapter.resetCurrentAdapter(this, LocalDate.now(), null);
+        }
+    }
 }

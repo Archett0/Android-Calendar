@@ -1,7 +1,10 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.HourAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.HourEvent;
@@ -54,8 +58,8 @@ public class DailyCalendarActivity extends AppCompatActivity implements
         findViewById(R.id.add_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DailyCalendarActivity.this, "Add Event Button Clicked", Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(DailyCalendarActivity.this, AddScheduleActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -75,12 +79,16 @@ public class DailyCalendarActivity extends AppCompatActivity implements
             ArrayList<Schedule> schedules = Schedule.eventsForDateAndTime(date, time);   // 当前在设置的小时所包含的所有日程
             HourEvent hourEvent = new HourEvent(time, schedules);
             list.add(hourEvent);
+            if (!hourEvent.getEvents().isEmpty()) {
+                Log.i("Daily View Date Selected", "hourEvent:" + hourEvent);
+            }
         }
         return list;
     }
 
     // 设置HourAdapter
     private void setHourAdapter() {
+        Log.i("Daily View Date Selected", "Setting adapter:");
         HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEventList());
         hourListView.setAdapter(hourAdapter);
     }
@@ -101,7 +109,7 @@ public class DailyCalendarActivity extends AppCompatActivity implements
 
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
-        selectedDate = LocalDate.of(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+        selectedDate = LocalDate.of(calendar.getYear(), calendar.getMonth(), calendar.getDay());
         setHourAdapter();
         Log.i("Daily View Date Selected", "  -- " + selectedDate);
     }
@@ -109,5 +117,19 @@ public class DailyCalendarActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
+    }
+
+    private void resetHourAdapter() {
+        Log.i("Daily View Date Selected", "Resetting adapter:");
+        HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEventList());
+        hourListView.setAdapter(hourAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadOrReloadDataFromDatabase(getContentResolver(), "DailyReload");
+        Log.i("Daily View Date Selected", "Date selected:" + selectedDate);
+        resetHourAdapter();
     }
 }

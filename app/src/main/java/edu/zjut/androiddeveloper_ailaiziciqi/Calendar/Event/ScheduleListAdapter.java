@@ -1,5 +1,7 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -48,17 +50,36 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
     // 1: Constructor will be executed first.
     public ScheduleListAdapter(Context context, LocalDate dayClickRecord, Cursor cursor) {
         super(context);
+        // 从数据库读取所有日程
+        loadOrReloadDataFromDatabase(context.getContentResolver(), "Test load");
         this.context = context;
         this.cursor = cursor;
         mLoader = Glide.with(context.getApplicationContext());
         LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
         List<String> titles = new ArrayList<>();
         map.put("今日日程", getEventList(0, dayClickRecord));
-        map.put("类别2待完善", getEventList(1, dayClickRecord));
-        map.put("类别3待完善", getEventList(2, dayClickRecord));
+//        map.put("类别2待完善", getEventList(1, dayClickRecord));
+//        map.put("类别3待完善", getEventList(2, dayClickRecord));
         titles.add("今日日程");
-        titles.add("类别2待完善");
-        titles.add("类别3待完善");
+//        titles.add("类别2待完善");
+//        titles.add("类别3待完善");
+        resetGroups(map, titles);
+    }
+
+    // A method to reset data to the adapter
+    public void resetCurrentAdapter(Context context, LocalDate dayClickRecord, Cursor cursor) {
+        loadOrReloadDataFromDatabase(context.getContentResolver(), "Test loading");
+        this.context = context;
+        this.cursor = cursor;
+        mLoader = Glide.with(context.getApplicationContext());
+        LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
+        List<String> titles = new ArrayList<>();
+        map.put("今日日程", getEventList(0, dayClickRecord));
+//        map.put("类别2待完善", getEventList(1, dayClickRecord));
+//        map.put("类别3待完善", getEventList(2, dayClickRecord));
+        titles.add("今日日程");
+//        titles.add("类别2待完善");
+//        titles.add("类别3待完善");
         resetGroups(map, titles);
     }
 
@@ -87,6 +108,9 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
             params.leftMargin = 0;
             h.mTextTitle.setLayoutParams(params);
         } else {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) h.mTextTitle.getLayoutParams();
+            params.leftMargin = 50;
+            h.mTextTitle.setLayoutParams(params);
             h.mTextTitle.setVisibility(View.VISIBLE);
             h.mEventTime.setVisibility(View.VISIBLE);
             h.mEventTimeEnd.setVisibility(View.VISIBLE);
@@ -130,11 +154,12 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
                 scheduleList.add(DEFAULT_SCHEDULE);
                 emptyFlag = true;
             }
-        } else if (type == 1) {
-
-        } else if (type == 2) {
-
         }
+//        else if (type == 1) {
+//
+//        } else if (type == 2) {
+//
+//        }
         return scheduleList;
     }
 }

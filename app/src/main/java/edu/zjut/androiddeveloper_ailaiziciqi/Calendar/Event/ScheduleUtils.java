@@ -39,7 +39,7 @@ public class ScheduleUtils {
     /**
      * 从数据库刷新数据到内存
      */
-    public static void loadOrReloadDataFromDatabase(Cursor cursor, ContentResolver contentResolver, String message) {
+    public static void loadOrReloadDataFromDatabase(ContentResolver contentResolver, String message) {
 
         String[] projection = {DbContact.ScheduleEntry._ID,
                 DbContact.ScheduleEntry.COLUMN_EVENT_NAME,
@@ -50,7 +50,7 @@ public class ScheduleUtils {
                 DbContact.ScheduleEntry.COLUMN_WEEK,
                 DbContact.ScheduleEntry.COLUMN_LUNAR
         };
-        cursor = contentResolver.query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, null);
+        Cursor cursor = contentResolver.query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, null);
         // clear the old static list
         if (Schedule.scheduleArrayList.size() != 0) {
             Schedule.scheduleArrayList.clear();
@@ -59,6 +59,7 @@ public class ScheduleUtils {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 /// 获取Column的位置
+                int scheduleIdIndex = cursor.getColumnIndex(DbContact.ScheduleEntry._ID);
                 int scheduleIndex = cursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_EVENT_NAME);
                 int scheduleDateIndex = cursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_START_DATE);
                 int scheduleEndDateIndex = cursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_END_DATE);
@@ -67,6 +68,7 @@ public class ScheduleUtils {
                 int weekIndex = cursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_WEEK);
                 int lunarIndex = cursor.getColumnIndex(DbContact.ScheduleEntry.COLUMN_LUNAR);
                 // 取值
+                int scheduleIdValue = cursor.getInt(scheduleIdIndex);
                 String scheduleValue = cursor.getString(scheduleIndex);
                 String scheduleDateValue = cursor.getString(scheduleDateIndex);
                 String scheduleEndDateValue = cursor.getString(scheduleEndDateIndex);
@@ -80,8 +82,9 @@ public class ScheduleUtils {
                 LocalTime time = LocalTime.parse(scheduleStartTimeValue);
                 LocalTime endTime = LocalTime.parse(scheduleEndTimeValue);
                 // 保存
-                Schedule newSchedule = new Schedule(date, endDate, time, endTime, weekValue, lunarValue, scheduleValue);
+                Schedule newSchedule = new Schedule(scheduleIdValue, date, endDate, time, endTime, weekValue, lunarValue, scheduleValue);
                 Schedule.scheduleArrayList.add(newSchedule);
+                Log.i("Utils Class Called", "Single Data added, id:" + newSchedule.getId());
             } while (cursor.moveToNext());
             // Tag
             Log.i("Utils Class Called", message + "ed from database");
@@ -291,7 +294,7 @@ public class ScheduleUtils {
         }
         int index = 0;
         for (; index < WEATHER_REPORTS.size(); ++index) {
-            if(WEATHER_REPORTS.get(index).getDate().equals(localDate)){
+            if (WEATHER_REPORTS.get(index).getDate().equals(localDate)) {
                 return index;
             }
         }
