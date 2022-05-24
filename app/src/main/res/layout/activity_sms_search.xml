@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10sp">
 
             <ImageView
                 android:id="@+id/back"
@@ -33,6 +34,17 @@
                 android:paddingLeft="16dp"
                 android:src="@drawable/back" />
 
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/cancle"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="远程日程"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <SearchView
                 android:id="@+id/searchview"
@@ -44,48 +56,7 @@
                 android:queryHint="请输入搜索内容"
                 app:queryBackground="@drawable/bg_searchview" />
 
-            <ImageView
-                android:id="@+id/sms_search"
-                android:layout_width="60dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_ripple"
-                android:padding="4dp"
-                android:paddingLeft="16dp"
-                android:layout_toRightOf="@id/searchview"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/message" />
         </LinearLayout>
-        <RelativeLayout
-            android:id="@+id/select_bar"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/colorPrimary">
-
-            <ImageView
-                android:id="@+id/cancle"
-                android:layout_width="60dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_ripple"
-                android:padding="4dp"
-                android:paddingLeft="16dp"
-                android:src="@drawable/cancle" />
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/cancle"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="筛选"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
 
     </LinearLayout>
 
@@ -93,20 +64,21 @@
         android:id="@+id/lv_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_navigation"
         android:layout_below="@+id/top"
         android:divider="#00000000"
         android:textColor="#000"></ListView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/iv_add"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end|bottom"
-        android:background="@color/white"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_bottom_navigation" />
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#046cea"
+        android:contentDescription="123"
+        android:src="@drawable/addbutton" />
+
 </RelativeLayout>

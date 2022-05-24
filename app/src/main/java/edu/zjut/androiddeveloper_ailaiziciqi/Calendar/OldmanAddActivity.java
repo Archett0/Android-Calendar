@@ -1,30 +1,37 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Calendar;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.voice.VoiceAssistant;
 
-public class AddScheduleActivity extends AppCompatActivity {
+public class OldmanAddActivity extends AppCompatActivity {
     private TextView timestart, timeend;
+    // TODO 一些不同
+    private TextView timetitle, starttitle, endtitle;
+    private TextView title;
+
     private Calendar cal;
     private int year_start, month_start, day_start;
     private int hour_start, min_start;
@@ -37,20 +44,54 @@ public class AddScheduleActivity extends AppCompatActivity {
     private boolean isSwitched = false;
     private Switch aSwitch;
 
-    private ImageView back, submit;
+    private ImageView back;
+    // TODO 一些不同
+    private Button submit;
 
     private EditText scheduleTitle;
+
+    protected Handler mainHandler;
+
+    private VoiceAssistant voiceAssistant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.activity_oldman_add);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        OnClickEvent onClickEvent = new OnClickEvent();
+
+        title = findViewById(R.id.title);
+
+        timetitle = findViewById(R.id.timetitle);
+        starttitle = findViewById(R.id.starttitle);
+        endtitle = findViewById(R.id.endtitle);
+
+//        百度语音
+        mainHandler = new Handler() {
+            /*
+             * @param msg
+             */
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+
+        };
+        voiceAssistant = new VoiceAssistant(this, mainHandler);
 
 
         timestart = findViewById(R.id.timestart);
         timeend = findViewById(R.id.timeend);
+
+        title.setOnClickListener(onClickEvent);
+        timetitle.setOnClickListener(onClickEvent);
+        starttitle.setOnClickListener(onClickEvent);
+        endtitle.setOnClickListener(onClickEvent);
+        timestart.setOnClickListener(onClickEvent);
+        timeend.setOnClickListener(onClickEvent);
 
         getDate(1);
         String fixhour_start = "";
@@ -95,9 +136,6 @@ public class AddScheduleActivity extends AppCompatActivity {
                 Log.w("1", scheduleTitle.getText().toString());
                 Log.w("2", timestart.getText().toString());
                 Log.w("3", timeend.getText().toString());
-
-                Log.w("",year_start+""+month_start+day_start+hour_start+min_start);
-                Log.w("",year_end+""+month_end+day_end+hour_end+min_end);
                 //结束
                 finish();
             }
@@ -165,11 +203,11 @@ public class AddScheduleActivity extends AppCompatActivity {
                             textView.setText(textView.getText() + " " + fixhour + i + ":" + fixmin + i1);
                         }
                     };
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(AddScheduleActivity.this, timeSetListener, hour, min, true);
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(OldmanAddActivity.this, timeSetListener, hour, min, true);
                     timePickerDialog.show();
                 }
             };
-            DatePickerDialog dialog = new DatePickerDialog(AddScheduleActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, listener, year, month, day);//后边三个参数为显示dialog时默认的日期，月份从0开始，0-11对应1-12个月
+            DatePickerDialog dialog = new DatePickerDialog(OldmanAddActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, listener, year, month, day);//后边三个参数为显示dialog时默认的日期，月份从0开始，0-11对应1-12个月
             dialog.show();
 
 
@@ -198,5 +236,38 @@ public class AddScheduleActivity extends AppCompatActivity {
                 isSwitched = false;
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // 此处为android 6.0以上动态授权的回调，用户自行实现。
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private class OnClickEvent implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.timestart:
+                    voiceAssistant.speak(timestart.getText().toString());
+                    break;
+                case R.id.timeend:
+                    voiceAssistant.speak(timeend.getText().toString());
+                    break;
+                case R.id.timetitle:
+                    voiceAssistant.speak(timetitle.getText().toString());
+                    break;
+                case R.id.starttitle:
+                    voiceAssistant.speak(starttitle.getText().toString());
+                    break;
+                case R.id.endtitle:
+                    voiceAssistant.speak(endtitle.getText().toString());
+                    break;
+                case R.id.title:
+                    voiceAssistant.speak(title.getText().toString());
+                    break;
+            }
+        }
+
     }
 }

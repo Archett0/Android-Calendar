@@ -1,9 +1,11 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,6 +23,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddSchedu
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SmsReceiver;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
@@ -241,7 +245,23 @@ public class MixActivity extends BaseActivity implements
                 startActivity(searchIntent);
             }
         });
+
+        getSms();
+//        Intent intent = new Intent("android.provider.Telephony.SMS_RECEIVED");
+//        sendBroadcast(intent);
+//        Log.w("smsintent","run");
     }
+
+    private void getSms() {
+        ActivityCompat.requestPermissions(MixActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 1);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
+        SmsReceiver smsReceiver = new SmsReceiver();
+        //设置较高的优先级
+        intentFilter.setPriority(2147483647);
+        registerReceiver(smsReceiver, intentFilter);
+    }
+
 
     @Override
     protected void initData() {
