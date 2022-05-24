@@ -42,6 +42,15 @@
             android:name=".CalendarImpl.search.SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".CalendarImpl.smsdetail.SmsDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalendarImpl.add.SendSmsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalendarImpl.search.SmsSearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".CalendarImpl.add.AddScheduleActivity"
             android:exported="true"
             android:label="@string/title_activity_add_schedule" />

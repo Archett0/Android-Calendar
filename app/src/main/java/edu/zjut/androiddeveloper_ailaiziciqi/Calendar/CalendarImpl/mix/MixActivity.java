@@ -39,7 +39,6 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddSchedu
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.Event;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SmsReceiver;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;

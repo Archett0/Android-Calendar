@@ -31,7 +31,7 @@ import java.util.List;
 public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> {
 
     private RequestManager mLoader;
-    private static final Schedule DEFAULT_SCHEDULE = new Schedule("今日暂无日程", null, null, null);
+    private static final Schedule DEFAULT_SCHEDULE = new Schedule("今日暂无日程");
     private static boolean emptyFlag = false;
     private OnItemClickListener mEventItemClickListener;    // 用于Activity监听列表点击事件的接口
     private Context context;

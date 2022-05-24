@@ -94,11 +94,11 @@ public class Schedule {
         scheduleEndTime = time.plusHours(1);
     }
 
-    public Schedule(String name, LocalDate date, LocalTime time, LocalTime endTime) {
+    public Schedule(String name) {
         this.schedule = name;
-        this.scheduleDate = date;
-        this.scheduleStartTime = time;
-        this.scheduleEndTime = endTime;
+        this.scheduleDate = null;
+        this.scheduleStartTime = null;
+        this.scheduleEndTime = null;
     }
 
     public int getId() {

@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
-import com.alibaba.fastjson.JSON;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -76,6 +74,7 @@ public class SmsReceiver extends BroadcastReceiver {
             ArrayList<String> result = scheduleLists2StringList(listS, fullMessage.split(":")[2]);
 
             Log.w("send", "result");
+            // TODO: Ready to fix
             massage.sendMultipartTextMessage(address.substring(address.length() - 4, address.length()), null, result, null, null);
         }
 

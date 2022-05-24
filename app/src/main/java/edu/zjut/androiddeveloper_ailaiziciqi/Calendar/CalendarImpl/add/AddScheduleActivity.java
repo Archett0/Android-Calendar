@@ -149,8 +149,14 @@ public class AddScheduleActivity extends AppCompatActivity {
         String tmpStartString = timestart.getText().toString().trim();  // raw start data
         String tmpEndString = timeend.getText().toString().trim();  // raw end data
 
+        // 判断是否为全天事件
+        if (isSwitched) {
+            tmpStartString += " 00:00";
+            tmpEndString += " 23:59";
+        }
+
         // 用工具类处理用户输入
-        Schedule readySchedule = transformUserInputToCorrectForm(scheduleName,tmpStartString,tmpEndString,month_start,month_end);
+        Schedule readySchedule = transformUserInputToCorrectForm(scheduleName, tmpStartString, tmpEndString, month_start, month_end);
 
         // 处理完毕,获取处理好的值
         String scheduleDate = String.valueOf(readySchedule.getScheduleDate());
