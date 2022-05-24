@@ -203,7 +203,7 @@ public class SearchActivity extends AppCompatActivity {
                             item.setIcon(R.drawable.ic_baseline_library_add_check_24_selected);
                             item.setTitle("取消全选");
                             BottomNavigationItemView itemView0 = (BottomNavigationItemView) menuView.getChildAt(0);
-                            itemView0.setEnabled(false);
+                            itemView0.setEnabled(true);
                             BottomNavigationItemView itemView1 = (BottomNavigationItemView) menuView.getChildAt(1);
                             itemView1.setEnabled(true);
 
