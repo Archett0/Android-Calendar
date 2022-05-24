@@ -82,6 +82,7 @@ public class ScheduleUtils {
                 LocalTime time = LocalTime.parse(scheduleStartTimeValue);
                 LocalTime endTime = LocalTime.parse(scheduleEndTimeValue);
                 // 保存
+                // TODO: Something is not right here so we will fix this
                 Schedule newSchedule = new Schedule(scheduleIdValue, date, endDate, time, endTime, weekValue, lunarValue, scheduleValue);
                 Schedule.scheduleArrayList.add(newSchedule);
                 Log.i("Utils Class Called", "Single Data added, id:" + newSchedule.getId());
@@ -90,31 +91,12 @@ public class ScheduleUtils {
             Log.i("Utils Class Called", message + "ed from database");
             Log.i("Utils Class Called", "Data" + message + "ed:" + Schedule.scheduleArrayList.size());
         }
-        // if there's no data from database, just insert these default data
+        // if there's no data from database, just don't insert any data
         else {
-            // TODO:测试完成后删去这个sector
-            Schedule schedule1 = new Schedule("Play apex", LocalDate.now(), LocalTime.of(20, 0));
-            Schedule schedule2 = new Schedule("Play Android studio", LocalDate.now(), LocalTime.of(21, 0));
-            Schedule schedule3 = new Schedule("Tea with Jack Ma", LocalDate.now().plusDays(1), LocalTime.of(15, 0));
-            Schedule schedule4 = new Schedule("Take a bath", LocalDate.now(), LocalTime.of(20, 0));
-            Schedule schedule5 = new Schedule("Event no.1", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule6 = new Schedule("Event no.2", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule7 = new Schedule("Event no.3", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule8 = new Schedule("Event no.4", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule9 = new Schedule("Neutralize CB's Server", LocalDate.now().plusDays(2), LocalTime.of(4, 0));
-            Schedule schedule10 = new Schedule("Neutralize CB's Website", LocalDate.now().plusDays(2), LocalTime.of(6, 0));
-            Schedule.scheduleArrayList.add(schedule1);
-            Schedule.scheduleArrayList.add(schedule2);
-            Schedule.scheduleArrayList.add(schedule3);
-            Schedule.scheduleArrayList.add(schedule4);
-            Schedule.scheduleArrayList.add(schedule5);
-            Schedule.scheduleArrayList.add(schedule6);
-            Schedule.scheduleArrayList.add(schedule7);
-            Schedule.scheduleArrayList.add(schedule8);
-            Schedule.scheduleArrayList.add(schedule9);
-            Schedule.scheduleArrayList.add(schedule10);
-            Log.i("Load Cursor", "No data from database, default data is loaded");
+            Log.i("Load Cursor", "No data from database, nothing is loaded");
         }
+        // TODO: Now we have the data, so we can sort them
+        // TODO: Implement Sorting Methods
     }
 
 
