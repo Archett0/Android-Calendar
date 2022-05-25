@@ -4,18 +4,11 @@ import android.Manifest;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.*;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.content.IntentFilter;
@@ -26,16 +19,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
@@ -55,19 +43,10 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.base.activity
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupItemDecoration;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import com.google.gson.Gson;
-import com.qweather.sdk.bean.base.Code;
-import com.qweather.sdk.bean.weather.WeatherNowBean;
-import com.qweather.sdk.view.HeConfig;
-import com.qweather.sdk.view.QWeather;
 
 public class MixActivity extends BaseActivity implements
         CalendarView.OnCalendarSelectListener,
@@ -115,6 +94,13 @@ public class MixActivity extends BaseActivity implements
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, MixActivity.class));
+    }
+
+    /*
+      获取点击事件
+     */
+    public static LocalDate getDayClickRecord() {
+        return dayClickRecord;
     }
 
     @Override

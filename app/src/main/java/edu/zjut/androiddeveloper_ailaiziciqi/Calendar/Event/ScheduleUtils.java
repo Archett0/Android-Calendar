@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.WeatherOfDate;
 
@@ -35,12 +36,17 @@ public class ScheduleUtils {
     public static final String CITY_LOCATION = "101210101";  // 杭州的地理位置
     public static boolean IS_WEATHER_DATA_RECEIVED = false; // 是否成功拿到天气预报信息
     public static List<WeatherOfDate> WEATHER_REPORTS;  // 处理好的15天预报
+    private static final int COLOR_A = R.color.event_color_01;  // 颜色1
+    private static final int COLOR_B = R.color.event_color_02;  // 颜色2
+    private static final int COLOR_C = R.color.event_color_03;  // 颜色3
+    private static final int COLOR_D = R.color.event_color_04;  // 颜色4
 
     /**
      * 从数据库刷新数据到内存
      */
     public static void loadOrReloadDataFromDatabase(ContentResolver contentResolver, String message) {
 
+        // 查询得到的投影
         String[] projection = {DbContact.ScheduleEntry._ID,
                 DbContact.ScheduleEntry.COLUMN_EVENT_NAME,
                 DbContact.ScheduleEntry.COLUMN_START_DATE,
@@ -50,7 +56,10 @@ public class ScheduleUtils {
                 DbContact.ScheduleEntry.COLUMN_WEEK,
                 DbContact.ScheduleEntry.COLUMN_LUNAR
         };
-        Cursor cursor = contentResolver.query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, null);
+        // 查询排序的规则
+        String order = DbContact.ScheduleEntry.COLUMN_START_DATE + " " + "ASC";
+
+        Cursor cursor = contentResolver.query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, order);
         // clear the old static list
         if (Schedule.scheduleArrayList.size() != 0) {
             Schedule.scheduleArrayList.clear();
@@ -295,4 +304,22 @@ public class ScheduleUtils {
                 + schedule.getScheduleEndTime() + "结束。本日程属于日历：我的日历。";
         return msg;
     }
+
+    /**
+     * 随机选择日程背景颜色
+     */
+    public static int getRandomColor() {
+
+        int randomColor = (int) (3 * Math.random());
+        if (randomColor == 0) {
+            return COLOR_A;
+        } else if (randomColor == 1) {
+            return COLOR_B;
+        } else if (randomColor == 2) {
+            return COLOR_C;
+        } else {
+            return COLOR_D;
+        }
+    }
+
 }

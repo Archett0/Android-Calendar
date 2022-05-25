@@ -20,7 +20,8 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/ic_launcher_background.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/voice_assistant_red.xml" value="0.5665" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_calendar.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_daily_calendar.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_daily_calendar.xml" value="0.5" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_day_view_exp.xml" value="0.12277867528271405" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_full.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_main.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_mix.xml" value="0.33" />

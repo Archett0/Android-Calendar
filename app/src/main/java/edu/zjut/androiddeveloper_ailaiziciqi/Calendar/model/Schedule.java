@@ -182,12 +182,15 @@ public class Schedule {
     public static ArrayList<Schedule> scheduleArrayList = new ArrayList<>();
 
     /**
-     * 根据开始日期获取日程
+     * 根据日期是否被包括来获取日程
      */
     public static ArrayList<Schedule> eventsForDate(LocalDate date) {
         ArrayList<Schedule> events = new ArrayList<>();
         for (Schedule event : scheduleArrayList) {
-            if (event.getScheduleDate().equals(date)) {
+            LocalDate start = event.getScheduleDate();
+            LocalDate end = event.getScheduleEndDate();
+            // 如果当天的日期被日程的开始和结束日期包括,则加入
+            if (start.compareTo(date) <= 0 && end.compareTo(date) >= 0) {
                 events.add(event);
             }
         }
@@ -222,6 +225,35 @@ public class Schedule {
         return schedules;
     }
 
+    /**
+     * 根据月份搜索日程
+     */
+    public static ArrayList<Schedule> schedulesForMonth(int newYear, int newMonth) {
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        for (Schedule schedule : scheduleArrayList) {
+            if (schedule.getScheduleDate().getYear() == newYear
+                    && schedule.getScheduleDate().getMonthValue() == newMonth) {
+                schedules.add(schedule);
+            }
+        }
+        return schedules;
+    }
+
+    /**
+     * 根据id搜索日程
+     */
+    public static Schedule getScheduleById(int id) {
+        if(scheduleArrayList.isEmpty()){
+            return null;
+        }
+        for(Schedule schedule : scheduleArrayList){
+            if(schedule.getId() == id){
+                return schedule;
+            }
+        }
+        return null;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -230,6 +262,19 @@ public class Schedule {
                 "日期 = " + scheduleDate + " " +
                 "开始时间 = " + scheduleStartTime + " " +
                 "结束时间 = " + scheduleEndTime;
+        return msg;
+    }
+
+    public String toShortString() {
+        String msg;
+        if (!scheduleDate.equals(scheduleEndDate)) {
+            msg = schedule + " " + scheduleDate + " " + scheduleStartTime
+                    + " - " + scheduleEndDate + " " + scheduleEndTime;
+        } else {
+            msg = schedule + " " + scheduleDate + " " +
+                    scheduleStartTime + "-" +
+                    scheduleEndTime;
+        }
         return msg;
     }
 }
