@@ -42,6 +42,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddSchedu
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DayViewExpActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SmsReceiver;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
@@ -327,7 +328,8 @@ public class MixActivity extends BaseActivity implements
         mOldManBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MixActivity.this, OldmanActivity.class);
+//                Intent intent = new Intent(MixActivity.this, OldmanActivity.class);
+                Intent intent = new Intent(MixActivity.this, DayViewExpActivity.class);
                 startActivity(intent);
             }
         });
