@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/content_background"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".OldmanActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_tool"
+            android:layout_width="match_parent"
+            android:layout_height="272dp"
+            android:background="@color/colorPrimary"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:id="@+id/old_man_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:paddingLeft="16dp"
+                android:text="2022"
+                android:textColor="#046cea"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
+
+
+            <ImageView
+                android:id="@+id/btn_settings"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_ripple"
+                android:padding="4dp"
+                android:src="@drawable/ic_baseline_settings_24"
+                app:tint="#333333" />
+
+            <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/btn_settings"
+                android:background="@drawable/bg_ripple"
+                android:padding="4dp"
+                android:src="@drawable/addbutton"
+                app:tint="#333333" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/iv_add"
+                android:background="@drawable/bg_ripple"
+                android:padding="4dp"
+                android:src="@drawable/search"
+                app:tint="#333333" />
+
+
+        </RelativeLayout>
+
+        <ViewFlipper
+            android:id="@+id/viewflipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/voice_all_details_layout"
+
+            android:layout_marginTop="80sp"
+
+            android:flipInterval="3000"
+            android:inAnimation="@anim/right_in"
+            android:outAnimation="@anim/left_out"
+            android:persistentDrawingCache="animation">
+
+
+        </ViewFlipper>
+
+        <LinearLayout
+            android:id="@+id/voice_all_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/voice_all_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:text="语音播报"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/voice_assistant_red"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/content_background"
+        app:group_background="@color/content_background"
+        app:group_center="false"
+        app:group_has_header="false"
+        app:group_height="42dp"
+        app:group_padding_left="16dp"
+        app:group_padding_right="16dp"
+        app:group_text_color="#555555"
+        app:group_text_size="14sp" />
+</LinearLayout>

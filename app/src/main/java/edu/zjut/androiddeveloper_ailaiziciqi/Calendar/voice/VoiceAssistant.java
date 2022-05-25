@@ -209,4 +209,8 @@ public class VoiceAssistant {
         }
     }
 
+    public void release() {
+        synthesizer.release();
+    }
+
 }

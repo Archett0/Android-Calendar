@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="60sp"
+    tools:context=".OldmanActivity">
+
+    <edu.zjut.androiddeveloper_ailaiziciqi.layouttools.FriendlyScrollView
+        android:id="@+id/card_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="15dp"
+            app:cardCornerRadius="20dp"
+            app:cardUseCompatPadding="true"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/poem_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:ems="1"
+                            android:text="青山一道同云雨"
+                            android:textColor="#BFBFBF"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/poem_right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:ems="1"
+                            android:text="明月何曾是两乡"
+                            android:textColor="#BFBFBF"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/old_man_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="20dp"
+                                android:gravity="center"
+                                android:text="四月"
+                                android:textColor="@color/black"
+                                android:textSize="54sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/old_man_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="200sp"
+                                android:layout_gravity="center"
+
+                                android:text="01"
+                                android:textColor="#046cea"
+                                android:textSize="180sp"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="160sp"
+                                android:layout_height="8dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:background="#cfecff" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/middle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/main"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/old_man_lunar_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="right"
+                        android:text="大年初一"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        android:text=" · "
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/old_man_day_of_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="left"
+                        android:text="星期一"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/middle"
+                    android:layout_gravity="center_vertical"
+                    android:background="#046cea"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="15sp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="15sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_old_man"
+                        android:paddingLeft="20sp"
+                        android:paddingTop="5sp"
+                        android:paddingRight="20sp"
+                        android:paddingBottom="5sp"
+                        android:text="宜"
+                        android:gravity="center"
+                        android:textColor="#046cea"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/old_man_good"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="5sp"
+                        android:paddingBottom="5sp"
+                        android:text="今日忌:"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bottom"
+                    android:layout_gravity="center_vertical"
+                    android:background="#f9c261"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="15sp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="15sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_old_man"
+                        android:paddingLeft="20sp"
+                        android:paddingTop="5sp"
+                        android:paddingRight="20sp"
+                        android:paddingBottom="5sp"
+                        android:text="忌"
+                        android:gravity="center"
+                        android:textColor="#f9c261"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/old_man_bad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="5sp"
+                        android:paddingBottom="5sp"
+                        android:text="今日忌:"
+
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </edu.zjut.androiddeveloper_ailaiziciqi.layouttools.FriendlyScrollView>
+    <!--    <edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView-->
+    <!--        android:id="@+id/recyclerView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_below="@+id/card_view"-->
+    <!--        android:background="@color/content_background"-->
+    <!--        app:group_background="@color/content_background"-->
+    <!--        app:group_center="false"-->
+    <!--        app:group_has_header="false"-->
+    <!--        app:group_height="42dp"-->
+    <!--        app:group_padding_left="16dp"-->
+    <!--        app:group_padding_right="16dp"-->
+    <!--        app:group_text_color="#555555"-->
+    <!--        app:group_text_size="14sp" />-->
+</RelativeLayout>
