@@ -285,7 +285,7 @@ public class MixActivity extends BaseActivity implements
                     intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
                     // 获取相应的日期,并填充
                     if (WEATHER_REPORTS != null && !WEATHER_REPORTS.isEmpty()) {
-                        int weatherIndex = getScheduleWeatherReport(schedule.getScheduleDate());
+                        int weatherIndex = getScheduleWeatherReport(schedule);
                         if (weatherIndex != -1) {
                             intent.putExtra("Weather", WEATHER_REPORTS.get(weatherIndex).getWeather());
                             intent.putExtra("WeatherDetails", WEATHER_REPORTS.get(weatherIndex).getWeatherDetails());

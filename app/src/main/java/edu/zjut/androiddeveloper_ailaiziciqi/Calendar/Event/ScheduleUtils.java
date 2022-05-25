@@ -279,13 +279,25 @@ public class ScheduleUtils {
     /**
      * 给出日期获取当天天气数据
      */
-    public static int getScheduleWeatherReport(LocalDate localDate) {
+    public static int getScheduleWeatherReport(Schedule schedule) {
+        LocalDate startDate = schedule.getScheduleDate();
+        LocalDate endDate = schedule.getScheduleEndDate();
         if (WEATHER_REPORTS == null || WEATHER_REPORTS.isEmpty()) {
             return -1;
         }
         int index = 0;
         for (; index < WEATHER_REPORTS.size(); ++index) {
-            if (WEATHER_REPORTS.get(index).getDate().equals(localDate)) {
+            LocalDate weatherDate = WEATHER_REPORTS.get(index).getDate();
+            // 当天的日程所以返回当天的天气
+            if (weatherDate.equals(startDate)) {
+                return index;
+            }
+            // 到这天截止所以也返回当天的天气
+            else if (startDate.isBefore(weatherDate) && endDate.equals(weatherDate)) {
+                return index;
+            }
+            // 日程横跨这天所以也返回这天的天气
+            else if(startDate.isBefore(weatherDate) && endDate.isAfter(weatherDate)){
                 return index;
             }
         }
@@ -298,8 +310,8 @@ public class ScheduleUtils {
     public static String generateShareText(Schedule schedule) {
         String msg;
         msg = schedule.getSchedule() + "\"： "
-                + generateScheduleDescription(schedule,SCHEDULE_DESCRIPTION_START) + "， "
-                + generateScheduleDescription(schedule,SCHEDULE_DESCRIPTION_END) + "， 日程时间从"
+                + generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START) + "， "
+                + generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END) + "， 日程时间从"
                 + schedule.getScheduleStartTime() + "开始, 到"
                 + schedule.getScheduleEndTime() + "结束。本日程属于日历：我的日历。";
         return msg;
