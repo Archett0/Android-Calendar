@@ -103,6 +103,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
 
         // 设定日程的标题
         h.mTextTitle.setText(item.getSchedule());
+        h.mNoEventHint.setText("今天没有日程");
 
         if (!emptyFlag) {
             // 判断日程的时间,并根据情况来设定
@@ -138,21 +139,11 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
 
         // 根据是否没有事件来改变控件可见度
         if (emptyFlag) {
-            h.mTextTitle.setVisibility(View.VISIBLE);
-            h.mEventTime.setVisibility(View.INVISIBLE);
-            h.mEventTimeEnd.setVisibility(View.INVISIBLE);
-            h.mMainCardBar.setVisibility(View.INVISIBLE);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) h.mTextTitle.getLayoutParams();
-            params.leftMargin = 0;
-            h.mTextTitle.setLayoutParams(params);
+            h.mCardWithEvent.setVisibility(View.GONE);
+            h.mCardWithNoEvent.setVisibility(View.VISIBLE);
         } else {
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) h.mTextTitle.getLayoutParams();
-            params.leftMargin = 50;
-            h.mTextTitle.setLayoutParams(params);
-            h.mTextTitle.setVisibility(View.VISIBLE);
-            h.mEventTime.setVisibility(View.VISIBLE);
-            h.mEventTimeEnd.setVisibility(View.VISIBLE);
-            h.mMainCardBar.setVisibility(View.VISIBLE);
+            h.mCardWithEvent.setVisibility(View.VISIBLE);
+            h.mCardWithNoEvent.setVisibility(View.GONE);
         }
         // 监听子项的点击事件
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +164,9 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
     private static class EventViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextTitle, mEventTime, mEventTimeEnd;
         private View mMainCardBar;
+        private LinearLayout mCardWithEvent;
+        private LinearLayout mCardWithNoEvent;
+        private TextView mNoEventHint;
 
         private EventViewHolder(View itemView) {
             super(itemView);
@@ -180,6 +174,9 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
             mEventTime = itemView.findViewById(R.id.eventTime);
             mEventTimeEnd = itemView.findViewById(R.id.eventTimeEnd);
             mMainCardBar = itemView.findViewById(R.id.main_card_vertical_bar);
+            mCardWithEvent = itemView.findViewById(R.id.card_with_event);
+            mCardWithNoEvent = itemView.findViewById(R.id.card_with_no_event);
+            mNoEventHint = itemView.findViewById(R.id.no_event_info);
         }
     }
 

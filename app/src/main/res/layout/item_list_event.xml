@@ -14,6 +14,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/card_with_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -65,22 +66,21 @@
 
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:padding="14dp">-->
+    <LinearLayout
+        android:id="@+id/card_with_no_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="14dp">
 
-<!--        <TextView-->
-<!--            android:id="@+id/no_event_info"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1"-->
-<!--            android:ellipsize="end"-->
-<!--            android:gravity="center"-->
-<!--            android:lines="2"-->
-<!--            android:textColor="#333333"-->
-<!--            android:textSize="20sp"-->
-<!--            tools:text="无日程提示" />-->
-<!--    </LinearLayout>-->
+        <TextView
+            android:id="@+id/no_event_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:lines="2"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            tools:text="无日程提示" />
+    </LinearLayout>
 </LinearLayout>
