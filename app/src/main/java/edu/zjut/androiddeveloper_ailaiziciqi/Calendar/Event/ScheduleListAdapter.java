@@ -18,11 +18,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerAdapter;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,6 +38,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
     private OnItemClickListener mEventItemClickListener;    // 用于Activity监听列表点击事件的接口
     private Context context;
     private Cursor cursor;
+    private LocalDate selectedDate;
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position, Schedule schedule);
@@ -54,6 +55,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         loadOrReloadDataFromDatabase(context.getContentResolver(), "Test load");
         this.context = context;
         this.cursor = cursor;
+        this.selectedDate = dayClickRecord;
         mLoader = Glide.with(context.getApplicationContext());
         LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
         List<String> titles = new ArrayList<>();
@@ -71,6 +73,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         loadOrReloadDataFromDatabase(context.getContentResolver(), "Test loading");
         this.context = context;
         this.cursor = cursor;
+        this.selectedDate = dayClickRecord;
         mLoader = Glide.with(context.getApplicationContext());
         LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
         List<String> titles = new ArrayList<>();
@@ -93,12 +96,47 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
     }
 
     // 3: After that we go here to set the parameters and texts for the views we got.
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") Schedule item, int position) {
         EventViewHolder h = (EventViewHolder) holder;
+
+        // 设定日程的标题
         h.mTextTitle.setText(item.getSchedule());
-        h.mEventTime.setText(String.valueOf(item.getScheduleStartTime()));
-        h.mEventTimeEnd.setText(String.valueOf(item.getScheduleEndTime()));
+
+        if (!emptyFlag) {
+            // 判断日程的时间,并根据情况来设定
+            LocalDate eventStartDate = item.getScheduleDate();
+            LocalDate eventEndDate = item.getScheduleEndDate();
+            LocalTime eventStartTime = item.getScheduleStartTime();
+            LocalTime eventEndTime = item.getScheduleEndTime();
+
+            // event within this date
+            if (eventStartDate.equals(eventEndDate)) {
+                h.mEventTime.setText(String.valueOf(eventStartTime));
+                h.mEventTimeEnd.setText(String.valueOf(eventEndTime));
+            }
+            // spans date forward
+            else if (eventStartDate.equals(selectedDate) && eventEndDate.isAfter(selectedDate)) {
+                h.mEventTime.setText("跨天日程");
+                h.mEventTimeEnd.setText(eventStartTime + "开始");
+            }
+            // spans date from before
+            else if (eventEndDate.equals(selectedDate) && eventStartDate.isBefore(selectedDate)) {
+                h.mEventTime.setText("跨天日程");
+                h.mEventTimeEnd.setText(eventEndTime + "结束");
+            }
+            // spans date from both before and forward
+            else if (eventStartDate.isBefore(selectedDate) && eventEndDate.isAfter(selectedDate)) {
+                h.mEventTime.setText("跨天日程");
+                h.mEventTimeEnd.setText("今天全天");
+            }
+        } else {
+            h.mEventTime.setText(String.valueOf(item.getScheduleStartTime()));
+            h.mEventTimeEnd.setText(String.valueOf(item.getScheduleEndTime()));
+        }
+
+        // 根据是否没有事件来改变控件可见度
         if (emptyFlag) {
             h.mTextTitle.setVisibility(View.VISIBLE);
             h.mEventTime.setVisibility(View.INVISIBLE);

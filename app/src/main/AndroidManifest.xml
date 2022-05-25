@@ -27,9 +27,6 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
-            android:name=".DayViewExpActivity"
-            android:exported="false" />
-        <activity
             android:name=".OldmanActivity"
             android:exported="false" />
         <activity
