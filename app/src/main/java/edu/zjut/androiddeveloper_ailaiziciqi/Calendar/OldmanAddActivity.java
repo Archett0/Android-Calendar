@@ -1,14 +1,22 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.isScheduleValid;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.transformUserInputToCorrectForm;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,18 +28,16 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.voice.VoiceAssistant;
 
 public class OldmanAddActivity extends AppCompatActivity {
     private TextView timestart, timeend;
-    // TODO 一些不同
-    private TextView timetitle, starttitle, endtitle;
-    private TextView title;
-
     private Calendar cal;
     private int year_start, month_start, day_start;
     private int hour_start, min_start;
@@ -44,54 +50,35 @@ public class OldmanAddActivity extends AppCompatActivity {
     private boolean isSwitched = false;
     private Switch aSwitch;
 
-    private ImageView back;
-    // TODO 一些不同
-    private Button submit;
+    private ImageView back, submit;
 
     private EditText scheduleTitle;
 
-    protected Handler mainHandler;
+    private boolean isInputValid;   // 记录用户输入是否合法的Flag
+    private Cursor mCursor; // 重新加载数据需要使用的Cursor
 
+    private TextView title;
+    protected Handler mainHandler;
     private VoiceAssistant voiceAssistant;
+
+    private TextView timetitle;
+    private TextView starttitle;
+    private TextView endtitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oldman_add);
+        setContentView(R.layout.settings_activity);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        OnClickEvent onClickEvent = new OnClickEvent();
-
         title = findViewById(R.id.title);
-
         timetitle = findViewById(R.id.timetitle);
         starttitle = findViewById(R.id.starttitle);
         endtitle = findViewById(R.id.endtitle);
 
-//        百度语音
-        mainHandler = new Handler() {
-            /*
-             * @param msg
-             */
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-            }
-
-        };
-        voiceAssistant = new VoiceAssistant(this, mainHandler);
-
-
         timestart = findViewById(R.id.timestart);
         timeend = findViewById(R.id.timeend);
-
-        title.setOnClickListener(onClickEvent);
-        timetitle.setOnClickListener(onClickEvent);
-        starttitle.setOnClickListener(onClickEvent);
-        endtitle.setOnClickListener(onClickEvent);
-        timestart.setOnClickListener(onClickEvent);
-        timeend.setOnClickListener(onClickEvent);
 
         getDate(1);
         String fixhour_start = "";
@@ -123,6 +110,7 @@ public class OldmanAddActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                voiceAssistant.release();
                 finish();
             }
         });
@@ -131,18 +119,157 @@ public class OldmanAddActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isInputValid = false;
                 //保存日程信息（主题 开始 结束）
                 scheduleTitle.getText();
-                Log.w("1", scheduleTitle.getText().toString());
-                Log.w("2", timestart.getText().toString());
-                Log.w("3", timeend.getText().toString());
-                //结束
-                finish();
+                // execute to database
+                if (!saveSchedule()) {
+                    // failed and do nothing
+                    Toast.makeText(OldmanAddActivity.this, "添加日程失败", Toast.LENGTH_SHORT).show();
+                } else {
+                    finish();
+                }
             }
         });
 
         scheduleTitle = findViewById(R.id.schedule_title);
+
+        OnClickEvent onClickEvent = new OnClickEvent();
+
+        //        百度语音
+        mainHandler = new Handler() {
+            /*
+             * @param msg
+             */
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+
+        };
+        voiceAssistant = new VoiceAssistant(this, mainHandler);
+
+        title.setOnClickListener(onClickEvent);
+        timetitle.setOnClickListener(onClickEvent);
+        starttitle.setOnClickListener(onClickEvent);
+        endtitle.setOnClickListener(onClickEvent);
+        timestart.setOnClickListener(onClickEvent);
+        timeend.setOnClickListener(onClickEvent);
     }
+
+    // 覆写返回键的监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) { //按下的如果是BACK，同时没有重复
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 检查用户输入是否合法，并将合法的用户输入写入数据库
+     */
+    private boolean saveSchedule() {
+
+        // 保存用户输入
+        String scheduleName = scheduleTitle.getText().toString().trim();    // event name: done
+        String tmpStartString = timestart.getText().toString().trim();  // raw start data
+        String tmpEndString = timeend.getText().toString().trim();  // raw end data
+
+        // 判断是否为全天事件
+        if (isSwitched) {
+            tmpStartString += " 00:00";
+            tmpEndString += " 23:59";
+        }
+
+        // 用工具类处理用户输入
+        Schedule readySchedule = transformUserInputToCorrectForm(scheduleName, tmpStartString, tmpEndString, month_start, month_end);
+
+        // 处理完毕,获取处理好的值
+        String scheduleDate = String.valueOf(readySchedule.getScheduleDate());
+        String scheduleEndDate = String.valueOf(readySchedule.getScheduleEndDate());
+        String scheduleStartTime = String.valueOf(readySchedule.getScheduleStartTime());
+        String scheduleEndTime = String.valueOf(readySchedule.getScheduleEndTime());
+        String scheduleWeek = String.valueOf(readySchedule.getWeek());
+        String scheduleLunar = String.valueOf(readySchedule.getLunar());
+
+        // Judge if the inputs are all empty
+        if (TextUtils.isEmpty(scheduleName)
+                && TextUtils.isEmpty(scheduleDate)
+                && TextUtils.isEmpty(scheduleEndDate)
+                && TextUtils.isEmpty(scheduleStartTime)
+                && TextUtils.isEmpty(scheduleEndTime)
+                && TextUtils.isEmpty(scheduleWeek)
+                && TextUtils.isEmpty(scheduleLunar)) {
+            isInputValid = true;
+            return isInputValid;
+        }
+
+        // Judge if any input is invalid
+        ContentValues values = new ContentValues();
+
+        if (TextUtils.isEmpty(scheduleName)) {
+            Toast.makeText(this, "必须输入主题", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_EVENT_NAME, scheduleName);
+        }
+
+        if (TextUtils.isEmpty(scheduleDate)) {
+            Toast.makeText(this, "必须选择开始日期", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_START_DATE, scheduleDate);
+        }
+
+        if (TextUtils.isEmpty(scheduleEndDate)) {
+            Toast.makeText(this, "必须选择结束日期", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_END_DATE, scheduleEndDate);
+        }
+
+        if (TextUtils.isEmpty(scheduleStartTime)) {
+            Toast.makeText(this, "必须选择开始时间", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_START_TIME, scheduleStartTime);
+        }
+
+        if (TextUtils.isEmpty(scheduleEndTime)) {
+            Toast.makeText(this, "必须选择结束时间", Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        } else {
+            values.put(DbContact.ScheduleEntry.COLUMN_END_TIME, scheduleEndTime);
+            values.put(DbContact.ScheduleEntry.COLUMN_WEEK, scheduleWeek);
+            values.put(DbContact.ScheduleEntry.COLUMN_LUNAR, scheduleLunar);
+        }
+
+        // 使用工具类检查用户输入是否合理
+        String errorMsg = isScheduleValid(readySchedule);
+        if (errorMsg != null) {
+            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+            return isInputValid;
+        }
+
+        Uri newUri = getContentResolver().insert(DbContact.ScheduleEntry.CONTENT_URI, values);
+        if (newUri == null) {
+            Toast.makeText(this, "保存出错", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "成功保存", Toast.LENGTH_SHORT).show();
+        }
+        isInputValid = true;
+        return isInputValid;
+    }
+
+//    /**
+//     * 从DB重新载入数据到内存，此时这么做是多余的
+//     */
+//    private void reloadDataFromDatabase() {
+//        // 使用工具类来做这件事
+//        loadOrReloadDataFromDatabase(mCursor,getContentResolver(),"Reload");
+//    }
 
     private void getDate(int num) {
         if (num == 1) {
@@ -238,12 +365,6 @@ public class OldmanAddActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // 此处为android 6.0以上动态授权的回调，用户自行实现。
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
     private class OnClickEvent implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -271,3 +392,5 @@ public class OldmanAddActivity extends AppCompatActivity {
 
     }
 }
+
+

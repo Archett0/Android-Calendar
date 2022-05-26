@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Having themes.xml for night-v31 because of the priority order of the resource qualifiers.
+    -->
+    <style name="AppTheme.AppWidgetContainerParent" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="appWidgetRadius">20sp</item>
+        <item name="appWidgetInnerRadius">20sp</item>
+    </style>
+</resources>

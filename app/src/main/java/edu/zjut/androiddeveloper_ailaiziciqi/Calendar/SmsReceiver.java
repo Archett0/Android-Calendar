@@ -75,7 +75,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
             Log.w("send", "result");
             // TODO: Ready to fix
-            massage.sendMultipartTextMessage(address.substring(address.length() - 4, address.length()), null, result, null, null);
+            massage.sendMultipartTextMessage(address, null, result, null, null);
+//            massage.sendMultipartTextMessage(address.substring(address.length() - 4, address.length()), null, result, null, null);
         }
 
         if (fullMessage.contains("【爱瓷日历】查询结果:")) {

@@ -5,4 +5,10 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/primary_btn_color</item>
     </style>
+
+    <style name="vertical_line_style_grey">
+        <item name="android:layout_width">2dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#ebebeb</item>
+    </style>
 </resources>

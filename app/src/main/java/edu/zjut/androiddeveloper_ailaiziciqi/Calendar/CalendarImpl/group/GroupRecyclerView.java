@@ -3,6 +3,7 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
