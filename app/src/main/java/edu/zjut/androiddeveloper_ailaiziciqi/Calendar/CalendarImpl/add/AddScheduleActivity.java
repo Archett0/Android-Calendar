@@ -5,6 +5,8 @@ import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -32,6 +35,9 @@ import java.util.Calendar;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.DayCalenderWidget;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.ListRemoteViewsFactory;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.ListWidgetService;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 
@@ -113,6 +119,10 @@ public class AddScheduleActivity extends AppCompatActivity {
                     // failed and do nothing
                     Toast.makeText(AddScheduleActivity.this, "添加日程失败", Toast.LENGTH_SHORT).show();
                 } else {
+
+                    // TODO: need to delete
+                    ListRemoteViewsFactory.refresh();
+
                     finish();
                 }
             }

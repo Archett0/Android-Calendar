@@ -11,5 +11,10 @@
         <attr name="group_padding_right" format="dimension" />
         <attr name="group_has_header" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="AppWidgetAttrs">
+        <attr name="appWidgetPadding" format="dimension" />
+        <attr name="appWidgetInnerRadius" format="dimension" />
+        <attr name="appWidgetRadius" format="dimension" />
+    </declare-styleable>
 
 </resources>

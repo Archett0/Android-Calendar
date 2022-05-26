@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Calendar.AppWidget.Container"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme.AppWidgetContainer"
+    android:padding="0sp"
+    android:background="#046cea">
+
+    <RelativeLayout
+        android:id="@+id/rl_tool"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="#046cea">
+
+        <TextView
+            android:id="@+id/tv_month_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="16sp"
+            android:text="5月26日"
+            android:textColor="#fff"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+        <FrameLayout
+            android:id="@+id/fl_current"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/bg_ripple">
+
+            <ImageView
+                android:id="@+id/iv_add_widget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/btn_settings"
+                android:padding="5sp"
+                android:src="@drawable/addbutton" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_show_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_tool"
+        android:background="#fff"
+        android:divider="#00000000"
+        android:textColor="#000"></ListView>
+
+
+</RelativeLayout>
