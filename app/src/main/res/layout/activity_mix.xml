@@ -94,29 +94,15 @@
             </FrameLayout>
 
             <ImageView
-                android:id="@+id/iv_more"
+                android:id="@+id/iv_settings_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="60dp"
-                android:background="@drawable/bg_ripple"
-                android:contentDescription="@string/app_name"
-                android:padding="6dp"
-                android:scaleType="centerInside"
-                android:src="@mipmap/ic_more"
-                app:tint="#333333" />
-
-            <ImageView
-                android:id="@+id/iv_func"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@+id/iv_more"
                 android:background="@drawable/bg_ripple"
                 android:padding="4dp"
-                android:src="@mipmap/ic_func"
+                android:src="@drawable/ic_baseline_settings_24"
                 app:tint="#333333" />
 
             <ImageView
@@ -124,23 +110,11 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@+id/iv_func"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/iv_settings_btn"
                 android:background="@drawable/bg_ripple"
                 android:padding="4dp"
                 android:src="@drawable/search"
-                app:tint="#333333" />
-
-            <ImageView
-                android:id="@+id/iv_old_man_btn"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/iv_search"
-                android:background="@drawable/bg_ripple"
-                android:padding="4dp"
-                android:src="@drawable/ic_baseline_directions_walk_24"
                 app:tint="#333333" />
 
         </RelativeLayout>

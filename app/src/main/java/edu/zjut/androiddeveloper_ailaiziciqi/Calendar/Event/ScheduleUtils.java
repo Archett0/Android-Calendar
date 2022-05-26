@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.WeatherOfDate;
 
@@ -35,12 +36,17 @@ public class ScheduleUtils {
     public static final String CITY_LOCATION = "101210101";  // 杭州的地理位置
     public static boolean IS_WEATHER_DATA_RECEIVED = false; // 是否成功拿到天气预报信息
     public static List<WeatherOfDate> WEATHER_REPORTS;  // 处理好的15天预报
+    private static final int COLOR_A = R.color.event_color_01;  // 颜色1
+    private static final int COLOR_B = R.color.event_color_02;  // 颜色2
+    private static final int COLOR_C = R.color.event_color_03;  // 颜色3
+    private static final int COLOR_D = R.color.event_color_04;  // 颜色4
 
     /**
      * 从数据库刷新数据到内存
      */
     public static void loadOrReloadDataFromDatabase(ContentResolver contentResolver, String message) {
 
+        // 查询得到的投影
         String[] projection = {DbContact.ScheduleEntry._ID,
                 DbContact.ScheduleEntry.COLUMN_EVENT_NAME,
                 DbContact.ScheduleEntry.COLUMN_START_DATE,
@@ -50,7 +56,10 @@ public class ScheduleUtils {
                 DbContact.ScheduleEntry.COLUMN_WEEK,
                 DbContact.ScheduleEntry.COLUMN_LUNAR
         };
-        Cursor cursor = contentResolver.query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, null);
+        // 查询排序的规则
+        String order = DbContact.ScheduleEntry.COLUMN_START_DATE + " " + "ASC";
+
+        Cursor cursor = contentResolver.query(DbContact.ScheduleEntry.CONTENT_URI, projection, null, null, order);
         // clear the old static list
         if (Schedule.scheduleArrayList.size() != 0) {
             Schedule.scheduleArrayList.clear();
@@ -82,6 +91,7 @@ public class ScheduleUtils {
                 LocalTime time = LocalTime.parse(scheduleStartTimeValue);
                 LocalTime endTime = LocalTime.parse(scheduleEndTimeValue);
                 // 保存
+                // TODO: Something is not right here so we will fix this
                 Schedule newSchedule = new Schedule(scheduleIdValue, date, endDate, time, endTime, weekValue, lunarValue, scheduleValue);
                 Schedule.scheduleArrayList.add(newSchedule);
                 Log.i("Utils Class Called", "Single Data added, id:" + newSchedule.getId());
@@ -90,31 +100,12 @@ public class ScheduleUtils {
             Log.i("Utils Class Called", message + "ed from database");
             Log.i("Utils Class Called", "Data" + message + "ed:" + Schedule.scheduleArrayList.size());
         }
-        // if there's no data from database, just insert these default data
+        // if there's no data from database, just don't insert any data
         else {
-            // TODO:测试完成后删去这个sector
-            Schedule schedule1 = new Schedule("Play apex", LocalDate.now(), LocalTime.of(20, 0));
-            Schedule schedule2 = new Schedule("Play Android studio", LocalDate.now(), LocalTime.of(21, 0));
-            Schedule schedule3 = new Schedule("Tea with Jack Ma", LocalDate.now().plusDays(1), LocalTime.of(15, 0));
-            Schedule schedule4 = new Schedule("Take a bath", LocalDate.now(), LocalTime.of(20, 0));
-            Schedule schedule5 = new Schedule("Event no.1", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule6 = new Schedule("Event no.2", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule7 = new Schedule("Event no.3", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule8 = new Schedule("Event no.4", LocalDate.now(), LocalTime.of(18, 0));
-            Schedule schedule9 = new Schedule("Neutralize CB's Server", LocalDate.now().plusDays(2), LocalTime.of(4, 0));
-            Schedule schedule10 = new Schedule("Neutralize CB's Website", LocalDate.now().plusDays(2), LocalTime.of(6, 0));
-            Schedule.scheduleArrayList.add(schedule1);
-            Schedule.scheduleArrayList.add(schedule2);
-            Schedule.scheduleArrayList.add(schedule3);
-            Schedule.scheduleArrayList.add(schedule4);
-            Schedule.scheduleArrayList.add(schedule5);
-            Schedule.scheduleArrayList.add(schedule6);
-            Schedule.scheduleArrayList.add(schedule7);
-            Schedule.scheduleArrayList.add(schedule8);
-            Schedule.scheduleArrayList.add(schedule9);
-            Schedule.scheduleArrayList.add(schedule10);
-            Log.i("Load Cursor", "No data from database, default data is loaded");
+            Log.i("Load Cursor", "No data from database, nothing is loaded");
         }
+        // TODO: Now we have the data, so we can sort them
+        // TODO: Implement Sorting Methods
     }
 
 
@@ -288,13 +279,25 @@ public class ScheduleUtils {
     /**
      * 给出日期获取当天天气数据
      */
-    public static int getScheduleWeatherReport(LocalDate localDate) {
+    public static int getScheduleWeatherReport(Schedule schedule) {
+        LocalDate startDate = schedule.getScheduleDate();
+        LocalDate endDate = schedule.getScheduleEndDate();
         if (WEATHER_REPORTS == null || WEATHER_REPORTS.isEmpty()) {
             return -1;
         }
         int index = 0;
         for (; index < WEATHER_REPORTS.size(); ++index) {
-            if (WEATHER_REPORTS.get(index).getDate().equals(localDate)) {
+            LocalDate weatherDate = WEATHER_REPORTS.get(index).getDate();
+            // 当天的日程所以返回当天的天气
+            if (weatherDate.equals(startDate)) {
+                return index;
+            }
+            // 到这天截止所以也返回当天的天气
+            else if (startDate.isBefore(weatherDate) && endDate.equals(weatherDate)) {
+                return index;
+            }
+            // 日程横跨这天所以也返回这天的天气
+            else if(startDate.isBefore(weatherDate) && endDate.isAfter(weatherDate)){
                 return index;
             }
         }
@@ -307,10 +310,28 @@ public class ScheduleUtils {
     public static String generateShareText(Schedule schedule) {
         String msg;
         msg = schedule.getSchedule() + "\"： "
-                + generateScheduleDescription(schedule,SCHEDULE_DESCRIPTION_START) + "， "
-                + generateScheduleDescription(schedule,SCHEDULE_DESCRIPTION_END) + "， 日程时间从"
+                + generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START) + "， "
+                + generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END) + "， 日程时间从"
                 + schedule.getScheduleStartTime() + "开始, 到"
                 + schedule.getScheduleEndTime() + "结束。本日程属于日历：我的日历。";
         return msg;
     }
+
+    /**
+     * 随机选择日程背景颜色
+     */
+    public static int getRandomColor() {
+
+        int randomColor = (int) (3 * Math.random());
+        if (randomColor == 0) {
+            return COLOR_A;
+        } else if (randomColor == 1) {
+            return COLOR_B;
+        } else if (randomColor == 2) {
+            return COLOR_C;
+        } else {
+            return COLOR_D;
+        }
+    }
+
 }

@@ -20,7 +20,8 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/ic_launcher_background.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/drawable/voice_assistant_red.xml" value="0.5665" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_calendar.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_daily_calendar.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_daily_calendar.xml" value="0.5" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_day_view_exp.xml" value="0.12277867528271405" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_full.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_main.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_mix.xml" value="0.33" />
@@ -29,6 +30,7 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_schedule_details.xml" value="0.5" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_search.xml" value="0.5169628432956381" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_view_pager.xml" value="0.32708333333333334" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/add_schedule_activity.xml" value="0.529891304347826" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/custom_week_bar.xml" value="0.4891304347826087" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/english_week_bar.xml" value="0.4891304347826087" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/fragment_pager.xml" value="0.4891304347826087" />
@@ -37,6 +39,7 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/item_list_article_group.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/item_list_event.xml" value="0.5" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/item_list_event_group.xml" value="0.5529891304347826" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/item_list_string.xml" value="0.48641304347826086" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/layout_item.xml" value="0.5739583333333333" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/settings_activity.xml" value="0.5739583333333333" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/solar_week_bar.xml" value="0.4891304347826087" />
@@ -44,14 +47,12 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/menu/schedule_details_menu.xml" value="0.5739583333333333" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.188" />
-        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/xml/root_preferences.xml" value="0.3796875" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/xml/root_preferences.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/drawable-v21/cv_bg_material.xml" value="0.188" />
         <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/layout/cv_layout_calendar_view.xml" value="0.16058763931104356" />
         <entry key="..\:/AndroidStudioProjects/Calendar/calendarview/src/main/res/layout/cv_week_bar.xml" value="0.16058763931104356" />
-        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.132" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable-v24/bg_ripple.xml" value="0.1315" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/bg_material.xml" value="0.1365" />
-        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/bg_old_man.xml" value="0.1585" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/bg_ripple.xml" value="0.1315" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/bg_searchview.xml" value="0.1315" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/corners_shape.xml" value="0.1365" />
@@ -61,25 +62,20 @@
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1435" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/drawable/voice_assistant_red.xml" value="0.1495" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_mix.xml" value="0.264" />
-        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_oldman.xml" value="0.4" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_oldman_add.xml" value="0.2140625" />
-        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_oldman_new.xml" value="0.264" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_search.xml" value="0.264" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_send_sms.xml" value="0.264" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_sms_details.xml" value="0.4" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/activity_sms_search.xml" value="0.264" />
-        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/day_calender_widget.xml" value="0.264" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/fragment_first.xml" value="0.22509057971014493" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/item_list_article.xml" value="0.25833333333333336" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/item_list_event.xml" value="0.2140625" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/item_list_event_group.xml" value="0.2140625" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/item_list_string.xml" value="0.2140625" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/layout_item.xml" value="0.3238805970149254" />
-        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/layout_item_widget.xml" value="0.23802083333333332" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/settings_activity.xml" value="0.25833333333333336" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/smsSearch_layout_item.xml" value="0.4" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/sms_search_layout_item.xml" value="0.264" />
-        <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/layout/view_flipper_layout.xml" value="0.196875" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.264" />
         <entry key="..\:/GitWarehouse/Android-Calendar/app/src/main/res/menu/navigation.xml" value="0.264" />
       </map>

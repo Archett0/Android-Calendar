@@ -13,6 +13,7 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ public class OldmanActivity extends AppCompatActivity {
     private TextView mTodayGood;
     private TextView mTodayBad;
     private Lunar lunarToday;
+    private ImageView settingsBtn;
     private List<String> todayGood;
     private List<String> todayBad;
     private Button voice_all_details;
@@ -74,7 +76,7 @@ public class OldmanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_oldman_new);
 
         // 设置状态栏
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // 设置状态栏颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // 设置状态栏颜色
 
         iv_add = findViewById(R.id.iv_add);
         iv_add.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +115,8 @@ public class OldmanActivity extends AppCompatActivity {
 //        }
 
         // 设置今天
+        lunarToday = Lunar.fromDate(new Date());
+
 
         date = LocalDate.now();
         makeFillpper(date);
@@ -199,6 +203,7 @@ public class OldmanActivity extends AppCompatActivity {
         // 设置今天的宜忌
         todayGood = lunarToday.getDayYi();
         todayBad = lunarToday.getDayJi();
+
         // 转成String类型
         String todayGoodStr = "";
         String todayBadStr = "";
@@ -228,6 +233,17 @@ public class OldmanActivity extends AppCompatActivity {
         mDayOfWeek.setText(dayOfWeek);
         mTodayGood.setText(todayGoodStr);
         mTodayBad.setText(todayBadStr);
+
+        // 监听设置按钮
+        settingsBtn = findViewById(R.id.btn_settings);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OldmanActivity.this,SettingsActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 
@@ -297,4 +313,3 @@ public class OldmanActivity extends AppCompatActivity {
         voiceAssistant.release();
     }
 }
-

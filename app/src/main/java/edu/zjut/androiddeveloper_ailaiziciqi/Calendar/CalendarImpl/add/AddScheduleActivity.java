@@ -1,6 +1,7 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add;
 
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.*;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.isScheduleValid;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.transformUserInputToCorrectForm;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -8,12 +9,10 @@ import android.app.TimePickerDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -29,11 +28,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Calendar;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.DayCalenderWidget;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.ListRemoteViewsFactory;
@@ -65,7 +61,7 @@ public class AddScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.add_schedule_activity);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 

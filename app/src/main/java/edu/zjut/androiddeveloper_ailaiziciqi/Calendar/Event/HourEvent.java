@@ -10,6 +10,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 /**
  * 一个时间段的全部事件
  */
+@Deprecated
 public class HourEvent {
 
     LocalTime time;
