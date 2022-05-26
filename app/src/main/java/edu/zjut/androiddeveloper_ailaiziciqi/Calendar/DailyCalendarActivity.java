@@ -20,6 +20,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class DailyCalendarActivity extends AppCompatActivity {
 
     private WeekView mWeekView; // 日视图
     private TextView mTodayBtn; // 今日日程按钮
+    private ImageView mBack; // 返回按钮
     Context context;    // 上下文
     private boolean ACCESS_FROM_INDEX = true;    // 访问是否是从首页双击进入的
 
@@ -66,6 +68,15 @@ public class DailyCalendarActivity extends AppCompatActivity {
         // 重置部分View的设置
         mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
         mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+
+        // 监听返回键
+        mBack = findViewById(R.id.today_back);
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         // 设置左边栏和顶栏的文字显示
         mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {

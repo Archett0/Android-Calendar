@@ -2,6 +2,9 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
 import android.Manifest;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_ACTIVATED;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_DEACTIVATED;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.SHARED_PREFERENCE_NAME;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.*;
 
 import android.annotation.SuppressLint;
@@ -29,11 +32,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SettingsActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SmsReceiver;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
@@ -71,12 +76,10 @@ public class MixActivity extends BaseActivity implements
 
 
     // 新增的属性
-    private AlertDialog mMoreDialog;    // 功能按钮
-    private AlertDialog mFuncDialog;    // 功能按钮
     private int dayClickCount;  // 点击次数计数器
     private static LocalDate dayClickRecord;    // 点击日期记录器
     private ScheduleListAdapter mScheduleListAdapter;   // 今日日程适配器
-    private ImageView mOldManBtn;   // TODO:老人页面按钮，之后会被整合进设置
+    private ImageView mSettingBtn;  // 设置按钮
 //    private Cursor mCursor; // 查询数据得到的游标
 //    private Double longitude, latitude;  // 位置经纬度
 //    private LocationManager locationManager;    // 位置管理器
@@ -149,6 +152,8 @@ public class MixActivity extends BaseActivity implements
         mCalendarLayout = findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
+        // 更改layout设置
+        setUserLayout();
 
         // 左边缘周标记的点击监听器
         mCalendarView.setOnClickCalendarPaddingListener(new CalendarView.OnClickCalendarPaddingListener() {
@@ -169,76 +174,14 @@ public class MixActivity extends BaseActivity implements
         mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
 
-        // 监听功能按钮右
-        findViewById(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
+        // 监听设置按钮
+        mSettingBtn = findViewById(R.id.iv_settings_btn);
+        mSettingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (mMoreDialog == null) {
-                    mMoreDialog = new AlertDialog.Builder(MixActivity.this)
-                            .setTitle(R.string.list_dialog_title)
-                            .setItems(R.array.list_dialog_items, MixActivity.this)
-                            .create();
-                }
-                mMoreDialog.show();
-            }
-        });
-
-        // 监听功能按钮右
-        final DialogInterface.OnClickListener listener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                mCalendarLayout.expand();
-                                break;
-                            case 1:
-                                boolean result = mCalendarLayout.shrink();
-                                Log.e("shrink", " --  " + result);
-                                break;
-                            case 2:
-                                mCalendarView.scrollToPre(false);
-                                break;
-                            case 3:
-                                mCalendarView.scrollToNext(false);
-                                break;
-                            case 4:
-                                mCalendarView.scrollToCurrent(true);
-//                                mCalendarView.scrollToCalendar(2018, 12, 30);
-                                break;
-                            case 5:
-                                mCalendarView.setRange(2018, 7, 1, 2019, 4, 28);
-//                                mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 6,
-//                                        mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 23);
-                                break;
-                            case 6:
-                                Log.e("scheme", "  " + mCalendarView.getSelectedCalendar().getScheme() + "  --  "
-                                        + mCalendarView.getSelectedCalendar().isCurrentDay());
-                                List<Calendar> weekCalendars = mCalendarView.getCurrentWeekCalendars();
-                                for (Calendar calendar : weekCalendars) {
-                                    Log.e("onWeekChange", calendar.toString() + "  --  " + calendar.getScheme());
-                                }
-                                new AlertDialog.Builder(MixActivity.this)
-                                        .setMessage(String.format("Calendar Range: \n%s —— %s",
-                                                mCalendarView.getMinRangeCalendar(),
-                                                mCalendarView.getMaxRangeCalendar()))
-                                        .show();
-                                break;
-                        }
-                    }
-                };
-
-        // 监听功能按钮左
-        findViewById(R.id.iv_func).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mFuncDialog == null) {
-                    mFuncDialog = new AlertDialog.Builder(MixActivity.this)
-                            .setTitle(R.string.func_dialog_title)
-                            .setItems(R.array.func_dialog_items, listener)
-                            .create();
-                }
-                mFuncDialog.show();
+            public void onClick(View view) {
+                Intent intent = new Intent(MixActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -305,16 +248,6 @@ public class MixActivity extends BaseActivity implements
                     Intent intent = new Intent(MixActivity.this, AddScheduleActivity.class);
                     startActivity(intent);
                 }
-            }
-        });
-
-        // 暂时的老年版按钮的监听
-        mOldManBtn = findViewById(R.id.iv_old_man_btn);
-        mOldManBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MixActivity.this, OldmanActivity.class);
-                startActivity(intent);
             }
         });
     }
@@ -461,6 +394,34 @@ public class MixActivity extends BaseActivity implements
         //getLocation();
         authorizeWeatherAccount();
         getWeather(MixActivity.this);
+
+        Log.i("Shared Preferences", "onCreate操作");
+        Log.i("Shared Preferences", "=========================================================================");
+        // 使用Shared Preferences来保存设置
+        PreferencesHelper preferencesHelper = new PreferencesHelper(MixActivity.this, SHARED_PREFERENCE_NAME);
+        // 日历首选模式
+        preferencesHelper.safePutString("default_view", "month");
+        // 仅周视图模式
+        preferencesHelper.safePutString("only_week_view_mode", OPTION_DEACTIVATED);
+        // 一周的开始
+        preferencesHelper.safePutString("week_begin", "sunday");
+        // 老年模式
+        preferencesHelper.safePutString("old_man_mode", OPTION_DEACTIVATED);
+        // 老人的名字
+        preferencesHelper.safePutString("old_man_name", "DEFAULT");
+        // 语音播报
+        preferencesHelper.safePutString("voice_over", OPTION_DEACTIVATED);
+        Log.i("Shared Preferences", "=========================================================================");
+
+        // 判断并开启老年模式
+        String old_man_mode = preferencesHelper.getString("old_man_mode");
+        if (old_man_mode.equals(OPTION_ACTIVATED)) {
+            Intent intent = new Intent(MixActivity.this, OldmanActivity.class);
+            startActivity(intent);
+            finish();
+            Log.i("Shared Preferences", "开启老年模式");
+            Log.i("Shared Preferences", "=========================================================================");
+        }
     }
 
 //    /**
@@ -500,11 +461,64 @@ public class MixActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("Random Debug", "onResume");
         if (dayClickRecord != null) {
             mScheduleListAdapter.resetCurrentAdapter(this, dayClickRecord, null);
-        }
-        else {
+        } else {
             mScheduleListAdapter.resetCurrentAdapter(this, LocalDate.now(), null);
         }
+        mCalendarLayout = findViewById(R.id.calendarLayout);
+
+        // 拿到Preferences和数据
+        PreferencesHelper preferencesHelper = new PreferencesHelper(MixActivity.this, SHARED_PREFERENCE_NAME);
+        Log.i("Shared Preferences", "在onResume进行的setUserLayout操作");
+        Log.i("Shared Preferences", "=========================================================================");
+        String default_view = preferencesHelper.getString("default_view");
+        // 用户设置: 启动视图
+        if (default_view.equals("week")) {
+            mCalendarLayout.shrink(1);
+            Log.i("Shared Preferences", "设置默认打开周视图");
+        } else {
+            mCalendarLayout.expand(1);
+            Log.i("Shared Preferences", "设置默认打开月视图");
+        }
+        Log.i("Shared Preferences", "=========================================================================");
+    }
+
+    private void setUserLayout() {
+        // 拿到Preferences和数据
+        PreferencesHelper preferencesHelper = new PreferencesHelper(MixActivity.this, SHARED_PREFERENCE_NAME);
+        Log.i("Shared Preferences", "setUserLayout操作");
+        Log.i("Shared Preferences", "=========================================================================");
+        String only_week_view_mode = preferencesHelper.getString("only_week_view_mode");
+        String week_begin = preferencesHelper.getString("week_begin");
+//        String old_man_name = preferencesHelper.getString("old_man_name");
+//        String voice_over = preferencesHelper.getString("voice_over");
+
+        // 用户设置: 仅周视图
+        if (only_week_view_mode.equals(OPTION_ACTIVATED)) {
+            mCalendarLayout.setModeOnlyWeekView();
+            Log.i("Shared Preferences", "设置仅周视图模式");
+        } else {
+            mCalendarLayout.setModeBothMonthWeekView();
+            Log.i("Shared Preferences", "设置双视图模式");
+        }
+
+        // 用户设置: 一周的开始
+        if (week_begin.equals("monday")) {
+            mCalendarView.setWeekStarWithMon();
+            Log.i("Shared Preferences", "设置一周的开始为周一");
+        } else if (week_begin.equals("sunday")) {
+            mCalendarView.setWeekStarWithSun();
+            Log.i("Shared Preferences", "设置一周的开始为周天");
+        } else if (week_begin.equals("saturday")) {
+            mCalendarView.setWeekStarWithSat();
+            Log.i("Shared Preferences", "设置一周的开始为周六");
+        } else {
+            mCalendarView.setWeekStarWithMon();
+            Log.i("Shared Preferences", "默认设置一周的开始为周一");
+        }
+
+        Log.i("Shared Preferences", "=========================================================================");
     }
 }

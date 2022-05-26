@@ -110,4 +110,7 @@
 
     <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
     <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_settings" translatable="false">SettingsActivity</string>
+
+
 </resources>
