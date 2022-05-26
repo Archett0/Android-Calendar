@@ -1,6 +1,7 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SmsSearchInformation {
@@ -53,5 +54,14 @@ public class SmsSearchInformation {
 
     public void setSmsScheduleList(List<Schedule> smsScheduleList) {
         this.smsScheduleList = smsScheduleList;
+    }
+
+    public List<ScheduleString> getTransformedStringList(){
+        List<ScheduleString> result = new ArrayList<>();
+        for(Schedule schedule: smsScheduleList){
+            ScheduleString newItem = new ScheduleString(schedule);
+            result.add(newItem);
+        }
+        return result;
     }
 }

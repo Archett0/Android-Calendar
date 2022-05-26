@@ -1,18 +1,16 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.TypeReference;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,6 +20,7 @@ import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SmsSearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleString;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.SmsSearchInformation;
 
 public class SmsReceiver extends BroadcastReceiver {
@@ -59,24 +58,22 @@ public class SmsReceiver extends BroadcastReceiver {
             Log.w("send", "");
             SmsManager massage = SmsManager.getDefault();
 
-            // TODO 调用数据库当前日期的日程搜索
-            // ---
-            LocalDate localDate = LocalDate.now();
-            LocalTime localTime = LocalTime.now();
-            Schedule schedule1 = new Schedule(localDate, localTime, localTime, "0", "五月十二", "这是一些日程");
-            Schedule schedule2 = new Schedule(localDate, localTime, localTime, "1", "五月十二", "这是一些日程");
-
+            int indexNian = fullMessage.indexOf("年");
+            int indexYue = fullMessage.indexOf("月");
+            int indexRi = fullMessage.lastIndexOf("日");
+            String yearS = fullMessage.substring(indexNian - 4, indexNian);
+            String monthS = fullMessage.substring(indexNian + 1, indexYue);
+            String dayS = fullMessage.substring(indexYue + 1, indexRi);
+            int year = Integer.parseInt(yearS);
+            int month = Integer.parseInt(monthS);
+            int day = Integer.parseInt(dayS);
+            LocalDate localDate = LocalDate.of(year,month,day);
             ArrayList<Schedule> listS = new ArrayList<>();
-            listS.add(schedule1);
-            listS.add(schedule2);
-            // ---
-
+            listS = Schedule.eventsForDate(localDate);
             ArrayList<String> result = scheduleLists2StringList(listS, fullMessage.split(":")[2]);
 
             Log.w("send", "result");
-            // TODO: Ready to fix
-            massage.sendMultipartTextMessage(address, null, result, null, null);
-//            massage.sendMultipartTextMessage(address.substring(address.length() - 4, address.length()), null, result, null, null);
+            massage.sendMultipartTextMessage(address.substring(address.length() - 4, address.length()), null, result, null, null);
         }
 
         if (fullMessage.contains("【爱瓷日历】查询结果:")) {
@@ -106,6 +103,33 @@ public class SmsReceiver extends BroadcastReceiver {
 
             SmsSearchInformation s = new SmsSearchInformation(phone, sendDate, listS);
             // TODO 调用保存其他手机日程的数据库表
+            //将List转化成String
+            String arrString = JSONArray.toJSONString(s.getTransformedStringList());
+            Log.i("Random Debug",arrString);
+
+            // 将JSON格式的String取出
+            List<ScheduleString> scheduleList = JSONArray.parseArray(arrString,ScheduleString.class);
+
+            if(scheduleList != null){
+                Log.i("Random Debug",scheduleList.size()+"");
+                for(ScheduleString schedule : scheduleList){
+                    Log.i("Random Debug",schedule.toString());
+                }
+                List<Schedule> revertedScheduleList = new ArrayList<>();
+                for(ScheduleString scheduleString: scheduleList){
+                    Schedule schedule = scheduleString.convertToSchedule();
+                    revertedScheduleList.add(schedule);
+                }
+
+                Log.i("Random Debug","Reverted List<Schedule>");
+                for(Schedule schedule: revertedScheduleList){
+                    Log.i("Random Debug",schedule.toString());
+                }
+            }
+
+
+
+
             if (smsSearchActivity != null) {
                 // 通知更新列表
 //                smsSearchActivity.updateListView();

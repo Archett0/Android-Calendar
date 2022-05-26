@@ -29,6 +29,9 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_schedule_detail.xml" value="0.5739583333333333" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_schedule_details.xml" value="0.5" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_search.xml" value="0.5169628432956381" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_send_sms.xml" value="0.519927536231884" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_sms_details.xml" value="0.519927536231884" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_sms_search.xml" value="0.519927536231884" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/activity_view_pager.xml" value="0.32708333333333334" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/add_schedule_activity.xml" value="0.529891304347826" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/custom_week_bar.xml" value="0.4891304347826087" />
@@ -42,6 +45,7 @@
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/item_list_string.xml" value="0.48641304347826086" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/layout_item.xml" value="0.5739583333333333" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/settings_activity.xml" value="0.5739583333333333" />
+        <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/sms_search_layout_item.xml" value="0.519927536231884" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/layout/solar_week_bar.xml" value="0.4891304347826087" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.5739583333333333" />
         <entry key="..\:/AndroidStudioProjects/Calendar/app/src/main/res/menu/schedule_details_menu.xml" value="0.5739583333333333" />

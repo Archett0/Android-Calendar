@@ -117,7 +117,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                 } else {
 
                     // TODO: need to delete
-                    ListRemoteViewsFactory.refresh();
+//                    ListRemoteViewsFactory.refresh();
 
                     finish();
                 }

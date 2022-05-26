@@ -243,11 +243,11 @@ public class Schedule {
      * 根据id搜索日程
      */
     public static Schedule getScheduleById(int id) {
-        if(scheduleArrayList.isEmpty()){
+        if (scheduleArrayList.isEmpty()) {
             return null;
         }
-        for(Schedule schedule : scheduleArrayList){
-            if(schedule.getId() == id){
+        for (Schedule schedule : scheduleArrayList) {
+            if (schedule.getId() == id) {
                 return schedule;
             }
         }

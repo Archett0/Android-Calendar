@@ -16,11 +16,16 @@ public class Provider extends ContentProvider {
     // Uris
     public static final int SCHEDULES = 100;
     public static final int SCHEDULE_ID = 101;
+    // SMS Uris
+    public static final int SMS = 103;
+    public static final int SMS_ID = 104;
     public static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         sUriMatcher.addURI(DbContact.CONTENT_AUTHORITY, DbContact.PATH_SCHEDULES, SCHEDULES);
         sUriMatcher.addURI(DbContact.CONTENT_AUTHORITY, DbContact.PATH_SCHEDULES + "/#", SCHEDULE_ID);
+        sUriMatcher.addURI(DbContact.CONTENT_AUTHORITY, DbContact.PATH_SMS, SMS);
+        sUriMatcher.addURI(DbContact.CONTENT_AUTHORITY, DbContact.PATH_SMS + "/#", SMS_ID);
     }
 
     // DB Helper
@@ -53,6 +58,18 @@ public class Provider extends ContentProvider {
                 cursor = database.query(DbContact.ScheduleEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
 
+            // Multiple sms
+            case SMS:
+                cursor = database.query(DbContact.SmsEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+
+            // Single sms
+            case SMS_ID:
+                selection = DbContact.SmsEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                cursor = database.query(DbContact.SmsEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+
             default:
                 throw new IllegalArgumentException("Can Not Query" + uri);
         }
@@ -60,7 +77,7 @@ public class Provider extends ContentProvider {
         cursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
 
         // add a log
-        Log.i("Provider Executed", "query schedule");
+        Log.i("Provider Executed", "query schedule and sms");
         return cursor;
     }
 
@@ -75,6 +92,9 @@ public class Provider extends ContentProvider {
         switch (match) {
             case SCHEDULES:
                 return insertSchedule(uri, contentValues);
+
+            case SMS:
+                return insertSms(uri, contentValues);
 
             default:
                 throw new IllegalArgumentException("Can Not Insert" + uri);
@@ -125,6 +145,36 @@ public class Provider extends ContentProvider {
 
         // add a log
         Log.i("Provider Executed", "insert schedule");
+        return ContentUris.withAppendedId(uri, id);
+    }
+
+    private Uri insertSms(Uri uri, ContentValues contentValues) {
+
+        String phone = contentValues.getAsString(DbContact.SmsEntry.COLUMN_PHONE_NUMBER);
+        if(phone == null)
+            throw new IllegalArgumentException("Phone is required");
+
+        String smsdate = contentValues.getAsString(DbContact.SmsEntry.COLUMN_SMS_DATE);
+        if(smsdate == null)
+            throw new IllegalArgumentException("Smsdate is required");
+
+        String schedulelist = contentValues.getAsString(DbContact.SmsEntry.COLUMN_SCHEDULES);
+        if(schedulelist == null)
+            throw new IllegalArgumentException("schedulelist is required");
+
+        // get writeable database
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        long id = database.insert(DbContact.SmsEntry.TABLE_NAME, null, contentValues);
+
+        // judge if the insert fails
+        if (id == -1) {
+            return null;
+        }
+
+        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
+
+        // add a log
+        Log.i("Provider Executed", "insert sms");
         return ContentUris.withAppendedId(uri, id);
     }
 
