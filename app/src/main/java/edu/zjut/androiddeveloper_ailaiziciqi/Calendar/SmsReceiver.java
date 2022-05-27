@@ -54,6 +54,7 @@ public class SmsReceiver extends BroadcastReceiver {
         Log.w("message", fullMessage);
         abortBroadcast();
 
+        // 接收到对方的查询请求后，立刻发送信息
         if (fullMessage.contains("【爱瓷日历】查询日程时间")) {
             Log.w("send", "");
             SmsManager massage = SmsManager.getDefault();
@@ -76,6 +77,7 @@ public class SmsReceiver extends BroadcastReceiver {
             massage.sendMultipartTextMessage(address.substring(address.length() - 4, address.length()), null, result, null, null);
         }
 
+        // 接收到对方发送的信息后，立刻保存进入数据库
         if (fullMessage.contains("【爱瓷日历】查询结果:")) {
             String[] result = fullMessage.split("/");
 

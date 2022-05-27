@@ -29,7 +29,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.WeatherOfDate;
 /**
  * 日程工具类
  */
-public class ScheduleUtils {
+public final class ScheduleUtils {
     public static final int SCHEDULE_DESCRIPTION_START = 0; // 描述类型：开始
     public static final int SCHEDULE_DESCRIPTION_END = 1; // 描述类型：结束
     public static boolean WEATHER_ACCOUNT_AUTHORIZED = false; // 天气API是否已经授权
@@ -43,8 +43,11 @@ public class ScheduleUtils {
 
     /**
      * 从数据库刷新数据到内存
+     *
+     * @param contentResolver 当前上下文的ContentResolver
+     * @param message         用于Debug的字符串，会在Logcat输出
      */
-    public static void loadOrReloadDataFromDatabase(ContentResolver contentResolver, String message) {
+    public static void loadOrReloadDataFromDatabase(final ContentResolver contentResolver, final String message) {
 
         // 查询得到的投影
         String[] projection = {DbContact.ScheduleEntry._ID,
@@ -91,7 +94,6 @@ public class ScheduleUtils {
                 LocalTime time = LocalTime.parse(scheduleStartTimeValue);
                 LocalTime endTime = LocalTime.parse(scheduleEndTimeValue);
                 // 保存
-                // TODO: Something is not right here so we will fix this
                 Schedule newSchedule = new Schedule(scheduleIdValue, date, endDate, time, endTime, weekValue, lunarValue, scheduleValue);
                 Schedule.scheduleArrayList.add(newSchedule);
                 Log.i("Utils Class Called", "Single Data added, id:" + newSchedule.getId());
@@ -104,15 +106,19 @@ public class ScheduleUtils {
         else {
             Log.i("Load Cursor", "No data from database, nothing is loaded");
         }
-        // TODO: Now we have the data, so we can sort them
-        // TODO: Implement Sorting Methods
     }
-
 
     /**
      * 将添加日程时的用户输入转换为可存入数据库的数据
+     *
+     * @param scheduleName   String类型日程名称
+     * @param tmpStartString String类型日程开始日期时间
+     * @param tmpEndString   String类型日程结束日期时间
+     * @param month_start    int类型日程开始月份
+     * @param month_end      int类型日程结束月份
+     * @return 一个Schedule对象
      */
-    public static Schedule transformUserInputToCorrectForm(String scheduleName, String tmpStartString, String tmpEndString, int month_start, int month_end) {
+    public static Schedule transformUserInputToCorrectForm(final String scheduleName, final String tmpStartString, final String tmpEndString, final int month_start, final int month_end) {
 
         // 分析字符串得到日期和时间
         LocalDate startDate = LocalDate.of(Integer.parseInt(tmpStartString.substring(0, 4)), month_start + 1, Integer.parseInt(tmpStartString.substring(7, 9)));
@@ -142,8 +148,11 @@ public class ScheduleUtils {
 
     /**
      * 判断一个日程是否合法
+     *
+     * @param schedule 一个Schedule日程
+     * @return 若合法则返回null，若不合法则返回错误信息
      */
-    public static String isScheduleValid(Schedule schedule) {
+    public static String isScheduleValid(final Schedule schedule) {
         LocalDate startDate = schedule.getScheduleDate();
         LocalDate endDate = schedule.getScheduleEndDate();
         LocalTime startTime = schedule.getScheduleStartTime();
@@ -166,8 +175,12 @@ public class ScheduleUtils {
 
     /**
      * 生成一个日程的描述
+     *
+     * @param schedule 一个Schedule日程
+     * @param type     生成描述的类型是开始还是结束
+     * @return 一个日程描述String
      */
-    public static String generateScheduleDescription(Schedule schedule, int type) {
+    public static String generateScheduleDescription(final Schedule schedule, final int type) {
         String description = "";
         if (type == SCHEDULE_DESCRIPTION_START) {
             description = "自 ";
@@ -216,9 +229,11 @@ public class ScheduleUtils {
     }
 
     /**
-     * 获取天气数据
+     * 获取天气数据并写入内存中的List中
+     *
+     * @param context 当前上下文
      */
-    public static void getWeather(Context context) {
+    public static void getWeather(final Context context) {
         /**
          * 3天预报数据
          * @param location 所查询的地区，可通过该地区ID、经纬度进行查询经纬度格式：经度,纬度
@@ -278,8 +293,11 @@ public class ScheduleUtils {
 
     /**
      * 给出日期获取当天天气数据
+     *
+     * @param schedule 一个Schedule日程
+     * @return 当前日程对应天气在天气List中的位置，如果不存在则返回-1
      */
-    public static int getScheduleWeatherReport(Schedule schedule) {
+    public static int getScheduleWeatherReport(final Schedule schedule) {
         LocalDate startDate = schedule.getScheduleDate();
         LocalDate endDate = schedule.getScheduleEndDate();
         if (WEATHER_REPORTS == null || WEATHER_REPORTS.isEmpty()) {
@@ -297,7 +315,7 @@ public class ScheduleUtils {
                 return index;
             }
             // 日程横跨这天所以也返回这天的天气
-            else if(startDate.isBefore(weatherDate) && endDate.isAfter(weatherDate)){
+            else if (startDate.isBefore(weatherDate) && endDate.isAfter(weatherDate)) {
                 return index;
             }
         }
@@ -306,8 +324,11 @@ public class ScheduleUtils {
 
     /**
      * 给出日程来生成分享的文字
+     *
+     * @param schedule 一个Schedule日程
+     * @return 这个日程的分享文字
      */
-    public static String generateShareText(Schedule schedule) {
+    public static String generateShareText(final Schedule schedule) {
         String msg;
         msg = schedule.getSchedule() + "\"： "
                 + generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START) + "， "
@@ -319,6 +340,8 @@ public class ScheduleUtils {
 
     /**
      * 随机选择日程背景颜色
+     *
+     * @return 随机选中的颜色id
      */
     public static int getRandomColor() {
 

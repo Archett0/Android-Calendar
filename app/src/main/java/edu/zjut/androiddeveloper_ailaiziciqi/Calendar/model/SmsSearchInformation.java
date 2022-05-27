@@ -56,6 +56,10 @@ public class SmsSearchInformation {
         this.smsScheduleList = smsScheduleList;
     }
 
+    /**
+     * 将自己的Schedule类型List转换为ScheduleString类型的List
+     * @return  一个ScheduleString类型的List
+     */
     public List<ScheduleString> getTransformedStringList(){
         List<ScheduleString> result = new ArrayList<>();
         for(Schedule schedule: smsScheduleList){

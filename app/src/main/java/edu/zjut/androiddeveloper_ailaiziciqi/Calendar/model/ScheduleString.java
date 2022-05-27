@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * 日程类(用于暂存全是string的数据)
  */
-public class ScheduleString {
+public final class ScheduleString {
 
     private int id; // 日程Id
     private String schedule;    // 日程名称

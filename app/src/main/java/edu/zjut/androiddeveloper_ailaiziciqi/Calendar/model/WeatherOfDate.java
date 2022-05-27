@@ -2,7 +2,7 @@ package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model;
 
 import java.time.LocalDate;
 
-public class WeatherOfDate {
+public final class WeatherOfDate {
 
     private LocalDate date;
     private String weather;

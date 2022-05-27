@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * 日程类
  */
-public class Schedule {
+public final class Schedule {
 
     private int id; // 日程Id
     private String schedule;    // 日程名称
@@ -183,6 +183,9 @@ public class Schedule {
 
     /**
      * 根据日期是否被包括来获取日程
+     *
+     * @param date  要查询的日期
+     * @return      时间包括这一天的所有日程
      */
     public static ArrayList<Schedule> eventsForDate(LocalDate date) {
         ArrayList<Schedule> events = new ArrayList<>();
@@ -198,22 +201,10 @@ public class Schedule {
     }
 
     /**
-     * 根据开始日期和开始时间获取日程
-     */
-    public static ArrayList<Schedule> eventsForDateAndTime(LocalDate date, LocalTime time) {
-        ArrayList<Schedule> events = new ArrayList<>();
-        for (Schedule event : scheduleArrayList) {
-            int eventHour = event.scheduleStartTime.getHour();
-            int cellHour = time.getHour();
-            if (event.getScheduleDate().equals(date) && eventHour == cellHour) {
-                events.add(event);
-            }
-        }
-        return events;
-    }
-
-    /**
      * 根据名称模糊搜索日程(忽略大小写)
+     *
+     * @param input 用户输入的日程名称
+     * @return      符合要求的全部日程
      */
     public static ArrayList<Schedule> schedulesForName(String input) {
         ArrayList<Schedule> schedules = new ArrayList<>();
@@ -227,6 +218,10 @@ public class Schedule {
 
     /**
      * 根据月份搜索日程
+     *
+     * @param newYear   要查询的年份
+     * @param newMonth  要查询的月份
+     * @return          符合要求的全部日程
      */
     public static ArrayList<Schedule> schedulesForMonth(int newYear, int newMonth) {
         ArrayList<Schedule> schedules = new ArrayList<>();
@@ -241,6 +236,9 @@ public class Schedule {
 
     /**
      * 根据id搜索日程
+     *
+     * @param id    日程的id
+     * @return      若日程存在则返回这个唯一的日程，若不存在则返回null
      */
     public static Schedule getScheduleById(int id) {
         if (scheduleArrayList.isEmpty()) {
