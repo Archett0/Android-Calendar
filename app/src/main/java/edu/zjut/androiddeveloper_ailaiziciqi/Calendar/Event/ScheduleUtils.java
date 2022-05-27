@@ -4,7 +4,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.nlf.calendar.Lunar;
 import com.qweather.sdk.bean.base.Code;
@@ -24,6 +26,8 @@ import java.util.List;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleString;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.SmsSearchInformation;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.WeatherOfDate;
 
 /**
@@ -356,5 +360,89 @@ public final class ScheduleUtils {
             return COLOR_D;
         }
     }
+
+    /**
+     * 从数据库取出所有接收到或者指定id的远程日程并返回
+     *
+     * @param context 当前上下文
+     * @param id      是否指定id，指定为id值，不指定为-1
+     * @return 数据库sms表中所有的远程日程
+     */
+    public static List<SmsSearchInformation> updateDataFromDatabase(final Context context, final int id) {
+        List<SmsSearchInformation> list = new ArrayList<>();
+
+        // 查询得到的投影
+        String[] projection = {DbContact.SmsEntry._ID,
+                DbContact.SmsEntry.COLUMN_SMS_DATE,
+                DbContact.SmsEntry.COLUMN_PHONE_NUMBER,
+                DbContact.SmsEntry.COLUMN_SCHEDULES
+        };
+
+        // 执行查询
+        Cursor cursor = context.getContentResolver().query(DbContact.SmsEntry.SMS_CONTENT_URI, projection, null, null, null);
+        // 现在取数据
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // 先获取Column位置
+                int idIndex = cursor.getColumnIndex(DbContact.SmsEntry._ID);
+                int dateIndex = cursor.getColumnIndex(DbContact.SmsEntry.COLUMN_SMS_DATE);
+                int phoneIndex = cursor.getColumnIndex(DbContact.SmsEntry.COLUMN_PHONE_NUMBER);
+                int schedulesIndex = cursor.getColumnIndex(DbContact.SmsEntry.COLUMN_SCHEDULES);
+
+                // 再取值
+                int idValue = cursor.getInt(idIndex);
+                String dateValue = cursor.getString(dateIndex);
+                String phoneValue = cursor.getString(phoneIndex);
+                String schedulesValue = cursor.getString(schedulesIndex);
+
+                // 执行转换
+                LocalDate date = LocalDate.parse(dateValue);
+
+                // 执行List转换:
+                // 将JSON格式的String取出
+                List<ScheduleString> scheduleList = JSONArray.parseArray(schedulesValue, ScheduleString.class);
+
+                // 若不为空则转换，为空直接跳出
+                if (scheduleList != null) {
+                    List<Schedule> revertedScheduleList = new ArrayList<>();
+                    for (ScheduleString scheduleString : scheduleList) {
+                        Schedule schedule = scheduleString.convertToSchedule();
+                        revertedScheduleList.add(schedule);
+                    }
+
+                    // 保存
+                    SmsSearchInformation newItem = new SmsSearchInformation(idValue, phoneValue, date, revertedScheduleList);
+                    list.add(newItem);
+                    Log.i("Random Debug", "Single sms item added, id:" + idValue);
+                } else {
+                    Toast.makeText(context, "数据库查询中数据转换出错！", Toast.LENGTH_SHORT).show();
+                    return list;
+                }
+            } while (cursor.moveToNext());
+        } else {
+            Log.i("Random Debug", "No data from sms database, nothing is loaded");
+        }
+
+        // 若指定id则返回一个List，但其中仅有一个元素
+        if (id != -1) {
+            for (SmsSearchInformation s : list) {
+                if(s.getId() == id){
+                    List<SmsSearchInformation> listOfId = new ArrayList<>();
+                    listOfId.add(s);
+                    Log.i("Random Debug", "Loaded sms from database");
+                    Log.i("Random Debug", "Single data loaded:" + list.size());
+                    return listOfId;
+                }
+            }
+        }
+        // 若不指定则返回全部
+        else {
+            Log.i("Random Debug", "Loaded sms from database");
+            Log.i("Random Debug", "Data list loaded:" + list.size());
+            return list;
+        }
+        return null;
+    }
+
 
 }

@@ -41,33 +41,25 @@ public final class Schedule {
         this.schedule = schedule;
     }
 
+    /**
+     * 将从短信截取出的日程转换成合法的日程
+     *
+     * @param schedule      日程名称
+     * @param mainDate      合法的日期+中文类型星期几+农历日期
+     * @param startTime     开始时间
+     * @param endTime       结束时间
+     */
     public Schedule(String schedule, String mainDate, String startTime, String endTime) {
         this.schedule = schedule;
 
         String year = mainDate.substring(0, 4);
-        Log.w("year", year);
         String month = mainDate.substring(5, 7);
-        Log.w("month_origin", month);
-        if (month.substring(0, 1).equals("0")) {
-            month = month.substring(1, 2);
-            Log.w("month_", month);
-        }
-
         String day = mainDate.substring(8, 10);
-        Log.w("day_origin", day);
-        if (day.substring(0, 1).equals("0")) {
-            day = day.substring(1, 2);
-        }
-        Log.w("day_", day);
         this.scheduleDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
-
-        String week = mainDate.substring(13, 14);
+        String week = mainDate.substring(11, 14);
         this.week = week;
-        Log.w("week_", week);
-
-        String lunar = mainDate.substring(17, 21);
+        String lunar = mainDate.substring(15, 19);
         this.lunar = lunar;
-        Log.w("lunar_", lunar);
 
         this.scheduleStartTime = LocalTime.parse(startTime + ":00",
                 DateTimeFormatter.ISO_TIME);

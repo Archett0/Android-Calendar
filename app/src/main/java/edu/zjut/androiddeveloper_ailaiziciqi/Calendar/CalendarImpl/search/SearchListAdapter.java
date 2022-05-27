@@ -11,12 +11,14 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,26 +164,37 @@ public class SearchListAdapter extends BaseAdapter {
 
         //将数据库中的内容加载到对应的控件上
         Schedule schedule = (Schedule) getItem(position);
-        viewHolder.schedule.setText(schedule.getSchedule());
 
-        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
-        viewHolder.date.setText(schedule.getScheduleDate().format(date) + schedule.getWeek() + " 农历" + schedule.getLunar());
-
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
-        viewHolder.timeStart.setText(schedule.getScheduleStartTime().format(time));
-
-        viewHolder.timeEnd.setText(schedule.getScheduleEndTime().format(time));
-
-        if (list.get(position).getIsChecked()) {
-            viewHolder.checkBox.setChecked(true);
-        } else {
-            viewHolder.checkBox.setChecked(false);
+        // 如果查找不到日程，就设置组件不可见
+        if(schedule.getScheduleDate().equals(LocalDate.of(1999,1,1))){
+            viewHolder.date.setVisibility(View.GONE);
+            viewHolder.mCardWithEvent.setVisibility(View.GONE);
+            viewHolder.mCardWithNoEvent.setVisibility(View.VISIBLE);
         }
+        else{
+            viewHolder.mCardWithEvent.setVisibility(View.VISIBLE);
+            viewHolder.mCardWithNoEvent.setVisibility(View.GONE);
+            viewHolder.schedule.setText(schedule.getSchedule());
 
-        if (list.get(position).isVisible()) {
-            viewHolder.checkBox.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.checkBox.setVisibility(View.INVISIBLE);
+            DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
+            viewHolder.date.setText(schedule.getScheduleDate().format(date) + schedule.getWeek() + " 农历" + schedule.getLunar());
+
+            DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
+            viewHolder.timeStart.setText(schedule.getScheduleStartTime().format(time));
+
+            viewHolder.timeEnd.setText(schedule.getScheduleEndTime().format(time));
+
+            if (list.get(position).getIsChecked()) {
+                viewHolder.checkBox.setChecked(true);
+            } else {
+                viewHolder.checkBox.setChecked(false);
+            }
+
+            if (list.get(position).isVisible()) {
+                viewHolder.checkBox.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.checkBox.setVisibility(View.INVISIBLE);
+            }
         }
 //        Log.w("SchedulePosition", viewHolder.position+"");
         viewHolder.position = position;
@@ -198,6 +211,9 @@ public class SearchListAdapter extends BaseAdapter {
         TextView timeStart;
         TextView timeEnd;
         CheckBox checkBox;
+        private LinearLayout mCardWithEvent;
+        private LinearLayout mCardWithNoEvent;
+        private TextView mNoEventHint;
 
         public ViewHolder(View view, int position) {
             this.position = position;
@@ -207,6 +223,10 @@ public class SearchListAdapter extends BaseAdapter {
             timeStart = view.findViewById(R.id.time_start);
             timeEnd = view.findViewById(R.id.time_end);
             checkBox = view.findViewById(R.id.check_box);
+            mCardWithEvent = view.findViewById(R.id.select_card_with_event);
+            mCardWithNoEvent = view.findViewById(R.id.select_card_with_no_event);
+            mNoEventHint = view.findViewById(R.id.no_event_info);
+            mNoEventHint.setText("没有符合条件的日程");
             checkBox.setVisibility(View.INVISIBLE);
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override

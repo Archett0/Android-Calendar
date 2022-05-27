@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.SmsSearchInformation;
 
@@ -56,10 +57,17 @@ public class SmsSearchAdapter extends BaseAdapter {
         SmsSearchInformation s = (SmsSearchInformation) getItem(position);
         viewHolder.phone_num.setText(s.getPhone());
         viewHolder.send_date.setText(s.getSendDate().toString());
-        if(s.getSmsScheduleList() == null) {
+        if (s.getSmsScheduleList() == null || s.getSmsScheduleList().isEmpty()) {
             viewHolder.message.setText("无日程结果");
         } else {
-            viewHolder.message.setText(s.getSmsScheduleList().get(0).getSchedule());
+            int size = s.getSmsScheduleList().size();
+            if (size > 1) {
+                String msg = s.getSmsScheduleList().get(0).getSchedule();
+                msg += "...等" + size + "个";
+                viewHolder.message.setText(msg);
+            } else {
+                viewHolder.message.setText(s.getSmsScheduleList().get(0).getSchedule());
+            }
         }
 
         return convertView;

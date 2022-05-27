@@ -71,13 +71,12 @@
     </LinearLayout>
 
 
-
     <ListView
         android:id="@+id/lv_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top"
         android:divider="#00000000"
-        android:textColor="#000"></ListView>
+        android:textColor="#000" />
 
 </RelativeLayout>

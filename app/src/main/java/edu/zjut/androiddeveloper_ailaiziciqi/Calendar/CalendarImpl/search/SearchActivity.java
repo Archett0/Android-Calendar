@@ -264,6 +264,8 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * 更新搜索日程的结果列表
+     *
+     * @param input 用户的输入String
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void updateListView(String input) {
@@ -278,7 +280,7 @@ public class SearchActivity extends AppCompatActivity {
                 list.add(new ScheduleWithCheck(schedule));
             }
         } else {
-            Schedule default_schedule = new Schedule(LocalDate.now(), LocalTime.now(), LocalTime.now(), "", "", "没有符合的日程");
+            Schedule default_schedule = new Schedule(LocalDate.of(1999,1,1), LocalTime.now(), LocalTime.now(), "", "", "没有符合的日程");
             list.add(new ScheduleWithCheck(default_schedule));
         }
 
@@ -298,7 +300,9 @@ public class SearchActivity extends AppCompatActivity {
             finish();
     }
 
-    // 编辑界面的确认删除功能
+    /**
+     *  编辑界面的确认删除功能
+     */
     private void showDeleteConfirmationDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -331,7 +335,11 @@ public class SearchActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    // 执行删除
+    /**
+     * 执行删除
+     *
+     * @param deleteMultiple    是否删除多个，若是则传入true
+     */
     private void deleteProduct(boolean deleteMultiple) {
 
         // single delete

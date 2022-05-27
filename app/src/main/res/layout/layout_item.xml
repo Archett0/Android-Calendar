@@ -12,12 +12,13 @@
         android:gravity="center_vertical"
         android:text="2021年7月17日星期六"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_marginBottom="10dp"
         android:paddingLeft="14dp"
         android:paddingRight="14dp" />
 
     <LinearLayout
+        android:id="@+id/select_card_with_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -25,7 +26,8 @@
         android:padding="14dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -33,34 +35,34 @@
                 android:id="@+id/time_start"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="08:00"
                 android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/time_end"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="08:00"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
         <View
             style="@style/vertical_line_style"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginStart="20dp"/>
 
         <TextView
             android:id="@+id/schedule"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center_vertical"
             android:text="测试信息"
-            android:layout_marginLeft="20dp"
-            android:textSize="20dp" />
+            android:layout_marginStart="20dp"
+            android:textSize="20sp" />
 
 
         <CheckBox
@@ -74,7 +76,7 @@
 
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/card_with_no_event"
+        android:id="@+id/select_card_with_no_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
