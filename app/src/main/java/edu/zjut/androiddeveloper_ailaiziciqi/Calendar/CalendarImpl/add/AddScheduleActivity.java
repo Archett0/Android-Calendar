@@ -1,18 +1,23 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.getChineseDate;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.isScheduleValid;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.transformUserInputToCorrectForm;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.getScheduleById;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -28,6 +33,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
@@ -57,17 +64,22 @@ public class AddScheduleActivity extends AppCompatActivity {
 
     private boolean isInputValid;   // 记录用户输入是否合法的Flag
     private Cursor mCursor; // 重新加载数据需要使用的Cursor
+    private TextView mTitle;    // 页面标题
+    private Uri mCurrentScheduleUri;    // 上个页面传来的uri
+    private int sid;    // 当前日程的id
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_schedule_activity);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
-
         timestart = findViewById(R.id.timestart);
         timeend = findViewById(R.id.timeend);
+        scheduleTitle = findViewById(R.id.schedule_title);
+        aSwitch = findViewById(R.id.timeswitch);
+        mTitle = findViewById(R.id.editor_title);   // 页面标题
 
         getDate(1);
         String fixhour_start = "";
@@ -92,7 +104,6 @@ public class AddScheduleActivity extends AppCompatActivity {
         timeEndSpinner.setOnClickListener(clickEventTimeEnd);
 
         SwitchEvent switchEvent = new SwitchEvent();
-        aSwitch = findViewById(R.id.timeswitch);
         aSwitch.setOnCheckedChangeListener(switchEvent);
 
         back = findViewById(R.id.cancle);
@@ -104,6 +115,37 @@ public class AddScheduleActivity extends AppCompatActivity {
         });
 
         submit = findViewById(R.id.ok);
+
+        // 判断是添加日程还是修改日程
+        Intent lastIntent = getIntent();
+        mCurrentScheduleUri = lastIntent.getData();
+        sid = lastIntent.getIntExtra("sid", -1);
+
+        // 新建
+        if (mCurrentScheduleUri == null || sid == -1) {
+            mTitle.setText("新建日程");
+        }
+        // 修改
+        else {
+            mTitle.setText("修改日程");
+            Schedule schedule = getScheduleById(sid);
+            if (schedule != null) {
+                scheduleTitle.setText(schedule.getSchedule());
+                String startDate = getChineseDate(schedule.getScheduleDate());
+                String endDate = getChineseDate(schedule.getScheduleEndDate());
+                if (schedule.getScheduleStartTime().equals(LocalTime.of(0, 0)) && schedule.getScheduleEndTime().equals(LocalTime.of(23, 59))) {
+                    aSwitch.setChecked(true);
+                    timestart.setText(startDate);
+                    timeend.setText(endDate);
+                } else {
+                    timestart.setText(startDate + " " + schedule.getScheduleStartTime().toString());
+                    timeend.setText(endDate + " " + schedule.getScheduleEndTime().toString());
+                }
+            } else {
+                mTitle.setText("新建日程");
+            }
+        }
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,18 +155,14 @@ public class AddScheduleActivity extends AppCompatActivity {
                 // execute to database
                 if (!saveSchedule()) {
                     // failed and do nothing
-                    Toast.makeText(AddScheduleActivity.this, "添加日程失败", Toast.LENGTH_SHORT).show();
+                    Log.i("Random Debug", "添加或更新日程失败");
                 } else {
-
                     // TODO: need to delete
 //                    ListRemoteViewsFactory.refresh();
-
                     finish();
                 }
             }
         });
-
-        scheduleTitle = findViewById(R.id.schedule_title);
     }
 
     // 覆写返回键的监听
@@ -223,23 +261,24 @@ public class AddScheduleActivity extends AppCompatActivity {
             return isInputValid;
         }
 
-        Uri newUri = getContentResolver().insert(DbContact.ScheduleEntry.CONTENT_URI, values);
-        if (newUri == null) {
-            Toast.makeText(this, "保存出错", Toast.LENGTH_SHORT).show();
+        if (mCurrentScheduleUri == null) {
+            Uri newUri = getContentResolver().insert(DbContact.ScheduleEntry.CONTENT_URI, values);
+            if (newUri == null) {
+                Toast.makeText(this, "保存出错", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "成功保存", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(this, "成功保存", Toast.LENGTH_SHORT).show();
+            int rowsAffected =getContentResolver().update(mCurrentScheduleUri, values, null, null);
+            if (rowsAffected == 0) {
+                Toast.makeText(this, "更新出错", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "成功更新", Toast.LENGTH_SHORT).show();
+            }
         }
         isInputValid = true;
         return isInputValid;
     }
-
-//    /**
-//     * 从DB重新载入数据到内存，此时这么做是多余的
-//     */
-//    private void reloadDataFromDatabase() {
-//        // 使用工具类来做这件事
-//        loadOrReloadDataFromDatabase(mCursor,getContentResolver(),"Reload");
-//    }
 
     private void getDate(int num) {
         if (num == 1) {

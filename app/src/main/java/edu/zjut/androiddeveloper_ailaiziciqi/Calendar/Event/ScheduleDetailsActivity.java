@@ -21,7 +21,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.databinding.AddScheduleActivityBinding;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarView;
 
 /**
@@ -44,6 +46,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationMenu;  // 菜单
     private Uri mCurrentScheduleUri;    // 当前日程的Uri
     private String scheduleTextForShare;    // 当前日程分享用描述文字
+    private int scheduleId; // 日程id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
         // 设置数据
         Intent intent = getIntent();
         mCurrentScheduleUri = intent.getData();
+        scheduleId = intent.getIntExtra("sid", -1);
         mScheduleNameView.setText(intent.getStringExtra("Name"));
         mScheduleStartDescriptionView.setText(intent.getStringExtra("StartDescription"));
         mScheduleEndDescriptionView.setText(intent.getStringExtra("EndDescription"));
@@ -105,7 +109,12 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
                         shareSchedule();
                         return true;
                     case R.id.single_event_modify:
-                        Toast.makeText(ScheduleDetailsActivity.this, "Modify Btn Clicked", Toast.LENGTH_SHORT).show();
+                        // 进入编辑页面
+                        Intent intent = new Intent(ScheduleDetailsActivity.this, AddScheduleActivity.class);
+                        intent.setData(mCurrentScheduleUri);
+                        intent.putExtra("sid", scheduleId);
+                        startActivity(intent);
+                        finish();
                         return true;
                     case R.id.single_event_delete:
                         showDeleteConfirmationDialog();
