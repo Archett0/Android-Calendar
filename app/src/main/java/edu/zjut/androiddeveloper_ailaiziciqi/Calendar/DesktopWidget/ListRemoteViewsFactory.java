@@ -21,7 +21,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
 
 public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private final static String TAG="Widget";
+    private final static String TAG = "Widget";
     private Context mContext;
     private int mAppWidgetId;
 
@@ -39,7 +39,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
     @Override
     public RemoteViews getViewAt(int position) {
         //  HashMap<String, Object> map;
-        Log.w("getViewAt",position+"");
+        Log.w("getViewAt", position + "");
         // 获取 item_widget_device.xml 对应的RemoteViews
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.layout_item_widget);
 
@@ -80,23 +80,19 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
      */
     private void initListViewData() {
         scheduleList = new ArrayList<>();
-        scheduleList.add(new Schedule(LocalDate.now(), LocalDate.now(), LocalTime.now(), LocalTime.now(), "1", "1", "1"));
-        scheduleList.add(new Schedule(LocalDate.now(), LocalDate.now(), LocalTime.now(), LocalTime.now(), "1", "1", "1"));
-        scheduleList.add(new Schedule(LocalDate.now(), LocalDate.now(), LocalTime.now(), LocalTime.now(), "1", "1", "1"));
-
-        //连数据库
+        // 连数据库
         // 搜索得到的对应DB的List
-
+        scheduleList = Schedule.eventsForDate(LocalDate.now());
     }
 
 
-    public static void refresh(){
-        scheduleList.add(new Schedule(LocalDate.now(), LocalDate.now(), LocalTime.now(), LocalTime.now(), "1", "1", "1"));
+    public static void refresh() {
+        scheduleList = Schedule.eventsForDate(LocalDate.now());
     }
 
     @Override
     public void onCreate() {
-        Toast.makeText(mContext,"onCreate", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "onCreate", Toast.LENGTH_SHORT).show();
         // 初始化“集合视图”中的数据
         initListViewData();
     }
