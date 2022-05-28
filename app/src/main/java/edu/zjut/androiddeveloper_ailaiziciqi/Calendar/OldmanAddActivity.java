@@ -50,7 +50,8 @@ public class OldmanAddActivity extends AppCompatActivity {
     private boolean isSwitched = false;
     private Switch aSwitch;
 
-    private ImageView back, submit;
+    private ImageView back;
+    private Button submit;
 
     private EditText scheduleTitle;
 
@@ -68,7 +69,7 @@ public class OldmanAddActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_schedule_activity);
+        setContentView(R.layout.activity_oldman_add);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 

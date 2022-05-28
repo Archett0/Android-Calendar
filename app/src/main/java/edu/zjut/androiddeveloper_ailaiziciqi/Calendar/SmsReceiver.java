@@ -112,7 +112,7 @@ public class SmsReceiver extends BroadcastReceiver {
                     saveSms(modelToSave);
                     if (smsSearchActivity != null) {
                         // 通知更新列表
-                        smsSearchActivity.updateListView();
+                        smsSearchActivity.updateListView(null);
                     }
                     return; //代表没有查询结果
                 }
@@ -144,7 +144,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
             if (smsSearchActivity != null) {
                 // 通知更新列表
-                smsSearchActivity.updateListView();
+                smsSearchActivity.updateListView(null);
             }
         }
     }

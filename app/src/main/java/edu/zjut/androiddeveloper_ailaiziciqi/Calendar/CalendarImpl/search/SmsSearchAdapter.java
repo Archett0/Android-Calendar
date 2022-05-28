@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -53,20 +54,31 @@ public class SmsSearchAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        //将数据库中的内容加载到对应的控件上
-        SmsSearchInformation s = (SmsSearchInformation) getItem(position);
-        viewHolder.phone_num.setText(s.getPhone());
-        viewHolder.send_date.setText(s.getSendDate().toString());
-        if (s.getSmsScheduleList() == null || s.getSmsScheduleList().isEmpty()) {
-            viewHolder.message.setText("无日程结果");
-        } else {
-            int size = s.getSmsScheduleList().size();
-            if (size > 1) {
-                String msg = s.getSmsScheduleList().get(0).getSchedule();
-                msg += "...等" + size + "个";
-                viewHolder.message.setText(msg);
+
+        if(list == null || list.isEmpty() || (list.size() == 1 && list.get(0).getId() == -1 )){
+            //将数据库中的内容加载到对应的控件上
+            SmsSearchInformation s = (SmsSearchInformation) getItem(position);
+            viewHolder.mCardWithSms.setVisibility(View.GONE);
+            viewHolder.mCardWithNoSms.setVisibility(View.VISIBLE);
+        }
+        else{
+            //将数据库中的内容加载到对应的控件上
+            SmsSearchInformation s = (SmsSearchInformation) getItem(position);
+            viewHolder.mCardWithSms.setVisibility(View.VISIBLE);
+            viewHolder.mCardWithNoSms.setVisibility(View.GONE);
+            viewHolder.phone_num.setText(s.getPhone());
+            viewHolder.send_date.setText(s.getSendDate().toString());
+            if (s.getSmsScheduleList() == null || s.getSmsScheduleList().isEmpty()) {
+                viewHolder.message.setText("无日程结果");
             } else {
-                viewHolder.message.setText(s.getSmsScheduleList().get(0).getSchedule());
+                int size = s.getSmsScheduleList().size();
+                if (size > 1) {
+                    String msg = s.getSmsScheduleList().get(0).getSchedule();
+                    msg += "...等" + size + "个";
+                    viewHolder.message.setText(msg);
+                } else {
+                    viewHolder.message.setText(s.getSmsScheduleList().get(0).getSchedule());
+                }
             }
         }
 
@@ -78,11 +90,18 @@ public class SmsSearchAdapter extends BaseAdapter {
         TextView phone_num;
         TextView send_date;
         TextView message;
+        private LinearLayout mCardWithSms;
+        private LinearLayout mCardWithNoSms;
+        private TextView mNoSmsHint;
 
         public ViewHolder(View view) {
             phone_num = view.findViewById(R.id.phone_num);
             send_date = view.findViewById(R.id.send_date);
             message = view.findViewById(R.id.message);
+            mCardWithSms = view.findViewById(R.id.with_sms_card);
+            mCardWithNoSms = view.findViewById(R.id.no_sms_card);
+            mNoSmsHint = view.findViewById(R.id.no_sms_info);
+            mNoSmsHint.setText("没有符合的短信");
         }
     }
 }

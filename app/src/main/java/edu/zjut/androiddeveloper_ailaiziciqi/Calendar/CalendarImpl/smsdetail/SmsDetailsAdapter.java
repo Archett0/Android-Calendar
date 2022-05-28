@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.time.format.DateTimeFormatter;
@@ -62,7 +63,7 @@ public class SmsDetailsAdapter extends BaseAdapter {
         viewHolder.schedule.setText(s.getSchedule());
         DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
         viewHolder.date.setText(s.getScheduleDate().format(date) +
-                "星期" + s.getWeek() + " 农历" + s.getLunar());
+                s.getWeek() + " " + s.getLunar());
 
         DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
         viewHolder.timeStart.setText(s.getScheduleStartTime().format(time));
@@ -78,6 +79,8 @@ public class SmsDetailsAdapter extends BaseAdapter {
         TextView timeStart;
         TextView timeEnd;
         CheckBox checkBox;
+        private LinearLayout mCardWithNoEvent;
+        private TextView mNoEventHint;
 
         public ViewHolder(View view) {
             schedule = view.findViewById(R.id.schedule);
@@ -86,6 +89,10 @@ public class SmsDetailsAdapter extends BaseAdapter {
             timeEnd = view.findViewById(R.id.time_end);
             checkBox = view.findViewById(R.id.check_box);
             checkBox.setVisibility(View.INVISIBLE);
+            mCardWithNoEvent = view.findViewById(R.id.select_card_with_no_event);
+            mCardWithNoEvent.setVisibility(View.GONE);
+            mNoEventHint = view.findViewById(R.id.no_event_info);
+            mNoEventHint.setText("没有符合条件的日程");
         }
     }
 }

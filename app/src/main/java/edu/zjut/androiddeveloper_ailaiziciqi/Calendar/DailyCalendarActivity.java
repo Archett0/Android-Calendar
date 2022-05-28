@@ -114,6 +114,7 @@ public class DailyCalendarActivity extends AppCompatActivity {
                     Uri scheduleUri = ContentUris.withAppendedId(DbContact.ScheduleEntry.CONTENT_URI, schedule.getId());
                     intent.setData(scheduleUri);
                     intent.putExtra("Name", schedule.getSchedule());
+                    intent.putExtra("sid", schedule.getId());
                     intent.putExtra("StartDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START));
                     intent.putExtra("EndDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END));
                     intent.putExtra("Date", String.valueOf(schedule.getScheduleDate()));

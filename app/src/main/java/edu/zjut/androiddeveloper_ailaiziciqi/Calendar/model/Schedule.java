@@ -267,4 +267,17 @@ public final class Schedule {
         }
         return msg;
     }
+
+    public String toFullString(){
+        String msg = "日程: ";
+        msg += "名称 = " + schedule + " " +
+                "id = " + id + " " +
+                "开始日期 = " + scheduleDate + " " +
+                "结束日期 = " + scheduleEndDate + " " +
+                "开始时间 = " + scheduleStartTime + " " +
+                "结束时间 = " + scheduleEndTime + " " +
+                "星期 = " + week + " " +
+                "农历 = " + lunar;
+        return msg;
+    }
 }

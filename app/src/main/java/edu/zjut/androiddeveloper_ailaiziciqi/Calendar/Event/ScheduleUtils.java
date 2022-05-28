@@ -125,8 +125,20 @@ public final class ScheduleUtils {
     public static Schedule transformUserInputToCorrectForm(final String scheduleName, final String tmpStartString, final String tmpEndString, final int month_start, final int month_end) {
 
         // 分析字符串得到日期和时间
-        LocalDate startDate = LocalDate.of(Integer.parseInt(tmpStartString.substring(0, 4)), month_start + 1, Integer.parseInt(tmpStartString.substring(7, 9)));
-        LocalDate endDate = LocalDate.of(Integer.parseInt(tmpEndString.substring(0, 4)), month_end + 1, Integer.parseInt(tmpEndString.substring(7, 9)));
+        int indexNian = tmpStartString.indexOf("年");
+        int indexYue = tmpStartString.indexOf("月");
+        int indexRi = tmpStartString.lastIndexOf("日");
+        String year = tmpStartString.substring(indexNian - 4, indexNian);
+        String day = tmpStartString.substring(indexYue + 1, indexRi);
+
+        int indexNianEnd = tmpEndString.indexOf("年");
+        int indexYueEnd = tmpEndString.indexOf("月");
+        int indexRiEnd = tmpEndString.lastIndexOf("日");
+        String yearEnd = tmpEndString.substring(indexNianEnd - 4, indexNianEnd);
+        String dayEnd = tmpEndString.substring(indexYueEnd + 1, indexRiEnd);
+
+        LocalDate startDate = LocalDate.of(Integer.parseInt(year), month_start + 1, Integer.parseInt(day));
+        LocalDate endDate = LocalDate.of(Integer.parseInt(yearEnd), month_end + 1, Integer.parseInt(dayEnd));
         LocalTime startTime = LocalTime.of(Integer.parseInt(tmpStartString.substring(tmpStartString.length() - 5, tmpStartString.length() - 3)), Integer.parseInt(tmpStartString.substring(tmpStartString.length() - 2, tmpStartString.length())));
         LocalTime endTime = LocalTime.of(Integer.parseInt(tmpEndString.substring(tmpEndString.length() - 5, tmpEndString.length() - 3)), Integer.parseInt(tmpEndString.substring(tmpEndString.length() - 2, tmpEndString.length())));
 
@@ -426,7 +438,7 @@ public final class ScheduleUtils {
         // 若指定id则返回一个List，但其中仅有一个元素
         if (id != -1) {
             for (SmsSearchInformation s : list) {
-                if(s.getId() == id){
+                if (s.getId() == id) {
                     List<SmsSearchInformation> listOfId = new ArrayList<>();
                     listOfId.add(s);
                     Log.i("Random Debug", "Loaded sms from database");
@@ -444,5 +456,52 @@ public final class ScheduleUtils {
         return null;
     }
 
+    /**
+     * 根据用户对日程名称的输入，搜索出含有这个名称的所有短信
+     *
+     * @param list  包含所有sms的列表
+     * @param input 用户输入的日程名称
+     * @return 搜索结果的list，若结果为空则返回仅有一个元素且id为-1的list
+     */
+    public static List<SmsSearchInformation> smsForName(List<SmsSearchInformation> list, String input) {
+        List<SmsSearchInformation> result = new ArrayList<>();
+
+        // 判断传入的list是否为空
+        if (list == null || list.isEmpty()) {
+            SmsSearchInformation defaultSms = new SmsSearchInformation(-1, "", LocalDate.now(), new ArrayList<>());
+            result.add(defaultSms);
+            return result;
+        }
+
+        // 若不为空则执行搜索
+        for (SmsSearchInformation sms : list) {
+            for (Schedule schedule : sms.getSmsScheduleList()) {
+                if (schedule.getSchedule().toLowerCase().contains(input)) {
+                    result.add(sms);
+                    break;
+                }
+            }
+        }
+
+        // 若结果为空则显示一条默认数据
+        if (result.isEmpty()) {
+            SmsSearchInformation defaultSms = new SmsSearchInformation(-1, "", LocalDate.now(), new ArrayList<>());
+            result.add(defaultSms);
+        }
+        return result;
+    }
+
+    /**
+     * 将LocalDate类型的值转换为中文形式
+     *
+     * @param date LocalDate类型日期
+     * @return 中文形式的日期值
+     */
+    public static String getChineseDate(LocalDate date) {
+        String englishDate = date.toString();
+        String mid = englishDate.replace("-", "月");
+        String after = mid.replaceFirst("月", "年");
+        return after + "日";
+    }
 
 }

@@ -6,6 +6,7 @@
     android:padding="8sp">
 
     <LinearLayout
+        android:id="@+id/with_sms_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/corners_shape"
@@ -58,6 +59,33 @@
             android:text="2021年7月17日星期六"
             android:textSize="20sp"/>
 
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/no_sms_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/corners_shape"
+        android:orientation="vertical"
+        android:padding="8sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8sp">
+
+            <TextView
+                android:id="@+id/no_sms_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="无短信提示"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="22sp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

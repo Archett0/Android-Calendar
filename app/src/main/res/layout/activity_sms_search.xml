@@ -49,11 +49,11 @@
             <SearchView
                 android:id="@+id/searchview"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@id/back"
+                android:layout_weight="1"
                 android:imeOptions="actionSearch"
-                android:queryHint="请输入搜索内容"
+                android:queryHint="请输入日程名称"
                 app:queryBackground="@drawable/bg_searchview" />
 
         </LinearLayout>
