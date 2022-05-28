@@ -1,5 +1,6 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.smsForName;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.updateDataFromDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
@@ -40,6 +42,8 @@ public class SmsSearchActivity extends AppCompatActivity {
     private ListView lv_show;
 
     private FloatingActionButton iv_add;
+
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +91,47 @@ public class SmsSearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        updateListView();
+
+        searchView = findViewById(R.id.searchview);
+        searchView.setIconifiedByDefault(false); //展开
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            //当点击搜索按钮时触发该方法
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            //当搜索内容改变时触发该方法
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                updateListView(s);
+                return true;
+            }
+        });
+
+        updateListView(null);
     }
 
-    public void updateListView() {
+    /**
+     * 刷新sms列表页面
+     *
+     * @param input 若需要模糊搜索则为用户输入的字串(日程名称)，若获取全部则传入null
+     */
+    public void updateListView(final String input) {
         List<SmsSearchInformation> list = updateDataFromDatabase(this, -1);
-        smsSearchAdapter = new SmsSearchAdapter(list, SmsSearchActivity.this);
+
+        // 获取全部
+        if (input == null || input.isEmpty()) {
+            Log.i("Random Debug", "updating sms ListView, input is null");
+            smsSearchAdapter = new SmsSearchAdapter(list, SmsSearchActivity.this);
+        }
+        // 模糊搜索
+        else {
+            Log.i("Random Debug", "updating sms ListView with input");
+            List<SmsSearchInformation> searchList = smsForName(list, input);
+            smsSearchAdapter = new SmsSearchAdapter(searchList, SmsSearchActivity.this);
+        }
         lv_show.setAdapter(smsSearchAdapter);
     }
 

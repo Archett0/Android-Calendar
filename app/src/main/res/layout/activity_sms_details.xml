@@ -59,7 +59,7 @@
                     android:layout_toRightOf="@id/cancle"
 
                     android:paddingLeft="10dp"
-                    android:text="日程详情"
+                    android:text="该短信包含的日程详情"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 

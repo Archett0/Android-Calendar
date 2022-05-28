@@ -444,5 +444,39 @@ public final class ScheduleUtils {
         return null;
     }
 
+    /**
+     * 根据用户对日程名称的输入，搜索出含有这个名称的所有短信
+     *
+     * @param list      包含所有sms的列表
+     * @param input     用户输入的日程名称
+     * @return          搜索结果的list，若结果为空则返回仅有一个元素且id为-1的list
+     */
+    public static List<SmsSearchInformation> smsForName(List<SmsSearchInformation> list, String input){
+        List<SmsSearchInformation> result = new ArrayList<>();
+
+        // 判断传入的list是否为空
+        if(list == null || list.isEmpty()){
+            SmsSearchInformation defaultSms = new SmsSearchInformation(-1,"",LocalDate.now(),new ArrayList<>());
+            result.add(defaultSms);
+            return result;
+        }
+
+        // 若不为空则执行搜索
+        for(SmsSearchInformation sms: list){
+            for(Schedule schedule: sms.getSmsScheduleList()){
+                if(schedule.getSchedule().toLowerCase().contains(input)){
+                    result.add(sms);
+                    break;
+                }
+            }
+        }
+
+        // 若结果为空则显示一条默认数据
+        if(result.isEmpty()){
+            SmsSearchInformation defaultSms = new SmsSearchInformation(-1,"",LocalDate.now(),new ArrayList<>());
+            result.add(defaultSms);
+        }
+        return result;
+    }
 
 }
