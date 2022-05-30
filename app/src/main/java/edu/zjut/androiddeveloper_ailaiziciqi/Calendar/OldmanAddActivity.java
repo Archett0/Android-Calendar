@@ -1,6 +1,7 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.isScheduleValid;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.transformUserInputToCorrectForm;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,9 +31,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.DayCalenderWidget;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.voice.VoiceAssistant;
 
@@ -86,7 +91,7 @@ public class OldmanAddActivity extends AppCompatActivity {
         if (hour_start >= 0 && hour_start <= 9) {
             fixhour_start = "0";
         }
-        ClickEvent clickEventTimeStart = new ClickEvent(timestart, year_start, month_start, day_start, hour_end, min_end);
+        ClickEvent clickEventTimeStart = new ClickEvent(timestart, year_start, month_start, day_start, hour_end, min_end, timeend, "end");
         timestart.setText(year_start + "年" + (month_start + 1) + "月" + day_start + "日" + " " + fixhour_start + hour_start + ":00");
 
         getDate(2);
@@ -94,7 +99,7 @@ public class OldmanAddActivity extends AppCompatActivity {
         if (hour_end >= 0 && hour_end <= 9) {
             fixhour_end = "0";
         }
-        ClickEvent clickEventTimeEnd = new ClickEvent(timeend, year_end, month_end, day_end, hour_end, min_end);
+        ClickEvent clickEventTimeEnd = new ClickEvent(timeend, year_end, month_end, day_end, hour_end, min_end, timestart, "start");
         timeend.setText(year_end + "年" + (month_end + 1) + "月" + day_end + "日" + " " + fixhour_end + hour_end + ":00");
 
         timeStartSpinner = findViewById(R.id.timestartspinner);
@@ -128,6 +133,13 @@ public class OldmanAddActivity extends AppCompatActivity {
                     // failed and do nothing
                     Toast.makeText(OldmanAddActivity.this, "添加日程失败", Toast.LENGTH_SHORT).show();
                 } else {
+                    loadOrReloadDataFromDatabase(getContentResolver(), "Day Load");
+                    try {
+                        DayCalenderWidget.updateView();
+                    } catch (Exception e) {
+                        Log.w("ListRemoteViewsFactory refresh exceprion", e.getMessage());
+                    }
+                    voiceAssistant.release();
                     finish();
                 }
             }
@@ -283,7 +295,7 @@ public class OldmanAddActivity extends AppCompatActivity {
             min_start = 0;
         } else {
             cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR, 1);
+            cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 1);
             year_end = cal.get(Calendar.YEAR);       //获取年月日时分秒
             month_end = cal.get(Calendar.MONTH);   //获取到的月份是从0开始计数
             day_end = cal.get(Calendar.DAY_OF_MONTH);
@@ -297,14 +309,19 @@ public class OldmanAddActivity extends AppCompatActivity {
         private TextView textView;
         private int year, month, day;
         private int hour, min;
+        private TextView otherTextView;
+        private String whichOtherTextView;
 
-        public ClickEvent(TextView textView, int year, int month, int day, int hour, int min) {
+        //        TextView textView: 当前的textview；     TextView otherTextView：另外的一个textview;       String whichOtherTextView:哪一个另外的textview
+        public ClickEvent(TextView textView, int year, int month, int day, int hour, int min, TextView otherTextView, String whichOtherTextView) {
             this.textView = textView;
             this.year = year;
             this.month = month;
             this.day = day;
             this.hour = hour;
             this.min = min;
+            this.otherTextView = otherTextView;
+            this.whichOtherTextView = whichOtherTextView;
         }
 
         @Override
@@ -313,23 +330,66 @@ public class OldmanAddActivity extends AppCompatActivity {
 
                 @Override
                 public void onDateSet(DatePicker arg0, int year, int month, int day) {
-                    textView.setText(year + "年" + (month + 1) + "月" + day + "日");      //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
 
-                    if (isSwitched) return;
+                    if (isSwitched) {
+                        textView.setText(year + "年" + (month + 1) + "月" + day + "日");      //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
+                        return;
+                    }
 
                     TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
                         @Override
-                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                             String fixhour = "";
-                            if (i >= 0 && i <= 9) {
+                            if (hour >= 0 && hour <= 9) {
                                 fixhour = "0";
                             }
 
                             String fixmin = "";
-                            if (i1 >= 0 && i1 <= 9) {
+                            if (minute >= 0 && minute <= 9) {
                                 fixmin = "0";
                             }
-                            textView.setText(textView.getText() + " " + fixhour + i + ":" + fixmin + i1);
+
+                            if (whichOtherTextView.equals("end")) { //正在更改start，另一个是end
+                                if(year_end <= year || month_end <= month || day_end <= day || hour_end <= hour || min_end <= minute) {
+                                    otherTextView.setText(year + "年" + (month + 1) + "月" + day + "日" + " " + fixhour + (hour+1) + ":" + fixmin + minute);
+                                    year_end = year;
+                                    month_end = month;
+                                    day_end = day;
+                                    hour_end = hour + 1;
+                                    min_end = minute;
+                                }
+
+                                textView.setText(year + "年" + (month + 1) + "月" + day + "日" + " " + fixhour + hour + ":" + fixmin + minute);
+                                year_start = year;
+                                month_start = month;
+                                day_start = day;
+                                hour_start = hour;
+                                min_start = minute;
+
+                            } else if (whichOtherTextView.equals("start")) {
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                                Calendar calendar_start = Calendar.getInstance();
+                                Calendar calendar_end = Calendar.getInstance();
+                                try {
+                                    calendar_start.setTime(sdf.parse(year_start + "-" + (month_start + 1) + "-" + day_start + " " + fixhour + hour_start + ":" + fixmin + min_start + ":00"));
+                                    calendar_end.setTime(sdf.parse(year + "-" + (month + 1) + "-" + day + " " + fixhour + hour + ":" + fixmin + minute + ":00"));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if(calendar_start.before(calendar_end)) {
+                                    textView.setText(year + "年" + (month + 1) + "月" + day + "日" + " " + fixhour + hour + ":" + fixmin + minute);
+                                    year_end = year;
+                                    month_end = month;
+                                    day_end = day;
+                                    hour_end = hour;
+                                    min_end = minute;
+                                }
+
+                            }
+
                         }
                     };
                     TimePickerDialog timePickerDialog = new TimePickerDialog(OldmanAddActivity.this, timeSetListener, hour, min, true);

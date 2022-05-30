@@ -1,6 +1,11 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.SCHEDULE_DESCRIPTION_END;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.SCHEDULE_DESCRIPTION_START;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.WEATHER_REPORTS;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.generateScheduleDescription;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.generateShareText;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.getScheduleWeatherReport;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.schedulesForName;
 
 import androidx.annotation.NonNull;
@@ -40,6 +45,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
@@ -121,6 +127,41 @@ public class SearchActivity extends AppCompatActivity {
                     Log.w("checkbox模式启动", "");
                 } else {
                     // 如果checkbox模式没有启动，则可以跳转到详情页
+
+                    Schedule schedule = (Schedule) searchListAdapter.getItem(i);
+                    // 点击已有的日程
+                    if (schedule.getScheduleDate() != null) {
+                        Log.i("Event List Click", "In Activity:" + i);
+                        Log.i("Event List Click", "In Activity:" + schedule.toString());
+                        Intent intent = new Intent(SearchActivity.this, ScheduleDetailsActivity.class);
+                        Uri scheduleUri = ContentUris.withAppendedId(DbContact.ScheduleEntry.CONTENT_URI, schedule.getId());
+                        intent.setData(scheduleUri);
+                        intent.putExtra("Name", schedule.getSchedule());
+                        intent.putExtra("sid", schedule.getId());
+                        intent.putExtra("StartDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_START));
+                        intent.putExtra("EndDescription", generateScheduleDescription(schedule, SCHEDULE_DESCRIPTION_END));
+                        intent.putExtra("Date", String.valueOf(schedule.getScheduleDate()));
+                        intent.putExtra("EndDate", String.valueOf(schedule.getScheduleEndDate()));
+                        intent.putExtra("Time", String.valueOf(schedule.getScheduleStartTime()));
+                        intent.putExtra("EndTime", String.valueOf(schedule.getScheduleEndTime()));
+                        // 获取相应的日期,并填充
+                        if (WEATHER_REPORTS != null && !WEATHER_REPORTS.isEmpty()) {
+                            int weatherIndex = getScheduleWeatherReport(schedule);
+                            if (weatherIndex != -1) {
+                                intent.putExtra("Weather", WEATHER_REPORTS.get(weatherIndex).getWeather());
+                                intent.putExtra("WeatherDetails", WEATHER_REPORTS.get(weatherIndex).getWeatherDetails());
+                            } else {
+                                intent.putExtra("Weather", "暂无天气信息");
+                                intent.putExtra("WeatherDetails", "暂无天气详情");
+                            }
+                        } else {
+                            intent.putExtra("Weather", "暂无天气信息");
+                            intent.putExtra("WeatherDetails", "暂无天气详情");
+                        }
+                        intent.putExtra("Type", "我的日历");
+                        startActivity(intent);
+                    }
+
                     Log.w("checkbox模式没有启动", "");
                     searchListAdapter.getListSelected();
                 }

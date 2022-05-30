@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
             ListPreference weekBegin = findPreference("week_begin");    // 一周的开始
             SwitchPreference oldManMode = findPreference("old_man_mode");  // 老年模式
             EditTextPreference oldManName = findPreference("old_man_name"); // 老人的姓名
-            SwitchPreference voiceOver = findPreference("voice_over");  // 语音播报
+//            SwitchPreference voiceOver = findPreference("voice_over");  // 语音播报
             Preference aboutUs = findPreference("about_us");    // 关于我们
             Preference contactUs = findPreference("contact_us");    // 联系我们
             Preference appVersion = findPreference("app_version");    // 软件版本
@@ -231,25 +231,25 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             // 语音播报
-            if (voiceOver != null) {
-                voiceOver.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        PreferencesHelper helper = new PreferencesHelper(requireContext(), SHARED_PREFERENCE_NAME);
-                        String before = helper.getString("voice_over");
-                        Log.i("Shared Preferences", "点击了语音播报,更改前的值为" + before);
-                        if (before.equals(OPTION_DEACTIVATED)) {
-                            helper.putString("voice_over", OPTION_ACTIVATED);
-                        } else if (before.equals(OPTION_ACTIVATED)) {
-                            helper.putString("voice_over", OPTION_DEACTIVATED);
-                        } else {
-                            Toast.makeText(requireContext(), "设置出错！", Toast.LENGTH_SHORT).show();
-                        }
-                        Log.i("Shared Preferences", "点击了语音播报,更改后的值为" + helper.getString("voice_over"));
-                        return true;
-                    }
-                });
-            }
+//            if (voiceOver != null) {
+//                voiceOver.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                    @Override
+//                    public boolean onPreferenceClick(Preference preference) {
+//                        PreferencesHelper helper = new PreferencesHelper(requireContext(), SHARED_PREFERENCE_NAME);
+//                        String before = helper.getString("voice_over");
+//                        Log.i("Shared Preferences", "点击了语音播报,更改前的值为" + before);
+//                        if (before.equals(OPTION_DEACTIVATED)) {
+//                            helper.putString("voice_over", OPTION_ACTIVATED);
+//                        } else if (before.equals(OPTION_ACTIVATED)) {
+//                            helper.putString("voice_over", OPTION_DEACTIVATED);
+//                        } else {
+//                            Toast.makeText(requireContext(), "设置出错！", Toast.LENGTH_SHORT).show();
+//                        }
+//                        Log.i("Shared Preferences", "点击了语音播报,更改后的值为" + helper.getString("voice_over"));
+//                        return true;
+//                    }
+//                });
+//            }
 
             // 软件版本
             if (appVersion != null) {

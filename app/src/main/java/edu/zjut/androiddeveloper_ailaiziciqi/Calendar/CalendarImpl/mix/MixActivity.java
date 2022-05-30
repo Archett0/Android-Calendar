@@ -74,6 +74,8 @@ public class MixActivity extends BaseActivity implements
     CalendarLayout mCalendarLayout;
     public GroupRecyclerView mRecyclerView;
 
+    private SmsReceiver smsReceiver;
+
 
     // 新增的属性
     private int dayClickCount;  // 点击次数计数器
@@ -257,10 +259,16 @@ public class MixActivity extends BaseActivity implements
         ActivityCompat.requestPermissions(MixActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 1);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
-        SmsReceiver smsReceiver = new SmsReceiver();
+        smsReceiver = new SmsReceiver();
         //设置较高的优先级
         intentFilter.setPriority(2147483647);
         registerReceiver(smsReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(smsReceiver);
     }
 
 

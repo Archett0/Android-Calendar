@@ -85,6 +85,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
                 Log.w("send", "result");
                 massage.sendMultipartTextMessage(address.substring(address.length() - 4, address.length()), null, result, null, null);
+//                massage.sendMultipartTextMessage(address, null, result, null, null);
             }
             // if duplicated data is detected, we just don't send again
             else {

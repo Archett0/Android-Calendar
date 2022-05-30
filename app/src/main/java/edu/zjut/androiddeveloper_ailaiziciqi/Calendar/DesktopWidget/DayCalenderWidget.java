@@ -1,5 +1,9 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_ACTIVATED;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_DEACTIVATED;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.SHARED_PREFERENCE_NAME;
+
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -15,11 +19,14 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanAddActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 
 /**
@@ -29,9 +36,12 @@ public class DayCalenderWidget extends AppWidgetProvider {
     private static final String CLICK_ACTION = "edu.zjut.androiddeveloper_ailaiziciqi.CLICK";
     private static final String COLLECTION_VIEW_ACTION = "edu.zjut.androiddeveloper_ailaiziciqi.COLLECTION_VIEW_ACTION";
     private static final String CLICK_ACTION_DATE = "edu.zjut.androiddeveloper_ailaiziciqi.CLICKDATE";
+    private static final String ACTION_APPWIDGET_UPDATE = "android.appwidget.action.APPWIDGET_UPDATE";
 
+    private static Context context;
 
-
+    private static ArrayList<Integer> appWidgetIdArray = new ArrayList<>();
+    private AppWidgetManager appWidgetManager;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -97,34 +107,27 @@ public class DayCalenderWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        context.stopService(serviceIntent);
     }
 
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+        Log.w("run DayCalenderWidget onUpdate", "run");
+
         for (int appWidgetId : appWidgetIds) {
+            appWidgetIdArray.add(appWidgetId);
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                Log.w("","runrun");
-                AppWidgetManager manager = AppWidgetManager.getInstance(context.getApplicationContext());//获得appwidget管理实例，用于管理appwidget以便进行更新操作
-                ComponentName componentName = new ComponentName(context.getApplicationContext(), DayCalenderWidget.class);//获得所有本程序创建的appwidget
-                RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.day_calender_widget);//获取远程视图
-                manager.updateAppWidget(componentName,remoteViews);
-            }
-        };
-        timer.schedule(task, 0, 3000);
-
-        Intent serviceIntent = new Intent(context, ListWidgetService.class);
-        context.startService(serviceIntent);
+        super.onEnabled(context);
+        Log.w("run DayCalenderWidget onEnabled", "run");
+        this.context = context;
+        ListRemoteViewsFactory.dayCalenderWidget = this;
     }
 
     @Override
@@ -152,7 +155,15 @@ public class DayCalenderWidget extends AppWidgetProvider {
             //因为点击按钮后要对布局中的文本进行更新，所以需要创建一个远程view
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.day_calender_widget);
 
-            Intent add_activity_intent = new Intent(context, AddScheduleActivity.class);
+            PreferencesHelper helper = new PreferencesHelper(context, SHARED_PREFERENCE_NAME);
+            String before = helper.getString("old_man_mode");
+            Intent add_activity_intent;
+            if (before.equals(OPTION_DEACTIVATED)) {
+                add_activity_intent = new Intent(context, AddScheduleActivity.class);
+            } else {
+                add_activity_intent = new Intent(context, OldmanAddActivity.class);
+            }
+
             add_activity_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(add_activity_intent);
 
@@ -177,6 +188,8 @@ public class DayCalenderWidget extends AppWidgetProvider {
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
+        } else if (intent.getAction().equals(ACTION_APPWIDGET_UPDATE)) {
+
         }
     }
 
@@ -184,6 +197,22 @@ public class DayCalenderWidget extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        Log.w("test1 Context", context.toString());
+        Log.w("test1 appWidgetManager", appWidgetManager.toString());
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_show_widget);
         updateAppWidget(context, appWidgetManager, appWidgetId);
+        Log.w("run DayCalenderWidget onAppWidgetOptionsChanged", "run");
+    }
+
+    public static void updateView() {
+        Log.w("run test DayCalenderWidget updateView", "run");
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        Log.w("test2 Context", context.toString());
+        Log.w("test", (appWidgetIdArray==null)+"");
+        for (int i = 0 ; i < appWidgetIdArray.size(); ++i) {
+            Log.w("test2 appWidgetManager", appWidgetManager.toString());
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIdArray.get(i).intValue(), R.id.lv_show_widget);
+            updateAppWidget(context, appWidgetManager, appWidgetIdArray.get(i).intValue());
+        }
     }
 }
