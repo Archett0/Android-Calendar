@@ -31,6 +31,7 @@ import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.nlf.calendar.Lunar;
+import com.nlf.calendar.Solar;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -82,8 +83,9 @@ public class DailyCalendarActivity extends AppCompatActivity {
         mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
             @Override
             public String interpretDate(java.util.Calendar date) {
-                Lunar lunar = Lunar.fromDate(date.getTime());
-                return "星期" + lunar.getWeekInChinese() + "  " + (lunar.getMonth() + 1) + "月" + lunar.getDay() + "日                 ";
+                Solar solar = Solar.fromDate(date.getTime());
+                String solarDate = "星期" + solar.getWeekInChinese() + "  " + solar.getMonth() + "月" + solar.getDay() + "日                 ";
+                return solarDate;
             }
 
             @Override
@@ -261,6 +263,7 @@ public class DailyCalendarActivity extends AppCompatActivity {
             targetDate.set(java.util.Calendar.MONTH, clickedDate.getMonthValue() - 1);
             targetDate.set(java.util.Calendar.YEAR, clickedDate.getYear());
             mWeekView.goToDate(targetDate);
+            Log.i("Day View", "选择了日期"+targetDate.getTime());
         } else {
             mWeekView.goToToday();
         }
