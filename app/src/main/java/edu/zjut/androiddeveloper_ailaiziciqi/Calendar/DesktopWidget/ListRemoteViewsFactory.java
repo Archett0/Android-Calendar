@@ -1,10 +1,12 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget;
 
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.schedulesForName;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -22,10 +24,13 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
 
 public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private final static String TAG = "Widget";
-    private Context mContext;
+    private static Context mContext;
     private int mAppWidgetId;
 
+    public static DayCalenderWidget dayCalenderWidget;
+
     private static List<Schedule> scheduleList;
+    public static final String ACTION_APPWIDGET_UPDATE = "android.appwidget.action.APPWIDGET_UPDATE";
 
     /**
      * 构造GridRemoteViewsFactory
@@ -54,22 +59,10 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 
         rv.setTextViewText(R.id.schedule_widget, schedule.getSchedule());
 
-        // 设置 第position位的“视图”对应的响应事件
-//        Intent fillInIntent = new Intent();
-//        fillInIntent.putExtra("Type", 0);
-//        fillInIntent.putExtra(DayCalenderWidget.COLLECTION_VIEW_EXTRA, position);
-//        rv.setOnClickFillInIntent(R.id.rl_widget_device, fillInIntent);
-//
-//
-//        Intent lockIntent = new Intent();
-//        lockIntent.putExtra(DayCalenderWidget.COLLECTION_VIEW_EXTRA, position);
-//        lockIntent.putExtra("Type", 1);
-//        rv.setOnClickFillInIntent(R.id.iv_lock, lockIntent);
-//
-//        Intent unlockIntent = new Intent();
-//        unlockIntent.putExtra("Type", 2);
-//        unlockIntent.putExtra(DayCalenderWidget.COLLECTION_VIEW_EXTRA, position);
-//        rv.setOnClickFillInIntent(R.id.iv_unlock, unlockIntent);
+        Bundle extras = new Bundle();
+        extras.putInt(ListRemoteViewsFactory.ACTION_APPWIDGET_UPDATE, position);
+        Intent changeIntent = new Intent();
+        changeIntent.putExtras(extras);
 
         return rv;
     }
@@ -82,11 +75,6 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
         scheduleList = new ArrayList<>();
         // 连数据库
         // 搜索得到的对应DB的List
-        scheduleList = Schedule.eventsForDate(LocalDate.now());
-    }
-
-
-    public static void refresh() {
         scheduleList = Schedule.eventsForDate(LocalDate.now());
     }
 
@@ -127,6 +115,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public void onDataSetChanged() {
+        scheduleList = Schedule.eventsForDate(LocalDate.now());
     }
 
     @Override

@@ -14,10 +14,10 @@ import java.util.TimerTask;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 
 public class ListWidgetService extends RemoteViewsService {
+    private ListRemoteViewsFactory listRemoteViewsFactory;
 
     @Override
     public RemoteViewsService.RemoteViewsFactory onGetViewFactory(Intent intent) {
-        RemoteViewsService.RemoteViewsFactory rc = new ListRemoteViewsFactory(this, intent);
-        return rc;
+        return new ListRemoteViewsFactory(this, intent);
     }
 }

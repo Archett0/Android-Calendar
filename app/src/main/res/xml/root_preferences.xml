@@ -42,12 +42,12 @@
             app:dialogTitle="输入您的姓名"
             app:summary="若输入名字,语音播报时您的名字也会被读出" />
 
-        <SwitchPreference
-            app:key="voice_over"
-            app:dependency="old_man_mode"
-            app:summaryOff="语音播报已禁用"
-            app:summaryOn="语音播报已启用"
-            app:title="语音播报" />
+<!--        <SwitchPreference-->
+<!--            app:key="voice_over"-->
+<!--            app:dependency="old_man_mode"-->
+<!--            app:summaryOff="语音播报已禁用"-->
+<!--            app:summaryOn="语音播报已启用"-->
+<!--            app:title="语音播报" />-->
     </PreferenceCategory>
 
     <PreferenceCategory app:title="关于">

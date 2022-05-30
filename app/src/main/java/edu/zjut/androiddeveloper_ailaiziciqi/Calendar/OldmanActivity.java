@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.voice.VoiceAssistant;
 import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control.MySyntherizer;
 import edu.zjut.androiddeveloper_ailaiziciqi.layouttools.FriendlyScrollView;
@@ -47,6 +49,7 @@ public class OldmanActivity extends AppCompatActivity {
     private List<String> todayGood;
     private List<String> todayBad;
     private Button voice_all_details;
+    private ImageView iv_search;
     private ImageView iv_add;
     private TextView poem_left;
     private TextView poem_right;
@@ -85,6 +88,15 @@ public class OldmanActivity extends AppCompatActivity {
                 voiceAssistant.release();
                 Intent intent = new Intent(OldmanActivity.this, OldmanAddActivity.class);
                 startActivityForResult(intent, 1);
+            }
+        });
+
+        iv_search = findViewById(R.id.iv_search);
+        iv_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent searchIntent = new Intent(OldmanActivity.this, SearchActivity.class);
+                startActivity(searchIntent);
             }
         });
 
@@ -136,6 +148,7 @@ public class OldmanActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float v, float v1) {
             if (e1.getX() - e2.getX() > MIN_MOVE) {
                 date = date.plusDays(1);
+                Log.w("date", date.toString());
                 makeFillpper(date);
                 Log.w("date+1", date.toString());
 
@@ -200,6 +213,7 @@ public class OldmanActivity extends AppCompatActivity {
     private void makeLunar(LocalDate date) {
         Date date_ = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
         lunarToday = Lunar.fromDate(date_);
+        Log.w("lunarToday", lunarToday.toString());
         // 设置今天的宜忌
         todayGood = lunarToday.getDayYi();
         todayBad = lunarToday.getDayJi();
@@ -220,9 +234,9 @@ public class OldmanActivity extends AppCompatActivity {
         // 获取本日的信息
 
         String year = String.valueOf(date.getYear()) + "年";
-        String month = lunarToday.getMonthInChinese() + "月";
+        String month = String.valueOf(date.getMonthValue()) + "月";
         String dated = String.valueOf(date.getDayOfMonth());
-        String dateLunar = lunarToday.getDayInChinese();
+        String dateLunar = lunarToday.getMonthInChinese() + "月" + lunarToday.getDayInChinese();
         String dayOfWeek = "星期" + lunarToday.getWeekInChinese();
         // 设置本日的黄历
 
