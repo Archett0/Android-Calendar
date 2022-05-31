@@ -118,27 +118,27 @@ public final class ScheduleUtils {
      * @param scheduleName   String类型日程名称
      * @param tmpStartString String类型日程开始日期时间
      * @param tmpEndString   String类型日程结束日期时间
-     * @param month_start    int类型日程开始月份
-     * @param month_end      int类型日程结束月份
      * @return 一个Schedule对象
      */
-    public static Schedule transformUserInputToCorrectForm(final String scheduleName, final String tmpStartString, final String tmpEndString, final int month_start, final int month_end) {
+    public static Schedule transformUserInputToCorrectForm(final String scheduleName, final String tmpStartString, final String tmpEndString) {
 
         // 分析字符串得到日期和时间
         int indexNian = tmpStartString.indexOf("年");
         int indexYue = tmpStartString.indexOf("月");
         int indexRi = tmpStartString.lastIndexOf("日");
         String year = tmpStartString.substring(indexNian - 4, indexNian);
+        String month = tmpStartString.substring(indexNian + 1, indexYue);
         String day = tmpStartString.substring(indexYue + 1, indexRi);
 
         int indexNianEnd = tmpEndString.indexOf("年");
         int indexYueEnd = tmpEndString.indexOf("月");
         int indexRiEnd = tmpEndString.lastIndexOf("日");
         String yearEnd = tmpEndString.substring(indexNianEnd - 4, indexNianEnd);
+        String monthEnd = tmpEndString.substring(indexNianEnd + 1, indexYueEnd);
         String dayEnd = tmpEndString.substring(indexYueEnd + 1, indexRiEnd);
 
-        LocalDate startDate = LocalDate.of(Integer.parseInt(year), month_start + 1, Integer.parseInt(day));
-        LocalDate endDate = LocalDate.of(Integer.parseInt(yearEnd), month_end + 1, Integer.parseInt(dayEnd));
+        LocalDate startDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+        LocalDate endDate = LocalDate.of(Integer.parseInt(yearEnd), Integer.parseInt(monthEnd), Integer.parseInt(dayEnd));
         LocalTime startTime = LocalTime.of(Integer.parseInt(tmpStartString.substring(tmpStartString.length() - 5, tmpStartString.length() - 3)), Integer.parseInt(tmpStartString.substring(tmpStartString.length() - 2, tmpStartString.length())));
         LocalTime endTime = LocalTime.of(Integer.parseInt(tmpEndString.substring(tmpEndString.length() - 5, tmpEndString.length() - 3)), Integer.parseInt(tmpEndString.substring(tmpEndString.length() - 2, tmpEndString.length())));
 

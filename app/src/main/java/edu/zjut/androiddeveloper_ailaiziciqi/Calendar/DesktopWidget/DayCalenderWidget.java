@@ -26,6 +26,7 @@ import java.util.TimerTask;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanAddActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 
@@ -174,7 +175,15 @@ public class DayCalenderWidget extends AppWidgetProvider {
             //因为点击按钮后要对布局中的文本进行更新，所以需要创建一个远程view
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.day_calender_widget);
 
-            Intent add_activity_intent = new Intent(context, MixActivity.class);
+            PreferencesHelper helper = new PreferencesHelper(context, SHARED_PREFERENCE_NAME);
+            String before = helper.getString("old_man_mode");
+            Intent add_activity_intent;
+            if (before.equals(OPTION_DEACTIVATED)) {
+                add_activity_intent = new Intent(context, MixActivity.class);
+            } else {
+                add_activity_intent = new Intent(context, OldmanActivity.class);
+            }
+
             add_activity_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(add_activity_intent);
 
