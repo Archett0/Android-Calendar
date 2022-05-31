@@ -4,19 +4,19 @@
     <item
         android:id="@+id/single_event_share"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_share_24"
+        android:icon="@drawable/ic_share"
         android:title="分享"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/single_event_modify"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_edit_24"
+        android:icon="@drawable/ic_edit"
         android:title="编辑"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/single_event_delete"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_delete_outline_24"
+        android:icon="@drawable/ic_delete"
         android:title="删除"
         app:showAsAction="ifRoom" />
 </menu>
