@@ -33,16 +33,27 @@
                 android:src="@drawable/back" />
 
             <TextView
+                android:id="@+id/hint"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/today_back"
+                android:gravity="center"
+                android:text="今日日程"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/hint_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
                 android:background="@drawable/bg_ripple"
-                android:text="今日日程"
-                android:textColor="#2789E4"
-                android:textSize="25sp"
+                android:text="返回今日"
+                android:textColor="@color/black"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 

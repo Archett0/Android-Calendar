@@ -47,6 +47,7 @@
         </LinearLayout>
 
         <View
+            android:layout_width="2dp"
             android:id="@+id/main_card_vertical_bar"
             style="@style/vertical_line_style"
             android:layout_marginStart="10dp"/>

@@ -46,12 +46,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="08:00"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
         <View
             style="@style/vertical_line_style"
+            android:layout_width="2dp"
             android:layout_marginStart="20dp"/>
 
         <TextView

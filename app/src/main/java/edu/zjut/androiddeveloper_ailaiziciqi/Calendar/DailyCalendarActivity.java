@@ -31,6 +31,7 @@ import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.nlf.calendar.Lunar;
+import com.nlf.calendar.Solar;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -82,13 +83,25 @@ public class DailyCalendarActivity extends AppCompatActivity {
         mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
             @Override
             public String interpretDate(java.util.Calendar date) {
-                Lunar lunar = Lunar.fromDate(date.getTime());
-                return "星期" + lunar.getWeekInChinese() + "  " + (lunar.getMonth() + 1) + "月" + lunar.getDay() + "日                 ";
+                Solar solar = Solar.fromDate(date.getTime());
+                String solarDate = "星期" + solar.getWeekInChinese() + "  " + solar.getMonth() + "月" + solar.getDay() + "日                 ";
+                return solarDate;
             }
 
             @Override
             public String interpretTime(int hour, int minutes) {
-                return hour > 11 ? (hour - 12) + " PM" : (hour == 0 ? "12 AM" : hour + " AM");
+                String result = "";
+                if (hour == 0) {
+                    result = "凌晨12点";
+                } else if (hour > 11) {
+                    result = "下午" + (hour - 12) + "点";
+                } else if (hour < 7) {
+                    result = "早晨" + hour + "点";
+                } else {
+                    result = "早上" + hour + "点";
+                }
+//                return hour > 11 ? (hour - 12) + " PM" : (hour == 0 ? "12 AM" : hour + " AM");
+                return result;
             }
         });
 
@@ -261,6 +274,7 @@ public class DailyCalendarActivity extends AppCompatActivity {
             targetDate.set(java.util.Calendar.MONTH, clickedDate.getMonthValue() - 1);
             targetDate.set(java.util.Calendar.YEAR, clickedDate.getYear());
             mWeekView.goToDate(targetDate);
+            Log.i("Day View", "选择了日期" + targetDate.getTime());
         } else {
             mWeekView.goToToday();
         }
