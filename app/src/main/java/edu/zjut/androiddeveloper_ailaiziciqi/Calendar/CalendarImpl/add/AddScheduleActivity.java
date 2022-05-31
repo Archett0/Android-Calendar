@@ -202,7 +202,7 @@ public class AddScheduleActivity extends AppCompatActivity {
         }
 
         // 用工具类处理用户输入
-        Schedule readySchedule = transformUserInputToCorrectForm(scheduleName, tmpStartString, tmpEndString, month_start, month_end);
+        Schedule readySchedule = transformUserInputToCorrectForm(scheduleName, tmpStartString, tmpEndString);
 
         // 处理完毕,获取处理好的值
         String scheduleDate = String.valueOf(readySchedule.getScheduleDate());
