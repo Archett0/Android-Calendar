@@ -110,9 +110,9 @@
 
     <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
     <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Daily Schedule List</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="app_widget_description">Add a Daily Schedule List</string>
     <string name="title_activity_settings" translatable="false">SettingsActivity</string>
 
 

@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="60sp"
-    tools:context=".OldmanActivity">
+    tools:context=".CalendarImpl.mix.OldmanActivity">
 
-    <edu.zjut.androiddeveloper_ailaiziciqi.layouttools.FriendlyScrollView
+    <edu.zjut.androiddeveloper_ailaiziciqi.LayoutTools.FriendlyScrollView
         android:id="@+id/card_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -242,7 +242,7 @@
 
         </androidx.cardview.widget.CardView>
 
-    </edu.zjut.androiddeveloper_ailaiziciqi.layouttools.FriendlyScrollView>
+    </edu.zjut.androiddeveloper_ailaiziciqi.LayoutTools.FriendlyScrollView>
     <!--    <edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView-->
     <!--        android:id="@+id/recyclerView"-->
     <!--        android:layout_width="match_parent"-->

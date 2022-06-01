@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.smsdetail;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SMS;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,10 +12,8 @@ import android.widget.TextView;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SmsSearchAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.SmsSearchInformation;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
 
 public class SmsDetailsAdapter extends BaseAdapter {
     //使用list<Nate>,list会存储数据库中note表所有记录。

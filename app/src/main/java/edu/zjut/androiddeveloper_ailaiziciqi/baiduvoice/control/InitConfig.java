@@ -1,8 +1,8 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control;
 
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.IOfflineResourceConst;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.IOfflineResourceConst;
 
 import java.util.Map;
 

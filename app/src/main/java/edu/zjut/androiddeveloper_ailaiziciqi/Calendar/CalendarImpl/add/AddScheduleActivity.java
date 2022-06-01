@@ -4,7 +4,7 @@ import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.isScheduleValid;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.transformUserInputToCorrectForm;
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.getScheduleById;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule.getScheduleById;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -47,7 +47,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.DayCalenderW
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.ListRemoteViewsFactory;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.ListWidgetService;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
 
 public class AddScheduleActivity extends AppCompatActivity {
     private TextView timestart, timeend;
@@ -279,7 +279,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                 Toast.makeText(this, "成功保存", Toast.LENGTH_SHORT).show();
             }
         } else {
-            int rowsAffected =getContentResolver().update(mCurrentScheduleUri, values, null, null);
+            int rowsAffected = getContentResolver().update(mCurrentScheduleUri, values, null, null);
             if (rowsAffected == 0) {
                 Toast.makeText(this, "更新出错", Toast.LENGTH_SHORT).show();
             } else {
@@ -305,7 +305,7 @@ public class AddScheduleActivity extends AppCompatActivity {
             month_end = cal.get(Calendar.MONTH);   //获取到的月份是从0开始计数
             day_end = cal.get(Calendar.DAY_OF_MONTH);
             hour_end = cal.get(Calendar.HOUR_OF_DAY);
-            Log.w("hour_end", hour_end+"");
+            Log.w("hour_end", hour_end + "");
             min_end = 0;
         }
 
@@ -318,7 +318,7 @@ public class AddScheduleActivity extends AppCompatActivity {
         private TextView otherTextView;
         private String whichOtherTextView;
 
-//        TextView textView: 当前的textview；     TextView otherTextView：另外的一个textview;       String whichOtherTextView:哪一个另外的textview
+        //        TextView textView: 当前的textview；     TextView otherTextView：另外的一个textview;       String whichOtherTextView:哪一个另外的textview
         public ClickEvent(TextView textView, int year, int month, int day, int hour, int min, TextView otherTextView, String whichOtherTextView) {
             this.textView = textView;
             this.year = year;
@@ -356,8 +356,8 @@ public class AddScheduleActivity extends AppCompatActivity {
                             }
 
                             if (whichOtherTextView.equals("end")) { //正在更改start，另一个是end
-                                if(year_end <= year || month_end <= month || day_end <= day || hour_end <= hour || min_end <= minute) {
-                                    otherTextView.setText(year + "年" + (month + 1) + "月" + day + "日" + " " + fixhour + (hour+1) + ":" + fixmin + minute);
+                                if (year_end <= year || month_end <= month || day_end <= day || hour_end <= hour || min_end <= minute) {
+                                    otherTextView.setText(year + "年" + (month + 1) + "月" + day + "日" + " " + fixhour + (hour + 1) + ":" + fixmin + minute);
                                     year_end = year;
                                     month_end = month;
                                     day_end = day;
@@ -388,7 +388,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                if(calendar_start.before(calendar_end)) {
+                                if (calendar_start.before(calendar_end)) {
                                     Log.w("starttime", year_start + "年" + (month_start + 1) + "月" + day_start + "日" + " " + fixhour + hour_start + ":" + fixmin + min_start);
                                     Log.w("endtime", year + "年" + (month + 1) + "月" + day + "日" + " " + fixhour + hour + ":" + fixmin + minute);
                                     textView.setText(year + "年" + (month + 1) + "月" + day + "日" + " " + fixhour + hour + ":" + fixmin + minute);
@@ -400,7 +400,12 @@ public class AddScheduleActivity extends AppCompatActivity {
                                 }
 
                             }
-
+                            String raw_timeEnd = timeend.getText().toString();
+                            int indexRi = raw_timeEnd.indexOf("日");
+                            int indexMao = raw_timeEnd.indexOf(":");
+                            String partLeft = raw_timeEnd.substring(0, indexRi + 1);
+                            String partRight = raw_timeEnd.substring(indexMao - 2);
+                            timeend.setText(partLeft + " " + partRight);
                         }
                     };
                     TimePickerDialog timePickerDialog = new TimePickerDialog(AddScheduleActivity.this, timeSetListener, hour, min, true);

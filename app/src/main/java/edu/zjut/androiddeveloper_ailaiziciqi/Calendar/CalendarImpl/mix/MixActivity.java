@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -33,11 +32,8 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddSchedu
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DailyCalendarActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SettingsActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SmsReceiver;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SMS.SmsReceiver;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.Calendar;
 import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.CalendarLayout;
@@ -50,7 +46,6 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRe
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MixActivity extends BaseActivity implements

@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.ScheduleWithCheck;
 
 public class SearchListAdapter extends BaseAdapter {
     //使用list<Nate>,list会存储数据库中note表所有记录。
@@ -47,7 +48,7 @@ public class SearchListAdapter extends BaseAdapter {
     public List<Schedule> getListSelected() {
         List<Schedule> selectedList = new ArrayList<>();
         for (ScheduleWithCheck s : list) {
-            if(s.getIsChecked()) {
+            if (s.getIsChecked()) {
                 selectedList.add(s.getSchedule());
             }
         }
@@ -59,7 +60,7 @@ public class SearchListAdapter extends BaseAdapter {
         this.list = list;
         layoutInflater = LayoutInflater.from(context);
         viewMap = new HashMap<>(); //创建与list相同大小的键值对viewholder数组
-        SearchListAdapter.searchActivity = (SearchActivity)context;
+        SearchListAdapter.searchActivity = (SearchActivity) context;
     }
 
     @Override
@@ -74,13 +75,13 @@ public class SearchListAdapter extends BaseAdapter {
 
     //    设置每个checkbox可见
     public void setAllCheckboxVisible() {
-        Log.w("list_size",list.size()+"");
+        Log.w("list_size", list.size() + "");
         for (View v : viewMap.values()) {
-            ViewHolder x = (ViewHolder)v.getTag();
+            ViewHolder x = (ViewHolder) v.getTag();
             x.checkBox.setVisibility(View.VISIBLE);
             notifyDataSetChanged();
         }
-        for(ScheduleWithCheck s : list) {
+        for (ScheduleWithCheck s : list) {
             s.setVisible(true);
         }
     }
@@ -88,24 +89,24 @@ public class SearchListAdapter extends BaseAdapter {
     //    设置每个checkbox不可见
     public void setAllCheckboxInvisible() {
         for (View v : viewMap.values()) {
-            ViewHolder x = (ViewHolder)v.getTag();
+            ViewHolder x = (ViewHolder) v.getTag();
             x.checkBox.setVisibility(View.INVISIBLE);
             notifyDataSetChanged();
         }
-        for(ScheduleWithCheck s : list) {
+        for (ScheduleWithCheck s : list) {
             s.setVisible(false);
         }
     }
 
     // 设置所有checkbox都被选择
     public void setAllCheckBoxSelected() {
-        Log.w("所有checkbox都被选择函数：","");
+        Log.w("所有checkbox都被选择函数：", "");
         for (View v : viewMap.values()) {
-            ViewHolder x = (ViewHolder)v.getTag();
+            ViewHolder x = (ViewHolder) v.getTag();
             x.checkBox.setSelected(true);
             notifyDataSetChanged();
         }
-        for(ScheduleWithCheck s : list) {
+        for (ScheduleWithCheck s : list) {
             s.setIsChecked(true);
         }
     }
@@ -113,23 +114,23 @@ public class SearchListAdapter extends BaseAdapter {
     // 设置所有checkbox都不被选择
     public void setAllCheckBoxNotSelected() {
         for (View v : viewMap.values()) {
-            ViewHolder x = (ViewHolder)v.getTag();
+            ViewHolder x = (ViewHolder) v.getTag();
             x.checkBox.setSelected(false);
             notifyDataSetChanged();
         }
-        for(ScheduleWithCheck s : list) {
+        for (ScheduleWithCheck s : list) {
             s.setIsChecked(false);
         }
     }
 
     @SuppressLint("RestrictedApi")
     private void isAllCheckBoxSelected() {
-        Log.w("size_of_viewHolder", list.size()+"");
+        Log.w("size_of_viewHolder", list.size() + "");
         int i = 0;
         for (ScheduleWithCheck s : list) {
-            if(s.getIsChecked()) {
+            if (s.getIsChecked()) {
                 Log.w("当前checkbox被选中", i + "");
-                ViewHolder h = (ViewHolder)viewMap.get(i).getTag();
+                ViewHolder h = (ViewHolder) viewMap.get(i).getTag();
                 Log.w("当前ViewHolder被选中", h.position + "");
                 searchActivity.setCheckBoxSelected(true);
                 searchActivity.getItemView().setEnabled(true);
@@ -166,12 +167,11 @@ public class SearchListAdapter extends BaseAdapter {
         Schedule schedule = (Schedule) getItem(position);
 
         // 如果查找不到日程，就设置组件不可见
-        if(schedule.getScheduleDate().equals(LocalDate.of(1999,1,1))){
+        if (schedule.getScheduleDate().equals(LocalDate.of(1999, 1, 1))) {
             viewHolder.date.setVisibility(View.GONE);
             viewHolder.mCardWithEvent.setVisibility(View.GONE);
             viewHolder.mCardWithNoEvent.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             viewHolder.mCardWithEvent.setVisibility(View.VISIBLE);
             viewHolder.mCardWithNoEvent.setVisibility(View.GONE);
             viewHolder.schedule.setText(schedule.getSchedule());
@@ -180,9 +180,44 @@ public class SearchListAdapter extends BaseAdapter {
             viewHolder.date.setText(schedule.getScheduleDate().format(date) + schedule.getWeek() + " 农历" + schedule.getLunar());
 
             DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
-            viewHolder.timeStart.setText(schedule.getScheduleStartTime().format(time));
-
-            viewHolder.timeEnd.setText(schedule.getScheduleEndTime().format(time));
+            LocalDate eventStartDate = schedule.getScheduleDate();
+            LocalDate eventEndDate = schedule.getScheduleEndDate();
+            LocalTime eventStartTime = schedule.getScheduleStartTime();
+            LocalTime eventEndTime = schedule.getScheduleEndTime();
+            LocalDate selectedDate = LocalDate.now();
+            if (eventStartDate.equals(eventEndDate)) {
+                // if its a all-day event
+                if (eventStartTime.equals(LocalTime.of(0, 0)) && eventEndTime.equals(LocalTime.of(23, 59))) {
+                    viewHolder.timeStart.setText("全天日程");
+                    viewHolder.timeEnd.setVisibility(View.GONE);
+                } else {
+                    viewHolder.timeStart.setText(schedule.getScheduleStartTime().format(time));
+                    viewHolder.timeEnd.setText(schedule.getScheduleEndTime().format(time));
+                    viewHolder.timeEnd.setVisibility(View.VISIBLE);
+                }
+            }
+            // spans date forward
+            else if (eventStartDate.equals(selectedDate) && eventEndDate.isAfter(selectedDate)) {
+                viewHolder.timeStart.setText("跨天日程");
+                viewHolder.timeEnd.setText((eventStartDate + "").substring(5) + "开始");
+                viewHolder.timeEnd.setVisibility(View.VISIBLE);
+            }
+            // spans date from before
+            else if (eventEndDate.equals(selectedDate) && eventStartDate.isBefore(selectedDate)) {
+                viewHolder.timeStart.setText("跨天日程");
+                viewHolder.timeEnd.setText((eventEndDate + "").substring(5) + "结束");
+                viewHolder.timeEnd.setVisibility(View.VISIBLE);
+            }
+            // spans date from both before and forward
+            else if (eventStartDate.isBefore(selectedDate) && eventEndDate.isAfter(selectedDate)) {
+                viewHolder.timeStart.setText("跨天日程");
+                viewHolder.timeEnd.setText("今天全天");
+                viewHolder.timeEnd.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.timeStart.setText((eventStartDate + "").substring(5));
+                viewHolder.timeEnd.setText((eventEndDate + "").substring(5));
+                viewHolder.timeEnd.setVisibility(View.VISIBLE);
+            }
 
             if (list.get(position).getIsChecked()) {
                 viewHolder.checkBox.setChecked(true);
@@ -204,7 +239,7 @@ public class SearchListAdapter extends BaseAdapter {
     }
 
     //用于给item的视图加载数据内容。
-    public class ViewHolder{
+    public class ViewHolder {
         int position;
         TextView schedule;
         TextView date;
@@ -217,7 +252,7 @@ public class SearchListAdapter extends BaseAdapter {
 
         public ViewHolder(View view, int position) {
             this.position = position;
-            Log.w("ViewHolder position",position+"");
+            Log.w("ViewHolder position", position + "");
             schedule = view.findViewById(R.id.schedule);
             date = view.findViewById(R.id.date);
             timeStart = view.findViewById(R.id.time_start);
@@ -234,7 +269,7 @@ public class SearchListAdapter extends BaseAdapter {
                     list.get(ViewHolder.this.position).setIsChecked(checkBox.isChecked());
 //                    Log.w("checkbox",String.valueOf(checkBox.isChecked()));
                     isAllCheckBoxSelected();
-                    Log.w("星期",list.get(ViewHolder.this.position).getSchedule().getWeek());
+                    Log.w("星期", list.get(ViewHolder.this.position).getSchedule().getWeek());
                 }
             });
         }

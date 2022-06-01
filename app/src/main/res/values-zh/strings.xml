@@ -85,4 +85,9 @@
 
     <string name="simple">简单风格</string>
     <string name="simple_desc">这是最简单的日历</string>
+
+    <string name="appwidget_text">今日日程列表</string>
+    <string name="add_widget">添加小组件</string>
+    <string name="app_widget_description">添加一个今日日程列表</string>
+
 </resources>

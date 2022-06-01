@@ -5,7 +5,7 @@
     android:initialLayout="@layout/day_calender_widget"
     android:minWidth="300dp"
     android:minHeight="180dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/widget_demo"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="5000"
     android:widgetCategory="home_screen" />

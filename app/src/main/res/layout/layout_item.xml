@@ -28,12 +28,13 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/time_start"
-                android:layout_width="80dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="08:00"
@@ -42,7 +43,7 @@
 
             <TextView
                 android:id="@+id/time_end"
-                android:layout_width="80dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="08:00"
@@ -53,12 +54,12 @@
         <View
             style="@style/vertical_line_style"
             android:layout_width="2dp"
-            android:layout_marginStart="20dp"/>
+            android:layout_marginStart="10dp"/>
 
         <TextView
             android:id="@+id/schedule"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:layout_weight="2"
             android:gravity="center_vertical"
             android:text="测试信息"

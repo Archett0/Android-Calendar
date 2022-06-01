@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control;
 
 import android.content.Context;
 import android.os.Build;

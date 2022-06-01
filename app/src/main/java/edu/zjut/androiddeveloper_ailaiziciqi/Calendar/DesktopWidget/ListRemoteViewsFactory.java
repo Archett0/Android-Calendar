@@ -1,7 +1,7 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.schedulesForName;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule.schedulesForName;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.ScheduleWithCheck;
 
 public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private final static String TAG = "Widget";

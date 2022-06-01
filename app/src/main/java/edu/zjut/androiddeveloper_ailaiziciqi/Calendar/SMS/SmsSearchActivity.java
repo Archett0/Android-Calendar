@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SMS;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.smsForName;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.updateDataFromDatabase;
@@ -6,7 +6,6 @@ import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,23 +15,13 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONArray;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.SendSmsActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.smsdetail.SmsDetailsActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SmsReceiver;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleString;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.SmsSearchInformation;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.SmsSearchInformation;
 
 public class SmsSearchActivity extends AppCompatActivity {
     private ImageView back; //返回按钮

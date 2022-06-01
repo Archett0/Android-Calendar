@@ -1,33 +1,27 @@
 package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget;
 
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_ACTIVATED;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_DEACTIVATED;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.SHARED_PREFERENCE_NAME;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.OldmanAddActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.OldmanActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.OldmanAddActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 
 /**

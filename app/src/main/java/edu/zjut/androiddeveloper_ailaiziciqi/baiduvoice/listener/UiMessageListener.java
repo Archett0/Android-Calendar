@@ -1,8 +1,8 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.listener;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.listener;
 
-import static edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.MainHandlerConstant.PRINT;
-import static edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.MainHandlerConstant.UI_CHANGE_INPUT_TEXT_SELECTION;
-import static edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.MainHandlerConstant.UI_CHANGE_SYNTHES_TEXT_SELECTION;
+import static edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.MainHandlerConstant.PRINT;
+import static edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.MainHandlerConstant.UI_CHANGE_INPUT_TEXT_SELECTION;
+import static edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.MainHandlerConstant.UI_CHANGE_SYNTHES_TEXT_SELECTION;
 
 import android.os.Handler;
 import android.os.Message;

@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util;
 
 import android.Manifest;
 import android.content.Context;
@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SynthesizerTool;
 import com.baidu.tts.client.TtsMode;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control.InitConfig;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control.InitConfig;
 
 import org.json.JSONObject;
 

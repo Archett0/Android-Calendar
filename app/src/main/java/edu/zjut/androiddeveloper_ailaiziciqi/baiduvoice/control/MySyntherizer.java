@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control;
 
 import android.content.Context;
 import android.os.Handler;
@@ -9,7 +9,7 @@ import android.util.Pair;
 import com.baidu.tts.client.SpeechSynthesizeBag;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.MainHandlerConstant;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.MainHandlerConstant;
 
 import java.util.ArrayList;
 import java.util.List;
