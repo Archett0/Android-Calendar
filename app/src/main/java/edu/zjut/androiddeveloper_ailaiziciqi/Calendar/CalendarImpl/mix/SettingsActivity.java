@@ -1,10 +1,9 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_ACTIVATED;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.OPTION_DEACTIVATED;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper.SHARED_PREFERENCE_NAME;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,10 +21,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
-import java.util.Objects;
-
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.PreferencesHelper;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 
 /**
  * 设置控制类

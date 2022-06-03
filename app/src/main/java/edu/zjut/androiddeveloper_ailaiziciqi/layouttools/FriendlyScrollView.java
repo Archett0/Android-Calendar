@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.layouttools;
+package edu.zjut.androiddeveloper_ailaiziciqi.LayoutTools;
 
 import android.content.Context;
 import android.util.AttributeSet;

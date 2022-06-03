@@ -49,14 +49,14 @@
         </receiver>
 
         <activity
-            android:name=".OldmanAddActivity"
+            android:name=".CalendarImpl.add.OldmanAddActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".CalendarImpl.mix.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".OldmanActivity"
+            android:name=".CalendarImpl.mix.OldmanActivity"
             android:exported="false" />
         <activity
             android:name=".Event.ScheduleDetailsActivity"
@@ -65,20 +65,20 @@
             android:name=".CalendarImpl.search.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".CalendarImpl.smsdetail.SmsDetailsActivity"
+            android:name=".SMS.SmsDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".CalendarImpl.add.SendSmsActivity"
             android:exported="false" />
         <activity
-            android:name=".CalendarImpl.search.SmsSearchActivity"
+            android:name=".SMS.SmsSearchActivity"
             android:exported="false" />
         <activity
             android:name=".CalendarImpl.add.AddScheduleActivity"
             android:exported="true"
             android:label="@string/title_activity_add_schedule" />
         <activity
-            android:name=".DailyCalendarActivity"
+            android:name=".CalendarImpl.mix.DailyCalendarActivity"
             android:exported="false" />
         <activity
             android:name=".CalendarImpl.mix.MixActivity"
@@ -89,11 +89,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestActivity" />
-        <activity android:name=".CalendarActivity" />
 
         <receiver
-            android:name=".SmsReceiver"
+            android:name=".SMS.SmsReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

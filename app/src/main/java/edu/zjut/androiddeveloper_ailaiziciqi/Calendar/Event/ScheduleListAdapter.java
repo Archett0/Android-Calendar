@@ -19,7 +19,7 @@ import com.bumptech.glide.RequestManager;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -114,8 +114,15 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
 
             // event within this date
             if (eventStartDate.equals(eventEndDate)) {
-                h.mEventTime.setText(String.valueOf(eventStartTime));
-                h.mEventTimeEnd.setText(String.valueOf(eventEndTime));
+                // if its a all-day event
+                if (eventStartTime.equals(LocalTime.of(0, 0)) && eventEndTime.equals(LocalTime.of(23, 59))) {
+                    h.mEventTime.setText("全天日程");
+                    h.mEventTimeEnd.setText(eventStartDate + "");
+                }
+                else{
+                    h.mEventTime.setText(String.valueOf(eventStartTime));
+                    h.mEventTimeEnd.setText(String.valueOf(eventEndTime));
+                }
             }
             // spans date forward
             else if (eventStartDate.equals(selectedDate) && eventEndDate.isAfter(selectedDate)) {

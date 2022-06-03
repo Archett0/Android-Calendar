@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.smsdetail;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SMS;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.updateDataFromDatabase;
 
@@ -6,27 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchListAdapter;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SmsSearchActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SmsSearchAdapter;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.SmsSearchInformation;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.SmsSearchInformation;
 
 public class SmsDetailsActivity extends AppCompatActivity {
     private SmsDetailsAdapter smsDetailsAdapter;

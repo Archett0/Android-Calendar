@@ -42,6 +42,7 @@
 
         <TextView
             style="@style/vertical_line_style"
+            android:layout_width="2dp"
             android:layout_marginLeft="10dp"/>
 
         <TextView

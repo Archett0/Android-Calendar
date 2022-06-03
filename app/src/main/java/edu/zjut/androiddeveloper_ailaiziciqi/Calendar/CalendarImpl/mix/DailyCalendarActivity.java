@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.SCHEDULE_DESCRIPTION_END;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.SCHEDULE_DESCRIPTION_START;
@@ -7,8 +7,8 @@ import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.getRandomColor;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.getScheduleWeatherReport;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.getScheduleById;
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.schedulesForMonth;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule.getScheduleById;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule.schedulesForMonth;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -30,7 +30,6 @@ import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
-import com.nlf.calendar.Lunar;
 import com.nlf.calendar.Solar;
 
 import java.time.LocalDate;
@@ -39,10 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 
 public class DailyCalendarActivity extends AppCompatActivity {
 

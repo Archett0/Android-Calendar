@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.voice;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Voice;
 
 import android.Manifest;
 import android.content.Context;
@@ -23,15 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control.InitConfig;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control.MySyntherizer;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control.NonBlockSyntherizer;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.listener.UiMessageListener;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.Auth;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.AutoCheck;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.FileUtil;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.IOfflineResourceConst;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.OfflineResource;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control.InitConfig;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control.MySyntherizer;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control.NonBlockSyntherizer;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.listener.UiMessageListener;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.Auth;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.AutoCheck;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.FileUtil;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.IOfflineResourceConst;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.OfflineResource;
 
 public class VoiceAssistant {
     // ================== 完整版初始化参数设置开始 ==========================

@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchListAdapter;
 

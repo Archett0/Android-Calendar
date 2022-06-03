@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
 
 /**
  * 一个时间段的全部事件

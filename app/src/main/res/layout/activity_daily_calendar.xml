@@ -7,7 +7,7 @@
     android:background="#ffffff"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".DailyCalendarActivity"
+    tools:context=".CalendarImpl.mix.DailyCalendarActivity"
     tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
 
     <RelativeLayout

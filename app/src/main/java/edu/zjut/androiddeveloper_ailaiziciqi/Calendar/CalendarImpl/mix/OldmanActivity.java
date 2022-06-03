@@ -1,8 +1,7 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -24,16 +21,14 @@ import com.nlf.calendar.Lunar;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.search.SearchActivity;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.voice.VoiceAssistant;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control.MySyntherizer;
-import edu.zjut.androiddeveloper_ailaiziciqi.layouttools.FriendlyScrollView;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.OldmanAddActivity;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Voice.VoiceAssistant;
+import edu.zjut.androiddeveloper_ailaiziciqi.LayoutTools.FriendlyScrollView;
 
 public class OldmanActivity extends AppCompatActivity {
 
@@ -253,7 +248,7 @@ public class OldmanActivity extends AppCompatActivity {
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OldmanActivity.this,SettingsActivity.class);
+                Intent intent = new Intent(OldmanActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 finish();
             }

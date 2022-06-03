@@ -1,12 +1,12 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.listener;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.listener;
 
 import android.content.Context;
 import android.os.Handler;
 
 import com.baidu.tts.client.SpeechSynthesizer;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.control.MySyntherizer;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.IOfflineResourceConst;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util.OfflineResource;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.control.MySyntherizer;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.IOfflineResourceConst;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util.OfflineResource;
 
 import java.io.IOException;
 import java.util.HashMap;

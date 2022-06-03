@@ -1,10 +1,10 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.listener;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.listener;
 
 import android.util.Log;
 
 import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizerListener;
-import edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.MainHandlerConstant;
+import edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.MainHandlerConstant;
 
 /**
  * SpeechSynthesizerListener 简单地实现，仅仅记录日志

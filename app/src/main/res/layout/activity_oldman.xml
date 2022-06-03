@@ -7,7 +7,7 @@
     android:background="@color/content_background"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".OldmanActivity">
+    tools:context=".CalendarImpl.mix.OldmanActivity">
 
 
     <RelativeLayout

@@ -25,10 +25,10 @@ import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleString;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.SmsSearchInformation;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.WeatherOfDate;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.ScheduleString;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.SmsSearchInformation;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.WeatherOfDate;
 
 /**
  * 日程工具类

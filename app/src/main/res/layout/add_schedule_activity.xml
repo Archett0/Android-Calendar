@@ -81,7 +81,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="10dp"
-                android:src="@drawable/title"></ImageView>
+                android:src="@drawable/ic_book" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,7 +119,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="10dp"
-                android:src="@drawable/time"></ImageView>
+                android:src="@drawable/ic_schedule" />
 
             <LinearLayout
                 android:layout_width="match_parent"

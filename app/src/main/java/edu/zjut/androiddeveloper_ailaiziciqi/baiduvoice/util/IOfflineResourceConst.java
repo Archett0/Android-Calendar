@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice.util;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice.util;
 
 import com.baidu.tts.client.TtsMode;
 

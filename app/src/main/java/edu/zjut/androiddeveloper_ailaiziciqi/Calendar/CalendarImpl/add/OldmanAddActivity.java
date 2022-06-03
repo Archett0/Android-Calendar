@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.Calendar;
+package edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add;
 
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.isScheduleValid;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.loadOrReloadDataFromDatabase;
@@ -18,7 +18,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -35,11 +34,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.add.AddScheduleActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DesktopWidget.DayCalenderWidget;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.voice.VoiceAssistant;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Voice.VoiceAssistant;
 
 public class OldmanAddActivity extends AppCompatActivity {
     private TextView timestart, timeend;

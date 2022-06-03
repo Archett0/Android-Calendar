@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
 
 /**
  *  小时Cell的适配器

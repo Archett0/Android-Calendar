@@ -1,4 +1,4 @@
-package edu.zjut.androiddeveloper_ailaiziciqi.baiduvoice;
+package edu.zjut.androiddeveloper_ailaiziciqi.BaiduVoice;
 
 /**
  * Created by fujiayi on 2017/9/13.

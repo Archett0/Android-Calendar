@@ -6,7 +6,7 @@ import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.generateScheduleDescription;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.generateShareText;
 import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleUtils.getScheduleWeatherReport;
-import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule.schedulesForName;
+import static edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule.schedulesForName;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -21,7 +21,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,28 +28,24 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.mix.MixActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.DB.DbContact;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Event.ScheduleDetailsActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.Schedule;
-import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.model.ScheduleWithCheck;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.Schedule;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.Model.ScheduleWithCheck;
+import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.SMS.SmsSearchActivity;
 
 public class SearchActivity extends AppCompatActivity {
     private SearchListAdapter searchListAdapter;
