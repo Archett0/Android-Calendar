@@ -64,6 +64,10 @@ public final class LunarCalendar {
     @SuppressLint("UseSparseArrays")
     private static final Map<Integer, String[]> SOLAR_TERMS = new HashMap<>();
 
+    public static String[] getSolarCalendar() {
+        return SOLAR_CALENDAR;
+    }
+
     /**
      * 返回传统农历节日
      *
