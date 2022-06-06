@@ -59,12 +59,19 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         mLoader = Glide.with(context.getApplicationContext());
         LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
         List<String> titles = new ArrayList<>();
-        map.put("今日日程", getEventList(0, dayClickRecord));
+        if (dayClickRecord.equals(LocalDate.now())) {
+            map.put("今日日程", getEventList(0, dayClickRecord));
 //        map.put("类别2待完善", getEventList(1, dayClickRecord));
 //        map.put("类别3待完善", getEventList(2, dayClickRecord));
-        titles.add("今日日程");
+            titles.add("今日日程");
 //        titles.add("类别2待完善");
 //        titles.add("类别3待完善");
+        } else {
+            String date = dayClickRecord.toString();
+            String hint = date.substring(5) + "日程";
+            map.put(hint, getEventList(0, dayClickRecord));
+            titles.add(hint);
+        }
         resetGroups(map, titles);
     }
 
@@ -77,12 +84,15 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
         mLoader = Glide.with(context.getApplicationContext());
         LinkedHashMap<String, List<Schedule>> map = new LinkedHashMap<>();
         List<String> titles = new ArrayList<>();
-        map.put("今日日程", getEventList(0, dayClickRecord));
-//        map.put("类别2待完善", getEventList(1, dayClickRecord));
-//        map.put("类别3待完善", getEventList(2, dayClickRecord));
-        titles.add("今日日程");
-//        titles.add("类别2待完善");
-//        titles.add("类别3待完善");
+        if (dayClickRecord.equals(LocalDate.now())) {
+            map.put("今日日程", getEventList(0, dayClickRecord));
+            titles.add("今日日程");
+        } else {
+            String date = dayClickRecord.toString();
+            String hint = date.substring(5) + "日程";
+            map.put(hint, getEventList(0, dayClickRecord));
+            titles.add(hint);
+        }
         resetGroups(map, titles);
     }
 
@@ -118,8 +128,7 @@ public class ScheduleListAdapter extends GroupRecyclerAdapter<String, Schedule> 
                 if (eventStartTime.equals(LocalTime.of(0, 0)) && eventEndTime.equals(LocalTime.of(23, 59))) {
                     h.mEventTime.setText("全天日程");
                     h.mEventTimeEnd.setText(eventStartDate + "");
-                }
-                else{
+                } else {
                     h.mEventTime.setText(String.valueOf(eventStartTime));
                     h.mEventTimeEnd.setText(String.valueOf(eventEndTime));
                 }
