@@ -43,6 +43,7 @@ import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.R;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.base.activity.BaseActivity;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupItemDecoration;
 import edu.zjut.androiddeveloper_ailaiziciqi.Calendar.CalendarImpl.group.GroupRecyclerView;
+import edu.zjut.androiddeveloper_ailaiziciqi.calendarview.LunarCalendar;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -270,29 +271,6 @@ public class MixActivity extends BaseActivity implements
     @Override
     protected void initData() {
         Log.i("Random Debug", "initData");
-        int year = mCalendarView.getCurYear();
-
-        Map<String, Calendar> map = new HashMap<>();
-        map.put(getSchemeCalendar(year, 5, 1, 0xFFdf1356, "假").toString(),
-                getSchemeCalendar(year, 5, 1, 0xFFdf1356, "假"));
-        map.put(getSchemeCalendar(year, 5, 2, 0xFFdf1356, "假").toString(),
-                getSchemeCalendar(year, 5, 2, 0xFFdf1356, "假"));
-        map.put(getSchemeCalendar(year, 5, 3, 0xFFdf1356, "假").toString(),
-                getSchemeCalendar(year, 5, 3, 0xFFdf1356, "假"));
-        map.put(getSchemeCalendar(year, 6, 3, 0xFFdf1356, "假").toString(),
-                getSchemeCalendar(year, 6, 3, 0xFFdf1356, "假"));
-        map.put(getSchemeCalendar(year, 6, 4, 0xFFdf1356, "假").toString(),
-                getSchemeCalendar(year, 6, 4, 0xFFdf1356, "假"));
-        map.put(getSchemeCalendar(year, 6, 5, 0xFFdf1356, "假").toString(),
-                getSchemeCalendar(year, 6, 5, 0xFFdf1356, "假"));
-        for(Schedule schedule: Schedule.scheduleArrayList){
-            map.put(getSchemeCalendar(schedule.getScheduleDate().getYear(), schedule.getScheduleDate().getMonthValue(), schedule.getScheduleDate().getDayOfMonth(), 0xFFe69138, "事").toString(),
-                    getSchemeCalendar(schedule.getScheduleDate().getYear(), schedule.getScheduleDate().getMonthValue(), schedule.getScheduleDate().getDayOfMonth(), 0xFFe69138, "事"));
-
-        }
-        //此方法在巨大的数据量上不影响遍历性能，推荐使用
-        mCalendarView.setSchemeDate(map);
-
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -470,6 +448,38 @@ public class MixActivity extends BaseActivity implements
             mScheduleListAdapter.resetCurrentAdapter(this, LocalDate.now(), null);
         }
         mCalendarLayout = findViewById(R.id.calendarLayout);
+        int year = mCalendarView.getCurYear();
+
+        Map<String, Calendar> map = new HashMap<>();
+        map.put(getSchemeCalendar(year, 5, 1, 0xFFdf1356, "假").toString(),
+                getSchemeCalendar(year, 5, 1, 0xFFdf1356, "假"));
+        map.put(getSchemeCalendar(year, 5, 2, 0xFFdf1356, "假").toString(),
+                getSchemeCalendar(year, 5, 2, 0xFFdf1356, "假"));
+        map.put(getSchemeCalendar(year, 5, 3, 0xFFdf1356, "假").toString(),
+                getSchemeCalendar(year, 5, 3, 0xFFdf1356, "假"));
+        map.put(getSchemeCalendar(year, 6, 3, 0xFFdf1356, "假").toString(),
+                getSchemeCalendar(year, 6, 3, 0xFFdf1356, "假"));
+        map.put(getSchemeCalendar(year, 6, 4, 0xFFdf1356, "假").toString(),
+                getSchemeCalendar(year, 6, 4, 0xFFdf1356, "假"));
+        map.put(getSchemeCalendar(year, 6, 5, 0xFFdf1356, "假").toString(),
+                getSchemeCalendar(year, 6, 5, 0xFFdf1356, "假"));
+        for(Schedule schedule: Schedule.scheduleArrayList){
+            map.put(getSchemeCalendar(schedule.getScheduleDate().getYear(), schedule.getScheduleDate().getMonthValue(), schedule.getScheduleDate().getDayOfMonth(), 0xFFe69138, "事").toString(),
+                    getSchemeCalendar(schedule.getScheduleDate().getYear(), schedule.getScheduleDate().getMonthValue(), schedule.getScheduleDate().getDayOfMonth(), 0xFFe69138, "事"));
+
+        }
+        for(String fes: LunarCalendar.getSolarCalendar()){
+            String rawMonth = fes.substring(0,2);
+            String rawDay = fes.substring(2,4);
+            int fesMonth = Integer.parseInt(rawMonth);
+            int fesDay = Integer.parseInt(rawDay);
+            map.put(getSchemeCalendar(year, fesMonth, fesDay, 0xFF13acf0, "节").toString(),
+                    getSchemeCalendar(year, fesMonth, fesDay, 0xFF13acf0, "节"));
+
+        }
+        //此方法在巨大的数据量上不影响遍历性能，推荐使用
+        mCalendarView.setSchemeDate(map);
+
 
         // 拿到Preferences和数据
         PreferencesHelper preferencesHelper = new PreferencesHelper(MixActivity.this, SHARED_PREFERENCE_NAME);
