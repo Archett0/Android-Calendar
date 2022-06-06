@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Aici Calendar</string>
+    <string name="app_name">カレンダー</string>
 
     <string-array name="english_week_string_array">
         <item>Sun</item>
