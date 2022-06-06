@@ -19,9 +19,9 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher_alt"
+        android:icon="@mipmap/ic_launcher_chn"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_alt_round"
+        android:roundIcon="@mipmap/ic_launcher_chn_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
